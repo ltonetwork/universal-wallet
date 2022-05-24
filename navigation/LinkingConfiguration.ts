@@ -27,7 +27,7 @@ const linking: LinkingOptions<RootStackParamList> = {
           },
           Ownables: {
             screens: {
-              OwnablesTabScreen: 'three',
+              TabScreen: 'three',
             },
           },
         },
