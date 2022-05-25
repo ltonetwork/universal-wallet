@@ -43,7 +43,6 @@ export default function OnboardingScreen({ navigation }) {
             }}
             titleStyles={{
 
-
             }}
             subTitleStyles={{
                 justifyContent: 'center'
