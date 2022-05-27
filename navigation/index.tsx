@@ -18,7 +18,7 @@ import OwnablesTabScreen from '../screens/OwnablesTabScreen';
 import CredentialsTabScreen from '../screens/CredentialsTabScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
-import OnboardingScreen from '../screens/OnBoardingScreen/OnBoardingScreen';
+import OnboardingScreen from '../screens/OnBoardingScreen';
 
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
