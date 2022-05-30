@@ -2,7 +2,7 @@ import { TouchableOpacity, Text, View } from "react-native"
 import slides from "../utils/slideList";
 import { useNavigation } from "@react-navigation/native";
 
-export default function Header({ currentSlideIndex, goToOtherSlide }) {
+export default function Header({ currentSlideIndex, goToOtherSlide }: any) {
 
     const navigation = useNavigation();
 

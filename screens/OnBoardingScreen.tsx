@@ -36,7 +36,7 @@ export default function OnboardingScreen() {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#ffffff', paddingTop: 50, paddingRight: 30 }}>
+        <SafeAreaView style={{ flex: 1, paddingTop: 50, paddingRight: 30 }}>
             <StatusBar backgroundColor='#F9E7FD' />
             <Header goToOtherSlide={goToOtherSlide} currentSlideIndex={currentSlideIndex} />
             <FlatList

@@ -5,8 +5,6 @@ import useCachedResources from './hooks/useCachedResources';
 import useColorScheme from './hooks/useColorScheme';
 import Navigation from './navigation';
 
-const localImage = require('./assets/images/background_degree.png')
-
 export default function App() {
   const isLoadingComplete = useCachedResources();
   const colorScheme = useColorScheme();
@@ -16,10 +14,8 @@ export default function App() {
   } else {
     return (
       <SafeAreaProvider>
-        <ImageBackground source={localImage} style={styles.container}>
-          <Navigation colorScheme={colorScheme} />
-          <StatusBar />
-        </ImageBackground>
+        <Navigation colorScheme={colorScheme} />
+        <StatusBar />
 
       </SafeAreaProvider>
     );

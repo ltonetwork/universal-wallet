@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import { ColorSchemeName, Image, Pressable } from 'react-native';
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import ModalScreen from '../screens/ModalScreen';
@@ -19,17 +19,30 @@ import CredentialsTabScreen from '../screens/CredentialsTabScreen';
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 import OnboardingScreen from '../screens/OnBoardingScreen';
+import { StyleSheet } from 'react-native';
+import { Dimensions } from 'react-native';
+import { localImage } from '../utils/utils';
 
+
+const navTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: 'transparent',
+  },
+};
+
+const { width, height } = Dimensions.get("screen");
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
   return (
+
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      theme={colorScheme === 'dark' ? DarkTheme : navTheme}>
+      <Image source={localImage} style={{ width, height, position: "absolute" }} />
       <RootNavigator />
-
     </NavigationContainer >
-
   );
 }
 
@@ -118,5 +131,18 @@ function TabBarIcon(props: {
 }) {
   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '',
+    justifyContent: 'center',
+    resizeMode: 'cover',
+    zIndex: 1
+
+
+  }
+})
 
 

@@ -3,9 +3,10 @@ import styled from "styled-components/native"
 import { Dimensions } from "react-native"
 import slides from "../utils/slideList";
 import { useNavigation } from "@react-navigation/native";
+import { Button } from "react-native-paper";
 
 
-export default function Footer({ currentSlideIndex }) {
+export default function Footer({ currentSlideIndex }: any) {
 
     const { width, height } = Dimensions.get('window')
     const navigation = useNavigation();
@@ -28,6 +29,7 @@ export default function Footer({ currentSlideIndex }) {
 
                 {slides.map((_, index) => (
                     <Indicator
+                        testID='indicator'
                         key={index}
                         style={[
                             currentSlideIndex == index && {
@@ -42,12 +44,15 @@ export default function Footer({ currentSlideIndex }) {
             <View style={{ marginBottom: 20 }}>
                 {currentSlideIndex === slides.length - 1 && (
                     <View style={{ height: 50, alignItems: 'center' }}>
-                        <StartButton
+                        <StartButton mode="contained" uppercase={false} labelStyle={{ fontWeight: '800', fontSize: 16 }} onPress={() => navigation.navigate('Root')}>
+                            Start
+                        </StartButton>
+                        {/* <StartButton
                             onPress={() => navigation.navigate('Root')}>
                             <Text style={{ fontWeight: 'bold', fontSize: 17, color: '#ffffff' }}>
                                 Start
                             </Text>
-                        </StartButton>
+                        </StartButton> */}
                     </View>
                 )}
             </View>
@@ -64,7 +69,7 @@ const Indicator = styled.View`
     border-radius: 5px;
 `
 
-const StartButton = styled.TouchableOpacity`
+const StartButton = styled(Button)`
     height: 45px;
     width: 240px;
     border-radius: 20px;

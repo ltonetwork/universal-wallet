@@ -1,20 +1,19 @@
 import { Dimensions } from "react-native";
 import { View, Image } from "react-native";
-import slides from "../utils/slideList";
-import layout from '../constants/Layout'
 import styled from "styled-components/native";
 
 const { width } = Dimensions.get('window');
 
-export default function Slide({ item }) {
+export default function Slide({ item }: any) {
 
     return (
         <View style={{ alignItems: 'center', width }}>
             <View style={{ width: 470, alignItems: 'flex-start', marginLeft: 150 }}>
-                <TitleImg source={item?.titleImg} />
-                <Subtitle>{item?.subtitle}</Subtitle>
+                <TitleImg testID='titleImg' source={item?.titleImg} />
+                <Subtitle testID="subtitle">{item?.subtitle}</Subtitle>
             </View>
             <Image
+                testID='image'
                 source={item?.image}
                 style={{ height: '55%', resizeMode: 'contain' }}
             />
