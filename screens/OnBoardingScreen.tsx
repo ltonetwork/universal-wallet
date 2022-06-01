@@ -1,44 +1,36 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react'
+import { FlatList, SafeAreaView, StatusBar, useWindowDimensions } from 'react-native'
+import Footer from '../components/Footer'
+import Header from '../components/Header'
+import Slide from '../components/Slide'
 import slides from '../utils/slideList'
-import Slide from '../components/Slide';
-import Header from '../components/Header';
-import Footer from '../components/Footer';
-import {
-    SafeAreaView,
-    FlatList,
-    StatusBar,
-    Dimensions,
-} from 'react-native';
 
 export default function OnboardingScreen() {
 
-    const { width, height } = Dimensions.get('window');
-    const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-    const ref = useRef();
+    const { width, height } = useWindowDimensions()
+    const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
+    const ref = useRef()
 
     const updateCurrentSlideIndex = e => {
-        const contentOffsetX = e.nativeEvent.contentOffset.x;
-        const currentIndex = Math.round(contentOffsetX / width);
-        setCurrentSlideIndex(currentIndex);
+        const contentOffsetX = e.nativeEvent.contentOffset.x
+        const currentIndex = Math.round(contentOffsetX / width)
+        setCurrentSlideIndex(currentIndex)
     }
 
-    const goToOtherSlide = () => {
-        const nextSlideIndex = currentSlideIndex + 1 || currentSlideIndex - 1;
-        if (nextSlideIndex === slides.length) {
-            const offset = nextSlideIndex / width;
-            ref?.current.scrollToOffset({ offset });
-            setCurrentSlideIndex(currentSlideIndex - 1);
-        } else if (nextSlideIndex === slides.length - 1) {
-            const offset = nextSlideIndex * width;
-            ref?.current.scrollToOffset({ offset });
-            setCurrentSlideIndex(currentSlideIndex + 1);
+    const changeSlide = () => {
+        if (currentSlideIndex === slides.length - 1) {
+            setCurrentSlideIndex(currentSlideIndex - 1)
+            ref?.current.scrollToIndex({ index: currentSlideIndex - 1, animated: true })
+        } else {
+            setCurrentSlideIndex(currentSlideIndex + 1)
+            ref?.current.scrollToIndex({ index: currentSlideIndex + 1, animated: true })
         }
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, paddingTop: 50, paddingRight: 30 }}>
+        <SafeAreaView style={{ flex: 1, paddingTop: 50 }}>
             <StatusBar backgroundColor='#F9E7FD' />
-            <Header goToOtherSlide={goToOtherSlide} currentSlideIndex={currentSlideIndex} />
+            <Header changeSlide={changeSlide} currentSlideIndex={currentSlideIndex} />
             <FlatList
                 ref={ref}
                 onMomentumScrollEnd={updateCurrentSlideIndex}
@@ -48,6 +40,7 @@ export default function OnboardingScreen() {
                 data={slides}
                 pagingEnabled
                 renderItem={({ item }) => <Slide item={item} />}
+                bounces={false}
             />
             <Footer currentSlideIndex={currentSlideIndex} />
         </SafeAreaView>

@@ -1,46 +1,29 @@
-import { TouchableOpacity, Text, View } from "react-native"
-import slides from "../utils/slideList";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native"
+import { TouchableOpacity, View } from "react-native"
+import slides from "../utils/slideList"
+import { HeaderView, HeaderBtn } from "./styles/Header.styles"
+import { Button } from "react-native-paper"
 
-export default function Header({ currentSlideIndex, goToOtherSlide }: any) {
+export default function Header({ currentSlideIndex, changeSlide }: any) {
 
-    const navigation = useNavigation();
+    const navigation = useNavigation()
 
     return (
-        <View
-            style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginBottom: -20
-            }}>
-
-            <View style={{ height: 35, marginLeft: 40 }}>
-                <TouchableOpacity
-                    onPress={goToOtherSlide}>
-                    <Text
-                        style={{
-                            fontSize: 15,
-                            color: '#A017B7'
-                        }}>
-                        More info
-                    </Text>
-                </TouchableOpacity>
-            </View>
-
+        <HeaderView>
+            <HeaderBtn
+                icon="information-outline"
+                mode="text"
+                uppercase={false}
+                onPress={changeSlide}>
+                More info
+            </HeaderBtn>
             {currentSlideIndex !== slides.length - 1 &&
-                <View style={{ height: 35, marginRight: 30 }}>
-                    <TouchableOpacity
-                        onPress={() => navigation.navigate('Root')}>
-                        <Text
-                            style={{
-                                fontSize: 15,
-                                color: '#A017B7'
-                            }}>
-                            Skip
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-            }
-        </View>
+                <HeaderBtn
+                    mode="text"
+                    uppercase={false}
+                    onPress={() => navigation.navigate('Root')}>
+                    Skip
+                </HeaderBtn>}
+        </HeaderView>
     )
 }

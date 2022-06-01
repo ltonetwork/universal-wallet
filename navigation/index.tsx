@@ -3,25 +3,23 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as React from 'react';
-import { ColorSchemeName, Image, Pressable } from 'react-native';
-import Colors from '../constants/Colors';
-import useColorScheme from '../hooks/useColorScheme';
-import ModalScreen from '../screens/ModalScreen';
-import NotFoundScreen from '../screens/NotFoundScreen';
-import WalletTabScreen from '../screens/WalletTabScreen';
-import OwnablesTabScreen from '../screens/OwnablesTabScreen';
-import CredentialsTabScreen from '../screens/CredentialsTabScreen';
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types';
-import LinkingConfiguration from './LinkingConfiguration';
-import OnboardingScreen from '../screens/OnBoardingScreen';
-import { StyleSheet } from 'react-native';
-import { Dimensions } from 'react-native';
-import { localImage } from '../utils/utils';
+import { FontAwesome } from '@expo/vector-icons'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import * as React from 'react'
+import { ColorSchemeName, Image, Pressable, useWindowDimensions } from 'react-native'
+import Colors from '../constants/Colors'
+import useColorScheme from '../hooks/useColorScheme'
+import CredentialsTabScreen from '../screens/CredentialsTabScreen'
+import ModalScreen from '../screens/ModalScreen'
+import NotFoundScreen from '../screens/NotFoundScreen'
+import OnboardingScreen from '../screens/OnBoardingScreen'
+import OwnablesTabScreen from '../screens/OwnablesTabScreen'
+import WalletTabScreen from '../screens/WalletTabScreen'
+import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types'
+import { localImage } from '../utils/utils'
+import LinkingConfiguration from './LinkingConfiguration'
 
 
 const navTheme = {
@@ -30,27 +28,27 @@ const navTheme = {
     ...DefaultTheme.colors,
     background: 'transparent',
   },
-};
-
-const { width, height } = Dimensions.get("screen");
+}
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
-  return (
 
+  const { width, height } = useWindowDimensions()
+
+  return (
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : navTheme}>
       <Image source={localImage} style={{ width, height, position: "absolute" }} />
       <RootNavigator />
     </NavigationContainer >
-  );
+  )
 }
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
  */
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function RootNavigator() {
   return (
@@ -62,17 +60,17 @@ function RootNavigator() {
         <Stack.Screen name="Modal" component={ModalScreen} />
       </Stack.Group>
     </Stack.Navigator>
-  );
+  )
 }
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
-const BottomTab = createBottomTabNavigator<RootTabParamList>();
+const BottomTab = createBottomTabNavigator<RootTabParamList>()
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme();
+  const colorScheme = useColorScheme()
 
   return (
     <BottomTab.Navigator
@@ -119,30 +117,20 @@ function BottomTabNavigator() {
         }}
       />
     </BottomTab.Navigator>
-  );
+  )
 }
 
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
 function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
+  name: React.ComponentProps<typeof FontAwesome>['name']
+  color: string
 }) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />
 }
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '',
-    justifyContent: 'center',
-    resizeMode: 'cover',
-    zIndex: 1
 
-
-  }
-})
 
 
