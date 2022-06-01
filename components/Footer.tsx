@@ -29,7 +29,7 @@ export default function Footer({ currentSlideIndex }: any) {
                     <StyledButton
                         mode='contained'
                         uppercase={false}
-                        labelStyle={{ fontWeight: '800', fontSize: 16 }}
+                        labelStyle={{ fontWeight: '800', fontSize: 16, width: '100%' }}
                         onPress={() => navigation.navigate('Root')}>
                         Start
                     </StyledButton>
