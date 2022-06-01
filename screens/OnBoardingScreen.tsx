@@ -18,13 +18,14 @@ export default function OnboardingScreen() {
     }
 
     const changeSlide = () => {
+        let nextIndex = currentSlideIndex + 1
+
         if (currentSlideIndex === slides.length - 1) {
-            setCurrentSlideIndex(currentSlideIndex - 1)
-            ref?.current.scrollToIndex({ index: currentSlideIndex - 1, animated: true })
-        } else {
-            setCurrentSlideIndex(currentSlideIndex + 1)
-            ref?.current.scrollToIndex({ index: currentSlideIndex + 1, animated: true })
+            nextIndex = currentSlideIndex - 1
         }
+
+        setCurrentSlideIndex(nextIndex)
+        ref?.current.scrollToIndex({ index: nextIndex, animated: true })
     }
 
     return (
