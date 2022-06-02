@@ -7,4 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- React Native init
+## 2022.06.01
+
+- [As a LTO user, I want to see some slide to know the objectives of the application and how start to use it](https://wealize.atlassian.net/jira/software/c/projects/LTO22004/boards/117?modal=detail&selectedIssue=LTO22004-17)
