@@ -20,7 +20,7 @@ export default function Header({ currentSlideIndex, changeSlide }: any) {
                 <HeaderBtn
                     mode="text"
                     uppercase={false}
-                    onPress={() => navigation.navigate('Root')}>
+                    onPress={() => navigation.navigate('SignIn')}>
                     Skip
                 </HeaderBtn>}
         </HeaderView>

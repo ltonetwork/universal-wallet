@@ -12,6 +12,7 @@ import { ColorSchemeName, Image, Pressable, useWindowDimensions } from 'react-na
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
 import CredentialsTabScreen from '../screens/CredentialsTabScreen'
+import SignInScreen from '../screens/SignInScreen'
 import ModalScreen from '../screens/ModalScreen'
 import NotFoundScreen from '../screens/NotFoundScreen'
 import OnboardingScreen from '../screens/OnBoardingScreen'
@@ -54,6 +55,7 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
