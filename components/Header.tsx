@@ -1,5 +1,4 @@
 import { useNavigation } from "@react-navigation/native"
-
 import slides from "../utils/slideList"
 import { HeaderView, HeaderBtn } from "./styles/Header.styles"
 

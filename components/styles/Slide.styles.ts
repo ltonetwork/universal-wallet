@@ -1,6 +1,5 @@
 import styled from "styled-components/native";
 
-
 export const Subtitle = styled.Text`
     color: #303030;
     font-size: 16px;

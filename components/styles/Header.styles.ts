@@ -1,7 +1,6 @@
 import styled from "styled-components/native"
 import { Button } from "react-native-paper"
 
-
 export const HeaderView = styled.View`
 flex-direction: row;
 justify-content: space-between;

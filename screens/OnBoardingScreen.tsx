@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { FlatList, SafeAreaView, StatusBar, useWindowDimensions } from 'react-native'
 import Footer from '../components/Footer'
 import Header from '../components/Header'

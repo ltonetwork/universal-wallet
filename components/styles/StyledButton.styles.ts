@@ -12,5 +12,5 @@ font-size: 16px;
 font-weight: 800;
 ${props => props.mode === `contained`
     ? `background-color: #A017B7; border-color: #A017B7; border-width: 1px; color: #ffffff; `
-    : `border-color: #A017B7; border-width: 1px; color: #A017B7;`};
+    : `border-width: 1px; color: #A017B7;`};
 `

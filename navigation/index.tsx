@@ -21,7 +21,11 @@ import WalletTabScreen from '../screens/WalletTabScreen'
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types'
 import { localImage } from '../utils/utils'
 import LinkingConfiguration from './LinkingConfiguration'
+import ImportAccountScreen from '../screens/ImportAccountScreen'
+// import { useState, useEffect } from 'react'
+// import AsyncStorage from '@react-native-async-storage/async-storage'
 
+import ImportAccountScreen2 from '../screens/ImportAccountScreen2'
 
 const navTheme = {
   ...DefaultTheme,
@@ -52,10 +56,35 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function RootNavigator() {
+
+  // const [isAppFirstLaunch, setIsAppFirstLaunch] = useState(null)
+
+  // useEffect(() => {
+  //   AsyncStorage.getItem('isAppFirstLaunch')
+  //     .then(value => {
+  //       if (value === null) {
+  //         setIsAppFirstLaunch(true)
+  //         AsyncStorage.setItem('isAppFirstLaunch', 'false')
+  //       } else {
+  //         setIsAppFirstLaunch(false)
+  //       }
+  //     })
+  // }, [])
+
+
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitle: 'Back to Sign in',
+        headerTitleStyle: { color: '#A017B7', fontWeight: '400', fontSize: 16 },
+        headerTintColor: '#A017B7',
+        headerShadowVisible: false,
+        headerStyle: { backgroundColor: 'transparent' }
+      }}>
       <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Import" component={ImportAccountScreen} />
+      <Stack.Screen name="Import2" component={ImportAccountScreen2} options={{ headerShown: true }} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>

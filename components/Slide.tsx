@@ -1,7 +1,6 @@
 import { Image, useWindowDimensions, View } from "react-native"
 import { Subtitle, TitleImg } from "./styles/Slide.styles"
 
-
 export default function Slide({ item }: any) {
     const { width, height } = useWindowDimensions()
 
