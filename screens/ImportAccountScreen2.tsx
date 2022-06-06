@@ -3,10 +3,17 @@ import { StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
 
+import { LTO } from '@ltonetwork/lto'
+const lto = new LTO('T')
 
-export default function ImportAccountScreen2() {
+
+export default function ImportAccountScreen2({ route }) {
     const [password, setPassword] = useState("")
     const [passwordVisible, setPasswordVisible] = useState(true)
+
+    const scanData = JSON.stringify(route.params.data)
+    const factory = require('@ltonetwork/lto').AccountFactoryED25519
+    const account = new factory('T').createFromPrivateKey(scanData)
 
     return (
         <StyledView noMarginTop>
@@ -36,12 +43,14 @@ export default function ImportAccountScreen2() {
                 value={password}
                 onChangeText={password => setPassword(password)}
                 secureTextEntry={passwordVisible}
-                placeholder="Type your password...">
-
+                placeholder="Type your password..."
+                right={<StyledInput.Icon
+                    name={passwordVisible ? "eye" : "eye-off"}
+                    onPress={() => setPasswordVisible(!passwordVisible)} />}>
             </StyledInput>
 
             {/* The icon eye to show or hide the password is not in the sketch, ask if we are going to include it */}
-
+            {/* Put a checkbox with the text Accept terms and conditions (where are they?) */}
             <StyledView flexEnd>
 
                 <StyledButton
@@ -49,7 +58,7 @@ export default function ImportAccountScreen2() {
                     disabled={false} // must be disable until we implement the import words
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                    onPress={() => console.log('account')}>
+                    onPress={() => console.log(scanData)}>
                     Import your account
                 </StyledButton>
 

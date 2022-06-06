@@ -22,10 +22,8 @@ import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../typ
 import { localImage } from '../utils/utils'
 import LinkingConfiguration from './LinkingConfiguration'
 import ImportAccountScreen from '../screens/ImportAccountScreen'
-// import { useState, useEffect } from 'react'
-// import AsyncStorage from '@react-native-async-storage/async-storage'
-
 import ImportAccountScreen2 from '../screens/ImportAccountScreen2'
+import ScanScreen from '../screens/ScanScreen'
 
 const navTheme = {
   ...DefaultTheme,
@@ -83,8 +81,9 @@ function RootNavigator() {
       }}>
       <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="Scan" component={ScanScreen} />
       <Stack.Screen name="Import" component={ImportAccountScreen} />
-      <Stack.Screen name="Import2" component={ImportAccountScreen2} options={{ headerShown: true }} />
+      <Stack.Screen name="Import2" component={ImportAccountScreen2} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>

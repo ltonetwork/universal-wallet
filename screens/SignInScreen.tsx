@@ -46,7 +46,7 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     mode="contained"
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                    onPress={() => console.log("Login with password: ", password)}>
+                    onPress={() => navigation.navigate('Import')}>
                     Sign in
                 </StyledButton>
 
@@ -54,7 +54,7 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     mode="outlined"
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                    onPress={() => navigation.navigate('Import')}>
+                    onPress={() => navigation.navigate('Scan')}>
                     Import your account
                 </StyledButton>
 

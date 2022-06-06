@@ -15,6 +15,7 @@ declare global {
 
 export type RootStackParamList = {
   SignIn: undefined
+  Scan: undefined
   Import: undefined
   Import2: undefined
   OnBoarding: undefined
