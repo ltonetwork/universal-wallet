@@ -8,9 +8,8 @@ export const Container = styled.View`
 `
 export const IndicatorContainer = styled.View`
     flex-direction: row;
-    margin-top: 0;
-    position: absolute;
-    right: 195px;
+    margin-top: 10px;
+    justify-content: center;
 `
 export const Indicator = styled.View`
     height: 6px;
