@@ -1,7 +1,9 @@
 import { useNavigation } from "@react-navigation/native"
+import React from 'react'
 import slides from "../utils/slideList"
 import { BtnContainer, Container, Indicator, IndicatorContainer } from "./styles/Footer.styles"
 import { StyledButton } from "./styles/StyledButton.styles"
+
 
 export default function Footer({ currentSlideIndex }: any) {
 

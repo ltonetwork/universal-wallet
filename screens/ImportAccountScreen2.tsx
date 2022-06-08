@@ -1,10 +1,19 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
+// const factory = require('@ltonetwork/lto').AccountFactoryED25519
 
-import { LTO } from '@ltonetwork/lto'
-const lto = new LTO('T')
+
+/* CRYPTO WORKING IF REQUIRED WITHIN FILE... ALREADY TESTED AND OK:
+const crypto = require('../crypto-custom')
+
+const mykey = crypto.createCipher('aes-128-cbc', 'mypassword')
+// let mystr = mykey.update('abc', 'utf8', 'hex')
+mystr += mykey.final('hex')
+
+console.log(mystr) //34feb914c099df25794bf9ccb85bea72
+ */
 
 
 export default function ImportAccountScreen2({ route }) {
@@ -12,11 +21,10 @@ export default function ImportAccountScreen2({ route }) {
     const [passwordVisible, setPasswordVisible] = useState(true)
 
     const scanData = JSON.stringify(route.params.data)
-    const factory = require('@ltonetwork/lto').AccountFactoryED25519
-    const account = new factory('T').createFromPrivateKey(scanData)
+    // const account = new factory('T').createFromPrivateKey(scanData)
 
     return (
-        <StyledView noMarginTop>
+        <StyledView marginTop={'0'}>
 
             <StyledTitle>Import account</StyledTitle>
 

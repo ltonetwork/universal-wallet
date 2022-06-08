@@ -1,6 +1,8 @@
 import { useNavigation } from "@react-navigation/native"
+import React from 'react'
 import slides from "../utils/slideList"
-import { HeaderView, HeaderBtn } from "./styles/Header.styles"
+import { HeaderBtn, HeaderView } from "./styles/Header.styles"
+
 
 export default function Header({ currentSlideIndex, changeSlide }: any) {
 

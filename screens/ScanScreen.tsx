@@ -3,13 +3,11 @@ import { BarCodeScanner } from 'expo-barcode-scanner'
 import { Text, StyleSheet } from 'react-native'
 import { Button } from 'react-native-paper'
 
+
 export default function ScanScreen({ navigation }) {
     const [isLoading, setIsLoading] = useState(true)
     const [scanData, setScanData] = useState()
     const [permission, setPermission] = useState(true)
-
-    // const factory = require('@ltonetwork/lto').AccountFactoryED25519
-    // const account = new factory('T').createFromPrivateKey(scanData.data)
 
     useEffect(() => {
         requestCameraPermission()

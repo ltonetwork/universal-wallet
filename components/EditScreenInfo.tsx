@@ -1,8 +1,9 @@
-import * as WebBrowser from 'expo-web-browser';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import Colors from '../constants/Colors';
-import { MonoText } from './StyledText';
-import { Text, View } from './Themed';
+import * as WebBrowser from 'expo-web-browser'
+import React from 'react'
+import { StyleSheet, TouchableOpacity } from 'react-native'
+import Colors from '../constants/Colors'
+import { MonoText } from './StyledText'
+import { Text, View } from './Themed'
 
 export default function EditScreenInfo({ path }: { path: string }) {
   return (
@@ -38,13 +39,13 @@ export default function EditScreenInfo({ path }: { path: string }) {
         </TouchableOpacity>
       </View>
     </View>
-  );
+  )
 }
 
 function handleHelpPress() {
   WebBrowser.openBrowserAsync(
     'https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet'
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -75,4 +76,4 @@ const styles = StyleSheet.create({
   helpLinkText: {
     textAlign: 'center',
   },
-});
+})

@@ -1,8 +1,7 @@
-import { useState } from 'react'
-import { StyledText, StyledTitle, StyledView } from '../components/styles/Signin.styles'
+import React, { useState } from 'react'
+import { StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
-
 
 export default function ImportAccountScreen({ navigation }) {
 
@@ -12,7 +11,7 @@ export default function ImportAccountScreen({ navigation }) {
 
 
     return (
-        <StyledView noMarginTop>
+        <StyledView marginTop={'0'}>
 
             <StyledTitle>Import account</StyledTitle>
 

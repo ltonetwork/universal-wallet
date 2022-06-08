@@ -5,7 +5,7 @@ export const StyledView = styled.View`
 flex: 1;
 margin: 70px 40px 20px 40px;
 ${props => props.flexEnd && `justify-content: flex-end;`}
-${props => props.noMarginTop && `margin-top: 0px;`}
+${props => props.marginTop && `margin-top: ${props.marginTop}px;`}
 `
 
 export const StyledText = styled(Text)`
