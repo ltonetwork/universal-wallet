@@ -2,26 +2,20 @@ import React, { useState } from 'react'
 import { StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
-// const factory = require('@ltonetwork/lto').AccountFactoryED25519
-
-
-/* CRYPTO WORKING IF REQUIRED WITHIN FILE... ALREADY TESTED AND OK:
-const crypto = require('../crypto-custom')
-
-const mykey = crypto.createCipher('aes-128-cbc', 'mypassword')
-// let mystr = mykey.update('abc', 'utf8', 'hex')
-mystr += mykey.final('hex')
-
-console.log(mystr) //34feb914c099df25794bf9ccb85bea72
- */
+const factory = require('@ltonetwork/lto').AccountFactoryED25519
 
 
 export default function ImportAccountScreen2({ route }) {
     const [password, setPassword] = useState("")
     const [passwordVisible, setPasswordVisible] = useState(true)
 
-    const scanData = JSON.stringify(route.params.data)
-    // const account = new factory('T').createFromPrivateKey(scanData)
+    const scanData = route.params.data
+    const account = new factory('T').createFromPrivateKey(scanData)
+
+
+    const unitArray = account.cypher.encrypt.privateKey
+    // let string = new TextDecoder("utf-8").decode(unitArray)
+
 
     return (
         <StyledView marginTop={'0'}>
@@ -66,7 +60,7 @@ export default function ImportAccountScreen2({ route }) {
                     disabled={false} // must be disable until we implement the import words
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                    onPress={() => console.log(scanData)}>
+                    onPress={() => console.log(unitArray)}>
                     Import your account
                 </StyledButton>
 

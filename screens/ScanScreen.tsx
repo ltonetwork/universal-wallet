@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
 import { BarCodeScanner } from 'expo-barcode-scanner'
-import { Text, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { Button } from 'react-native-paper'
-
+import { StyledText, StyledScanner } from '../components/styles/ScanScreen.styles'
+import { Text } from 'react-native-paper'
 
 export default function ScanScreen({ navigation }) {
     const [isLoading, setIsLoading] = useState(true)
@@ -33,7 +33,6 @@ export default function ScanScreen({ navigation }) {
     if (scanData) {
         return (
             <>
-
                 <Text>{scanData.data}</Text>
                 <Button onPress={() => setScanData(undefined)}>
                     Scan Again
@@ -44,8 +43,7 @@ export default function ScanScreen({ navigation }) {
 
     if (permission) {
         return (
-            <BarCodeScanner
-                style={[styles.container]}
+            <StyledScanner
                 onBarCodeScanned={({ type, data }) => {
                     try {
                         setScanData({ type, data })
@@ -55,28 +53,10 @@ export default function ScanScreen({ navigation }) {
                     }
                 }}
             >
-                <Text style={styles.text}>Scan the QR code from LTO's web application to import your wallet into your mobile phone</Text>
-            </BarCodeScanner>
+                <StyledText >Scan the QR code from LTO's web application to import your wallet into your mobile phone</StyledText>
+            </StyledScanner>
         )
     } else {
         return <Text>Permission denied</Text>
     }
 }
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    text: {
-        marginTop: -500,
-        backgroundColor: 'black',
-        color: 'white'
-    },
-    textError: {
-        color: 'red'
-    }
-})
