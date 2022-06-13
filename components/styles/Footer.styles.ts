@@ -21,5 +21,5 @@ export const Indicator = styled.View`
 export const BtnContainer = styled.View`
     height: 50px;
     align-items: center; 
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 `

@@ -4,12 +4,6 @@ import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
 import { RootStackScreenProps } from '../types'
 
-// const factory = require('@ltonetwork/lto').AccountFactoryED25519
-
-// const privateKey = process.env.PRIVATE_KEY
-
-// let account = new factory('T').createFromPrivateKey(privateKey)
-
 
 export default function SignInScreen({ navigation }: RootStackScreenProps<'SignIn'>) {
     const [password, setPassword] = useState("")
@@ -46,7 +40,7 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     mode="contained"
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                    onPress={() => navigation.navigate('Import')}>
+                    onPress={() => navigation.navigate('Root')}>
                     Sign in
                 </StyledButton>
 

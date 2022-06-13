@@ -33,7 +33,7 @@ export default function ScanScreen({ navigation }) {
     if (scanData) {
         return (
             <>
-                <Text>{scanData.data}</Text>
+                <Text>There's been an error... try again</Text>
                 <Button onPress={() => setScanData(undefined)}>
                     Scan Again
                 </Button>
@@ -43,18 +43,22 @@ export default function ScanScreen({ navigation }) {
 
     if (permission) {
         return (
-            <StyledScanner
-                onBarCodeScanned={({ type, data }) => {
-                    try {
-                        setScanData({ type, data })
-                        navigation.navigate('Import2', { data: data })
-                    } catch (err) {
-                        console.log(err)
-                    }
-                }}
-            >
-                <StyledText >Scan the QR code from LTO's web application to import your wallet into your mobile phone</StyledText>
-            </StyledScanner>
+            <>
+                <StyledScanner
+                    onBarCodeScanned={({ type, data }) => {
+                        try {
+                            setScanData({ type, data })
+                            navigation.navigate('Import2', { data: data })
+                        } catch (err) {
+                            console.log(err)
+                        }
+                    }}
+                >
+                    <StyledText title >QR Scanner</StyledText>
+                    <StyledText >Scan the QR code from LTO's web application to import your wallet into your mobile phone</StyledText>
+                </StyledScanner>
+
+            </>
         )
     } else {
         return <Text>Permission denied</Text>

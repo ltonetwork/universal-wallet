@@ -1,21 +1,42 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { LTO } from '@ltonetwork/lto'
 import { StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
-const factory = require('@ltonetwork/lto').AccountFactoryED25519
-
 
 export default function ImportAccountScreen2({ route }) {
     const [password, setPassword] = useState("")
     const [passwordVisible, setPasswordVisible] = useState(true)
+    const [account, setAccount] = useState()
 
-    const scanData = route.params.data
-    const account = new factory('T').createFromPrivateKey(scanData)
+    useEffect(() => {
+        getAccount()
+    }, [])
 
+    const getAccount = () => {
+        const factory = require('@ltonetwork/lto').AccountFactoryED25519
+        const scanData = route.params.data
+        const account = new factory('T').createFromPrivateKey(scanData)
+        setAccount(account)
+    }
 
-    const unitArray = account.cypher.encrypt.privateKey
-    // let string = new TextDecoder("utf-8").decode(unitArray)
+    const getAccountBalance = () => {
+        const lto = new LTO('T')
+        lto.getBalance(account)
+            .then(data => console.log(data))
+            .catch(err => console.log(err))
+    }
 
+    const getAccountAddress = () => {
+        return account?.address.toString()
+    }
+
+    // const createAccountfFromSeed = () => {
+    //     const lto = new LTO('T')
+    //     const seed = 'satisfy sustain shiver skill betray mother appear pupil coconut weasel firm top puzzle monkey seek'
+    //     const account2 = lto.account({ seed: seed })
+    //     return account2
+    // }
 
     return (
         <StyledView marginTop={'0'}>
@@ -27,7 +48,7 @@ export default function ImportAccountScreen2({ route }) {
                 disabled={true}
                 style={{ marginBottom: 15, backgroundColor: '#F5F5F5' }}
                 label="Nickname"
-                value={'Imported NickName'}
+                value={'@johndoe'}
             >
             </StyledInput>
 
@@ -36,7 +57,7 @@ export default function ImportAccountScreen2({ route }) {
                 style={{ marginBottom: 15, backgroundColor: '#F5F5F5' }}
                 disabled={true}
                 label="Wallet address"
-                value={'Imported Wallet address...'}
+                value={getAccountAddress()}
             >
             </StyledInput>
 
@@ -60,7 +81,7 @@ export default function ImportAccountScreen2({ route }) {
                     disabled={false} // must be disable until we implement the import words
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                    onPress={() => console.log(unitArray)}>
+                    onPress={() => getAccountBalance()}>
                     Import your account
                 </StyledButton>
 

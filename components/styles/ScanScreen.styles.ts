@@ -7,9 +7,12 @@ flex: 1;
 padding: 10px;
 align-items: center;
 justify-content: center;
+width: 100%;
+height: 100%;
 `
 
 export const StyledText = styled(Text)`
-background-color: '#000000';
-color: '#fffff;'
+color: #ffffff;
+font-weight: 900;
+${props => props.title && `font-size: 20px; font-weight: bold;`} 
 `

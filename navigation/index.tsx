@@ -73,7 +73,6 @@ function RootNavigator() {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerTitle: 'Back to Sign in',
         headerTitleStyle: { color: '#A017B7', fontWeight: '400', fontSize: 16 },
         headerTintColor: '#A017B7',
         headerShadowVisible: false,
@@ -81,9 +80,18 @@ function RootNavigator() {
       }}>
       <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Scan" component={ScanScreen} />
-      <Stack.Screen name="Import" component={ImportAccountScreen} />
-      <Stack.Screen name="Import2" component={ImportAccountScreen2} />
+      <Stack.Screen name="Scan" component={ScanScreen}
+        options={{
+          headerTitle: 'Back to Sign In',
+        }} />
+      <Stack.Screen name="Import" component={ImportAccountScreen}
+        options={{
+          headerTitle: 'Back to Sign In',
+        }} />
+      <Stack.Screen name="Import2" component={ImportAccountScreen2}
+        options={{
+          headerTitle: 'Back to Sign In',
+        }} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>

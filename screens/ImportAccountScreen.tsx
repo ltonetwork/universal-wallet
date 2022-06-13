@@ -3,11 +3,18 @@ import { StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
 
-export default function ImportAccountScreen({ navigation }) {
+export default function ImportAccountScreen({ navigation, route }) {
 
     const [words, setWords] = useState("")
+    const [backupPhrase, setBackupPhrase] = useState("")
 
-    const handleImport = () => { }
+
+    const getbackupPhrase = () => {
+    }
+
+    const factory = require('@ltonetwork/lto').AccountFactoryED25519
+    const scanData = route.params.data
+    const account = new factory('T').createFromPrivateKey(scanData)
 
 
     return (
@@ -42,4 +49,5 @@ export default function ImportAccountScreen({ navigation }) {
         </StyledView>
     )
 }
+
 
