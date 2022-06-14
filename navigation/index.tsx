@@ -3,27 +3,28 @@
  * https://reactnavigation.org/docs/getting-started
  *
  */
-import { FontAwesome } from '@expo/vector-icons'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
-import { ColorSchemeName, Image, Pressable, useWindowDimensions } from 'react-native'
+import { ColorSchemeName, Image, useWindowDimensions } from 'react-native'
+import { IconButton, Provider as PaperProvider } from 'react-native-paper'
+import LogoTitle from '../components/LogoTitle'
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
 import CredentialsTabScreen from '../screens/CredentialsTabScreen'
-import SignInScreen from '../screens/SignInScreen'
+import ImportAccountScreen from '../screens/ImportAccountScreen'
+import ImportAccountScreen2 from '../screens/ImportAccountScreen2'
 import ModalScreen from '../screens/ModalScreen'
 import NotFoundScreen from '../screens/NotFoundScreen'
 import OnboardingScreen from '../screens/OnBoardingScreen'
 import OwnablesTabScreen from '../screens/OwnablesTabScreen'
+import ScanScreen from '../screens/ScanScreen'
+import SignInScreen from '../screens/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen'
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types'
 import { localImage } from '../utils/utils'
 import LinkingConfiguration from './LinkingConfiguration'
-import ImportAccountScreen from '../screens/ImportAccountScreen'
-import ImportAccountScreen2 from '../screens/ImportAccountScreen2'
-import ScanScreen from '../screens/ScanScreen'
 
 const navTheme = {
   ...DefaultTheme,
@@ -38,12 +39,14 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
   const { width, height } = useWindowDimensions()
 
   return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : navTheme}>
-      <Image source={localImage} style={{ width, height, position: "absolute" }} />
-      <RootNavigator />
-    </NavigationContainer >
+    <PaperProvider>
+      <NavigationContainer
+        linking={LinkingConfiguration}
+        theme={colorScheme === 'dark' ? DarkTheme : navTheme}>
+        <Image source={localImage} style={{ width, height, position: "absolute" }} />
+        <RootNavigator />
+      </NavigationContainer >
+    </PaperProvider>
   )
 }
 
@@ -80,18 +83,9 @@ function RootNavigator() {
       }}>
       <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Scan" component={ScanScreen}
-        options={{
-          headerTitle: 'Back to Sign In',
-        }} />
-      <Stack.Screen name="Import" component={ImportAccountScreen}
-        options={{
-          headerTitle: 'Back to Sign In',
-        }} />
-      <Stack.Screen name="Import2" component={ImportAccountScreen2}
-        options={{
-          headerTitle: 'Back to Sign In',
-        }} />
+      <Stack.Screen name="Scan" component={ScanScreen} options={{ headerTitle: 'Back to Sign In', }} />
+      <Stack.Screen name="Import" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
+      <Stack.Screen name="Import2" component={ImportAccountScreen2} options={{ headerTitle: 'Back to Sign In' }} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -120,30 +114,27 @@ function BottomTabNavigator() {
         name="Wallet"
         component={WalletTabScreen}
         options={({ navigation }: RootTabScreenProps<'Wallet'>) => ({
-          title: 'Wallet',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerTitle: (props) => <LogoTitle {...props} />,
+          tabBarIcon: ({ color }) => <TabBarIcon icon="wallet-outline" color={color} />,
+          tabBarLabelStyle: { fontSize: 12 },
           headerRight: () => (
-            <Pressable
+            <IconButton
+              icon="menu"
+              color={Colors[colorScheme].tint}
+              size={25}
               onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
+            />
           ),
-        })}
+        })
+        }
       />
       <BottomTab.Screen
         name="Credentials"
         component={CredentialsTabScreen}
         options={{
           title: 'Credentials',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon icon="account-box-multiple-outline" color={color} />,
+          tabBarLabelStyle: { fontSize: 12 }
         }}
       />
       <BottomTab.Screen
@@ -151,7 +142,9 @@ function BottomTabNavigator() {
         component={OwnablesTabScreen}
         options={{
           title: 'Ownables',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          headerTitleAllowFontScaling: true,
+          tabBarIcon: ({ color }) => <TabBarIcon icon="bookmark-box-multiple-outline" color={color} />,
+          tabBarLabelStyle: { fontSize: 12 }
         }}
       />
     </BottomTab.Navigator>
@@ -161,12 +154,23 @@ function BottomTabNavigator() {
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name']
-  color: string
-}) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />
+// function TabBarIcon(props: {
+//   name: React.ComponentProps<typeof FontAwesome>['name']
+//   color: string
+// }) {
+//   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />
+// }
+
+function TabBarIcon(props: { icon: React.ComponentProps<typeof IconButton>['icon'], color: string }) {
+  return (
+    <IconButton
+      size={35}
+      style={{ marginBottom: 3 }} {...props}
+    />
+
+  )
 }
+
 
 
 

@@ -3,8 +3,9 @@ import { LTO } from '@ltonetwork/lto'
 import { StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
+import { RootStackScreenProps } from '../types'
 
-export default function ImportAccountScreen2({ route }) {
+export default function ImportAccountScreen2({ navigation, route }: RootStackScreenProps<'Import2'>) {
     const [password, setPassword] = useState("")
     const [passwordVisible, setPasswordVisible] = useState(true)
     const [account, setAccount] = useState()
@@ -81,7 +82,10 @@ export default function ImportAccountScreen2({ route }) {
                     disabled={false} // must be disable until we implement the import words
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                    onPress={() => getAccountBalance()}>
+                    onPress={() => {
+                        navigation.navigate('Root')
+                        // getAccountBalance()
+                    }}>
                     Import your account
                 </StyledButton>
 

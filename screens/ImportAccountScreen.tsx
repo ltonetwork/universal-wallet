@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
+import { RootStackScreenProps } from '../types'
 
-export default function ImportAccountScreen({ navigation, route }) {
+export default function ImportAccountScreen({ navigation, route }: RootStackScreenProps<'Import'>) {
 
     const [words, setWords] = useState("")
     const [backupPhrase, setBackupPhrase] = useState("")
