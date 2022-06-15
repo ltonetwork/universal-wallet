@@ -1,9 +1,10 @@
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import React, { useEffect, useState } from 'react'
-import { Button } from 'react-native-paper'
-import { StyledText, StyledScanner } from '../components/styles/ScanScreen.styles'
-import { Text } from 'react-native-paper'
+import { Button, Text } from 'react-native-paper'
+import { StyledScanner, StyledText } from '../components/styles/ScanScreen.styles'
+import LocalStorageService from '../services/LocalStorage.service'
 import { RootStackScreenProps } from '../types'
+
 
 export default function ScanScreen({ navigation }: RootStackScreenProps<'Scan'>) {
     const [isLoading, setIsLoading] = useState(true)
@@ -34,8 +35,8 @@ export default function ScanScreen({ navigation }: RootStackScreenProps<'Scan'>)
     if (scanData) {
         return (
             <>
-                <Text>There's been an error... try again</Text>
-                <Button onPress={() => setScanData(undefined)}>
+                <Text>{scanData}</Text>
+                <Button onPress={() => console.log('yeii')}>
                     Scan Again
                 </Button>
             </>
@@ -48,9 +49,15 @@ export default function ScanScreen({ navigation }: RootStackScreenProps<'Scan'>)
                 <StyledScanner
                     onBarCodeScanned={({ type, data }) => {
                         try {
-                            setScanData({ type, data })
-                            navigation.navigate('Import2', { data: data })
+                            LocalStorageService
+                                .storeData('storageKey', data)
+                            console.log(type)
+                            console.log('DATA:', data)
+                            setScanData(data)
+                            console.log('SCANDATA:', scanData)
+                            navigation.navigate('Import2')
                         } catch (err) {
+                            setScanData(undefined)
                             console.log(err)
                         }
                     }}

@@ -1,12 +1,40 @@
-import React from 'react'
-import { StatusBar, StyleSheet } from 'react-native'
-import EditScreenInfo from '../components/EditScreenInfo'
-// import { Text, View } from '../components/Themed'
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import React, { useEffect, useState } from 'react'
+import { Button, StatusBar, StyleSheet, View } from 'react-native'
+import { Card, Paragraph, Title } from 'react-native-paper'
 import { RootTabScreenProps } from '../types'
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper'
-import { View } from 'react-native'
 
-export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wallet'>) {
+
+export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
+    const [account, setAccount] = useState()
+
+
+    const getData = async (value: string) => {
+        // get Data from Storage
+        try {
+            const data = await AsyncStorage.getItem(value)
+            if (data !== null) {
+                console.log(data)
+                return data
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getData('storageKey')
+            .then(data => {
+                const factory = require('@ltonetwork/lto').AccountFactoryED25519
+                const acc = new factory('T').createFromPrivateKey(data)
+                setAccount(acc)
+                console.log("yourKey Value:  " + data)
+            })
+
+            .catch(err => console.log(err))
+    }
+        , [])
+
     return (
         <>
             <StatusBar backgroundColor={'#ffffff'} />
@@ -111,38 +139,26 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                         height: 100
                     }}>
                         <Card.Content>
-                            <Paragraph>No. Transactions</Paragraph>
+                            <Paragraph>No. of transactions</Paragraph>
                             <Title>5</Title>
                         </Card.Content>
                     </Card>
 
                 </View>
 
+                <Button
+                    title="Test"
+                    onPress={() => console.log(account)}>
+                </Button>
+
 
             </View>
 
-            {/* <View style={styles.container}>
-                <Text style={styles.title}>Wallet</Text>
-                <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-                <EditScreenInfo path="/screens/WalletTabScreen.tsx" />
-            </View> */}
         </>
     )
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-    },
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: '80%',
-    },
-})
+
+
+
+

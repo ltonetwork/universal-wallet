@@ -25,6 +25,7 @@ import WalletTabScreen from '../screens/WalletTabScreen'
 import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types'
 import { localImage } from '../utils/utils'
 import LinkingConfiguration from './LinkingConfiguration'
+import TabBarIcon from '../components/TabBarIcon'
 
 const navTheme = {
   ...DefaultTheme,
@@ -109,6 +110,7 @@ function BottomTabNavigator() {
       initialRouteName="Wallet"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarStyle: { height: 60 }
       }}>
       <BottomTab.Screen
         name="Wallet"
@@ -148,26 +150,6 @@ function BottomTabNavigator() {
         }}
       />
     </BottomTab.Navigator>
-  )
-}
-
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-// function TabBarIcon(props: {
-//   name: React.ComponentProps<typeof FontAwesome>['name']
-//   color: string
-// }) {
-//   return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />
-// }
-
-function TabBarIcon(props: { icon: React.ComponentProps<typeof IconButton>['icon'], color: string }) {
-  return (
-    <IconButton
-      size={35}
-      style={{ marginBottom: 3 }} {...props}
-    />
-
   )
 }
 

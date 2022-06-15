@@ -1,43 +1,45 @@
-import React, { useEffect, useState } from 'react'
 import { LTO } from '@ltonetwork/lto'
+import React, { useEffect, useState } from 'react'
 import { StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
+import LocalStorageService from '../services/LocalStorage.service'
 import { RootStackScreenProps } from '../types'
 
-export default function ImportAccountScreen2({ navigation, route }: RootStackScreenProps<'Import2'>) {
+
+export default function ImportAccountScreen2({ navigation }: RootStackScreenProps<'Import2'>) {
     const [password, setPassword] = useState("")
     const [passwordVisible, setPasswordVisible] = useState(true)
     const [account, setAccount] = useState()
 
     useEffect(() => {
-        getAccount()
-    }, [])
-
-    const getAccount = () => {
-        const factory = require('@ltonetwork/lto').AccountFactoryED25519
-        const scanData = route.params.data
-        const account = new factory('T').createFromPrivateKey(scanData)
-        setAccount(account)
+        LocalStorageService.getData('storageKey')
+            .then(data => {
+                const factory = require('@ltonetwork/lto').AccountFactoryED25519
+                const acc = new factory('T').createFromPrivateKey(data)
+                setAccount(acc)
+                console.log("yourKey Value:  " + data)
+            }
+            )
+            .catch(err => console.log(err))
     }
+        , [])
+
 
     const getAccountBalance = () => {
         const lto = new LTO('T')
         lto.getBalance(account)
-            .then(data => console.log(data))
+            .then(data => {
+                console.log('test1', data)
+                return data
+
+            })
             .catch(err => console.log(err))
     }
 
     const getAccountAddress = () => {
         return account?.address.toString()
     }
-
-    // const createAccountfFromSeed = () => {
-    //     const lto = new LTO('T')
-    //     const seed = 'satisfy sustain shiver skill betray mother appear pupil coconut weasel firm top puzzle monkey seek'
-    //     const account2 = lto.account({ seed: seed })
-    //     return account2
-    // }
 
     return (
         <StyledView marginTop={'0'}>
@@ -83,8 +85,9 @@ export default function ImportAccountScreen2({ navigation, route }: RootStackScr
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                     onPress={() => {
-                        navigation.navigate('Root')
-                        // getAccountBalance()
+                        console.log('tes2', getAccountBalance())
+                        console.log('Victory!:', account)
+                        navigation.navigate('Root', { screen: 'Wallet', params: { params: 'account' } })
                     }}>
                     Import your account
                 </StyledButton>
