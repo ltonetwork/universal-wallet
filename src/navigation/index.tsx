@@ -22,8 +22,8 @@ import OwnablesTabScreen from '../screens/OwnablesTabScreen'
 import ScanScreen from '../screens/ScanScreen'
 import SignInScreen from '../screens/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen'
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../types'
-import { localImage } from '../utils/utils'
+import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../../types'
+import { backgroundImage } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
 import TabBarIcon from '../components/TabBarIcon'
 
@@ -44,7 +44,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
       <NavigationContainer
         linking={LinkingConfiguration}
         theme={colorScheme === 'dark' ? DarkTheme : navTheme}>
-        <Image source={localImage} style={{ width, height, position: "absolute" }} />
+        <Image source={backgroundImage} style={{ width, height, position: "absolute" }} />
         <RootNavigator />
       </NavigationContainer >
     </PaperProvider>

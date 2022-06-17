@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
-import { RootStackScreenProps } from '../types'
+import { RootStackScreenProps } from '../../types'
 
 export default function ImportAccountScreen({ navigation, route }: RootStackScreenProps<'Import'>) {
 
@@ -10,8 +10,7 @@ export default function ImportAccountScreen({ navigation, route }: RootStackScre
     const [backupPhrase, setBackupPhrase] = useState("")
 
 
-    const getbackupPhrase = () => {
-    }
+    const getbackupPhrase = () => { }
 
     const factory = require('@ltonetwork/lto').AccountFactoryED25519
     const scanData = route.params.data
@@ -30,8 +29,6 @@ export default function ImportAccountScreen({ navigation, route }: RootStackScre
                 onChangeText={words => setWords(words)}
                 placeholder="Tap your backup phrase in the correct order"
             >
-
-                {/* The icon eye to show or hide the password is not in the sketch, ask if we are going to include it */}
 
             </StyledInput>
 

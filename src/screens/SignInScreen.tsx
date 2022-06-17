@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { StyledText, StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
-import { RootStackScreenProps } from '../types'
+import { RootStackScreenProps } from '../../types'
 
 
 export default function SignInScreen({ navigation }: RootStackScreenProps<'SignIn'>) {

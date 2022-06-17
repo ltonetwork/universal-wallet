@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Text } from 'react-native-paper'
 import { StyledScanner, StyledText } from '../components/styles/ScanScreen.styles'
 import LocalStorageService from '../services/LocalStorage.service'
-import { RootStackScreenProps } from '../types'
+import { RootStackScreenProps } from '../../types'
 
 
 export default function ScanScreen({ navigation }: RootStackScreenProps<'Scan'>) {
@@ -35,8 +35,8 @@ export default function ScanScreen({ navigation }: RootStackScreenProps<'Scan'>)
     if (scanData) {
         return (
             <>
-                <Text>{scanData}</Text>
-                <Button onPress={() => console.log('yeii')}>
+                <Text>Your key: {scanData}</Text>
+                <Button onPress={() => setScanData(undefined)}>
                     Scan Again
                 </Button>
             </>
@@ -51,10 +51,7 @@ export default function ScanScreen({ navigation }: RootStackScreenProps<'Scan'>)
                         try {
                             LocalStorageService
                                 .storeData('storageKey', data)
-                            console.log(type)
-                            console.log('DATA:', data)
                             setScanData(data)
-                            console.log('SCANDATA:', scanData)
                             navigation.navigate('Import2')
                         } catch (err) {
                             setScanData(undefined)
