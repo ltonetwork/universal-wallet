@@ -1,31 +1,23 @@
 import React from 'react'
-import { StyleSheet } from 'react-native'
-import EditScreenInfo from '../components/EditScreenInfo'
-import { Text, View } from '../components/Themed'
+import { Paragraph } from 'react-native-paper'
+import SocialMediaIcon from '../components/SocialMediaIcon'
+import { IconContainer, StyledImage, StyledTitle, StyledView } from '../components/styles/NextFunctionality.styles'
+import { placeholderImage, socialMediaIcons } from '../utils/images'
+import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../utils/redirectSocialMedia'
 
 export default function OwnablesTabScreen() {
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Ownables</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/OwnablesTabScreen.tsx" />
-    </View>
+    <StyledView>
+      <StyledImage source={placeholderImage}></StyledImage>
+      <StyledTitle>This functionality will soon be available</StyledTitle>
+      <Paragraph>Follow us on our social networks to stay up to date with the latest news about the application.</Paragraph>
+      <IconContainer>
+        <SocialMediaIcon source={socialMediaIcons.twitter} onPress={() => navigateToTwitter()} />
+        <SocialMediaIcon source={socialMediaIcons.facebook} onPress={() => navigateToFacebook()} />
+        <SocialMediaIcon source={socialMediaIcons.linkedin} onPress={() => navigateToLinkedin()} />
+        <SocialMediaIcon source={socialMediaIcons.telegram} onPress={() => navigateToTelegram()} />
+      </IconContainer>
+    </StyledView>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-})

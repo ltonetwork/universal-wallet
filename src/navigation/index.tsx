@@ -133,21 +133,41 @@ function BottomTabNavigator() {
       <BottomTab.Screen
         name="Credentials"
         component={CredentialsTabScreen}
-        options={{
-          title: 'Credentials',
+        options={({ navigation }: RootTabScreenProps<'Credentials'>) => ({
+          headerTitle: 'Credentials',
+          headerTitleStyle: { fontWeight: '800', marginLeft: 20 },
           tabBarIcon: ({ color }) => <TabBarIcon icon="account-box-multiple-outline" color={color} />,
-          tabBarLabelStyle: { fontSize: 12 }
-        }}
+          tabBarLabelStyle: { fontSize: 12 },
+          headerRight: () => (
+            <IconButton
+              icon="menu"
+              color={Colors[colorScheme].tint}
+              size={25}
+              onPress={() => navigation.navigate('Modal')}
+            />
+          ),
+        })
+        }
       />
       <BottomTab.Screen
         name="Ownables"
         component={OwnablesTabScreen}
-        options={{
-          title: 'Ownables',
+        options={({ navigation }: RootTabScreenProps<'Ownables'>) => ({
+          headerTitle: 'Ownables',
+          headerTitleStyle: { fontWeight: '800', marginLeft: 20 },
           headerTitleAllowFontScaling: true,
           tabBarIcon: ({ color }) => <TabBarIcon icon="bookmark-box-multiple-outline" color={color} />,
-          tabBarLabelStyle: { fontSize: 12 }
-        }}
+          tabBarLabelStyle: { fontSize: 12 },
+          headerRight: () => (
+            <IconButton
+              icon="menu"
+              color={Colors[colorScheme].tint}
+              size={25}
+              onPress={() => navigation.navigate('Modal')}
+            />
+          ),
+        })
+        }
       />
     </BottomTab.Navigator>
   )

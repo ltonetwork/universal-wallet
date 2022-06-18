@@ -11855,7 +11855,7 @@ react-native-os@^1.2.6:
 
 react-native-paper@^4.12.1:
   version "4.12.1"
-  resolved "https://registry.npmjs.org/react-native-paper/-/react-native-paper-4.12.1.tgz"
+  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-4.12.1.tgz#9c0c6236f40ab0bf02dd2d42e0264125d2f9d48a"
   integrity sha512-xvAkwtRatsDcB/eSBUwoThBAT5Yy32SgKwrfHRUXi/9s5lR2SEuPZwmsZyAaq+bsxtAH1CaIT4CDeVLSaArzyg==
   dependencies:
     "@callstack/react-theme-provider" "^3.0.7"

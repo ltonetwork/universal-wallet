@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { Button, StatusBar, View } from 'react-native'
-import { Card, Paragraph, Title } from 'react-native-paper'
+import { Card, IconButton, Paragraph, Title } from 'react-native-paper'
 import LocalStorageService from '../services/LocalStorage.service'
 import { RootTabScreenProps } from '../../types'
 import ApiClientService from '../services/ApiClient.service'
 import { formatNumber } from '../utils/formatNumber'
-import { ActivityIndicator } from 'react-native-paper'
+import Spinner from '../components/Spinner'
+import { QRIcon } from '../components/styles/QRIcon.styles'
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 
     const [isLoading, setIsLoading] = useState(true)
     const [details, setDetails] = useState(Object.create(null))
 
-    interface Typeddetails {
+    interface TypedDetails {
         available: number
         effective: number
         generating: number
         regular: number
     }
 
-    const { available, effective, generating, regular } = details as unknown as Typeddetails
+    const { available, effective, generating, regular } = details as unknown as TypedDetails
 
     useEffect(() => {
         readStorage()
@@ -55,7 +56,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
         <>
             {isLoading
                 ?
-                <ActivityIndicator size={'large'} style={{ justifyContent: 'center', alignItems: 'center' }} />
+                <Spinner />
                 :
                 <View style={{ alignContent: 'center' }}>
                     < StatusBar backgroundColor={'#ffffff'} />
@@ -171,10 +172,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
                     </View>
 
-                    <Button
-                        title="Test"
-                        onPress={() => console.log(titles)}>
-                    </Button>
+                    <QRIcon icon="qrcode-scan" color='#ffffff' onPress={() => console.log(titles)} />
 
                 </View>
             }
