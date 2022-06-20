@@ -1,6 +1,6 @@
 import { fireEvent, render } from '@testing-library/react-native'
 import React from 'react'
-import Header from '../Header'
+import Header from '../../src/components/Header'
 
 const mockedDispatch = jest.fn()
 

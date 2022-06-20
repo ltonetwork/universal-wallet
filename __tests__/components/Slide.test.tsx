@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react-native'
 import React from 'react'
-import Slide from '../Slide'
+import Slide from '../../src/components/Slide'
 
 it('Should renders items correctly', () => {
     const { getByTestId } = render(<Slide />)

@@ -1,15 +1,12 @@
-/**
- * If you are not familiar with React Navigation, refer to the "Fundamentals" guide:
- * https://reactnavigation.org/docs/getting-started
- *
- */
+import * as React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import * as React from 'react'
 import { ColorSchemeName, Image, useWindowDimensions } from 'react-native'
 import { IconButton, Provider as PaperProvider } from 'react-native-paper'
+import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../../types'
 import LogoTitle from '../components/LogoTitle'
+import TabBarIcon from '../components/TabBarIcon'
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
 import CredentialsTabScreen from '../screens/CredentialsTabScreen'
@@ -19,13 +16,14 @@ import ModalScreen from '../screens/ModalScreen'
 import NotFoundScreen from '../screens/NotFoundScreen'
 import OnboardingScreen from '../screens/OnBoardingScreen'
 import OwnablesTabScreen from '../screens/OwnablesTabScreen'
-import ScanScreen from '../screens/ScanScreen'
+import ScanKeyScreen from '../screens/ScanKeyScreen'
 import SignInScreen from '../screens/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen'
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../../types'
 import { backgroundImage } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
-import TabBarIcon from '../components/TabBarIcon'
+
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import { useEffect, useState } from 'react'
 
 const navTheme = {
   ...DefaultTheme,
@@ -51,6 +49,8 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
   )
 }
 
+
+
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -59,22 +59,42 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function RootNavigator() {
 
-  // const [isAppFirstLaunch, setIsAppFirstLaunch] = useState(null)
+  const [appFirstLaunch, setAppFirstLaunch] = useState(null || Boolean)
+  const [accountImported, setAccountImported] = useState(null || Boolean)
 
-  // useEffect(() => {
-  //   AsyncStorage.getItem('isAppFirstLaunch')
-  //     .then(value => {
-  //       if (value === null) {
-  //         setIsAppFirstLaunch(true)
-  //         AsyncStorage.setItem('isAppFirstLaunch', 'false')
-  //       } else {
-  //         setIsAppFirstLaunch(false)
-  //       }
-  //     })
-  // }, [])
+  useEffect(() => {
+    skipOnboarding()
+    skipImportAccount()
+  }, [])
 
+  const skipOnboarding = (): void => {
+    AsyncStorage.getItem('AppFirstLaunch')
+      .then(value => {
+        if (value == null) {
+          setAppFirstLaunch(true)
+          AsyncStorage.setItem('AppFirstLaunch', 'false')
+        } else {
+          setAppFirstLaunch(false)
+        }
+      })
+      .catch(err => console.log(err))
+  }
+
+  const skipImportAccount = (): void => {
+    AsyncStorage.getItem('storageKey')
+      .then(value => {
+        if (value == null) {
+          setAccountImported(false)
+        }
+        else {
+          setAccountImported(true)
+        }
+      })
+      .catch(err => console.log(err))
+  }
 
   return (
+
     <Stack.Navigator
       screenOptions={{
         headerTitleStyle: { color: '#A017B7', fontWeight: '400', fontSize: 16 },
@@ -82,11 +102,22 @@ function RootNavigator() {
         headerShadowVisible: false,
         headerStyle: { backgroundColor: 'transparent' }
       }}>
-      <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="Scan" component={ScanScreen} options={{ headerTitle: 'Back to Sign In', }} />
-      <Stack.Screen name="Import" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
-      <Stack.Screen name="Import2" component={ImportAccountScreen2} options={{ headerTitle: 'Back to Sign In' }} />
+      REMOVE COMMENTS BELOW TO SKIP ONBOARDING AND IMPORT ACCOUNT SCREENS IF ALREADY
+      SEEN AND IMPORTED
+      {appFirstLaunch
+        &&
+        <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
+      }
+
+      {accountImported
+        &&
+        <>
+          <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', }} />
+          <Stack.Screen name="Import" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
+          <Stack.Screen name="Import2" component={ImportAccountScreen2} options={{ headerTitle: 'Back to Sign In' }} />
+        </>
+      }
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -95,6 +126,8 @@ function RootNavigator() {
     </Stack.Navigator>
   )
 }
+
+
 
 /**
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
@@ -116,6 +149,7 @@ function BottomTabNavigator() {
         name="Wallet"
         component={WalletTabScreen}
         options={({ navigation }: RootTabScreenProps<'Wallet'>) => ({
+          headerStyle: { height: 100 },
           headerTitle: (props) => <LogoTitle {...props} />,
           tabBarIcon: ({ color }) => <TabBarIcon icon="wallet-outline" color={color} />,
           tabBarLabelStyle: { fontSize: 12 },
@@ -127,8 +161,7 @@ function BottomTabNavigator() {
               onPress={() => navigation.navigate('Modal')}
             />
           ),
-        })
-        }
+        })}
       />
       <BottomTab.Screen
         name="Credentials"
@@ -146,8 +179,7 @@ function BottomTabNavigator() {
               onPress={() => navigation.navigate('Modal')}
             />
           ),
-        })
-        }
+        })}
       />
       <BottomTab.Screen
         name="Ownables"
@@ -166,8 +198,7 @@ function BottomTabNavigator() {
               onPress={() => navigation.navigate('Modal')}
             />
           ),
-        })
-        }
+        })}
       />
     </BottomTab.Navigator>
   )

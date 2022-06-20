@@ -4,6 +4,6 @@ import { StyledImage } from "./styles/LogoTitle.styles"
 
 export default function LogoTitle(): JSX.Element {
   return (
-    <StyledImage source={logoTitle} />
+    <StyledImage testID="logo-title" source={logoTitle} />
   )
 }

@@ -62,7 +62,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                     < StatusBar backgroundColor={'#ffffff'} />
 
                     <View style={{
-                        marginTop: -10,
+                        marginTop: -5,
                         flexDirection: 'row',
                         justifyContent: 'space-evenly',
                         width: '100%',
@@ -172,7 +172,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
                     </View>
 
-                    <QRIcon icon="qrcode-scan" color='#ffffff' onPress={() => console.log(titles)} />
+                    <QRIcon icon="qrcode-scan" color='#ffffff' onPress={() => alert('yeiiiii')} />
 
                 </View>
             }

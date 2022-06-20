@@ -48,7 +48,7 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     mode="outlined"
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                    onPress={() => navigation.navigate('Scan')}>
+                    onPress={() => navigation.navigate('ScanKey')}>
                     Import your account
                 </StyledButton>
 
