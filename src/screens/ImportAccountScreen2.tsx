@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { RootStackScreenProps } from '../../types'
+import CheckBox from '../components/CheckBox'
 import Spinner from '../components/Spinner'
 import { StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
+import TermsModal from '../components/TermsModal'
 import LocalStorageService from '../services/LocalStorage.service'
 
 export default function ImportAccountScreen2({ navigation }: RootStackScreenProps<'Import2'>) {
     const [isLoading, setIsLoading] = useState(false)
     const [password, setPassword] = useState("")
     const [passwordVisible, setPasswordVisible] = useState(true)
+    const [checked, setChecked] = useState(false)
+    const [modalVisible, setModalVisible] = useState(false)
     const [account, setAccount] = useState<string | Account>()
 
     interface Account {
@@ -25,7 +29,7 @@ export default function ImportAccountScreen2({ navigation }: RootStackScreenProp
     }, [])
 
     const getAccount = () => {
-        LocalStorageService.getData('storageKey')
+        LocalStorageService.getData('@appKey')
             .then(data => {
                 const factory = require('@ltonetwork/lto').AccountFactoryED25519
                 const account = new factory('T').createFromPrivateKey(data)
@@ -45,9 +49,9 @@ export default function ImportAccountScreen2({ navigation }: RootStackScreenProp
                 ?
                 <Spinner />
                 :
-                <StyledView marginTop={'0'}>
-
+                <StyledView marginTop={10}>
                     <StyledTitle>Import account</StyledTitle>
+
 
                     <StyledInput
                         mode={'flat'}
@@ -78,13 +82,32 @@ export default function ImportAccountScreen2({ navigation }: RootStackScreenProp
                             onPress={() => setPasswordVisible(!passwordVisible)} />}>
                     </StyledInput>
 
-                    {/* Put a checkbox with the text Accept terms and conditions (where are they?) */}
+                    <CheckBox
+                        status={checked ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                            !checked && setModalVisible(true)
+                            setChecked(!checked)
+                        }}
+                    />
+
+                    <TermsModal
+                        modalVisible={modalVisible}
+                        setChecked={setChecked}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            setModalVisible(!modalVisible)
+                        }}
+                        onClose={() => {
+                            setModalVisible(!modalVisible)
+                            setChecked(true)
+                        }}
+                    />
 
                     <StyledView flexEnd>
 
                         <StyledButton
                             mode="contained"
-                            disabled={false} // must be disable until we implement the import words
+                            disabled={!checked && true}
                             uppercase={false}
                             labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                             onPress={() => navigation.navigate('Root', { screen: 'Wallet' })}>
@@ -93,7 +116,12 @@ export default function ImportAccountScreen2({ navigation }: RootStackScreenProp
                     </StyledView>
                 </StyledView >
 
+
+
+
             }
         </>
     )
 }
+
+

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { Button, StatusBar, View } from 'react-native'
-import { Card, IconButton, Paragraph, Title } from 'react-native-paper'
-import LocalStorageService from '../services/LocalStorage.service'
+import { StatusBar, View } from 'react-native'
+import { Card, Paragraph, Title } from 'react-native-paper'
 import { RootTabScreenProps } from '../../types'
-import ApiClientService from '../services/ApiClient.service'
-import { formatNumber } from '../utils/formatNumber'
 import Spinner from '../components/Spinner'
 import { QRIcon } from '../components/styles/QRIcon.styles'
+import ApiClientService from '../services/ApiClient.service'
+import LocalStorageService from '../services/LocalStorage.service'
+import { formatNumber } from '../utils/formatNumber'
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 
@@ -27,7 +27,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
     }, [])
 
     const readStorage = () => {
-        LocalStorageService.getData('storageKey')
+        LocalStorageService.getData('@appKey')
             .then(data => {
                 const factory = require('@ltonetwork/lto').AccountFactoryED25519
                 const account = new factory('T').createFromPrivateKey(data)

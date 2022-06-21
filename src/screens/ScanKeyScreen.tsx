@@ -6,7 +6,7 @@ import LocalStorageService from '../services/LocalStorage.service'
 import { RootStackScreenProps } from '../../types'
 
 
-export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan'>) {
+export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'ScanKey'>) {
     const [isLoading, setIsLoading] = useState(true)
     const [scanData, setScanData] = useState()
     const [permission, setPermission] = useState(true)
@@ -50,10 +50,10 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
                     onBarCodeScanned={({ type, data }) => {
                         try {
                             LocalStorageService
-                                .storeData('storageKey', data)
+                                .storeData('@appKey', data)
                             setScanData(data)
-                            console.log('Info scanned: ', data)
-                            navigation.navigate('Import', data)
+                            navigation.navigate('Import2')
+                            // navigation.navigate('Import', data)
                         } catch (err) {
                             setScanData(undefined)
                             console.log(err)

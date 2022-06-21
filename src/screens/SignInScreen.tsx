@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
+import { RootStackScreenProps } from '../../types'
 import { StyledText, StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
-import { RootStackScreenProps } from '../../types'
 
 
 export default function SignInScreen({ navigation }: RootStackScreenProps<'SignIn'>) {
@@ -10,7 +10,6 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
     const [passwordVisible, setPasswordVisible] = useState(true)
 
     const handleSignIn = () => { }
-
 
     return (
         <StyledView>
@@ -30,8 +29,6 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     name={passwordVisible ? "eye" : "eye-off"}
                     onPress={() => setPasswordVisible(!passwordVisible)} />}
             >
-
-                {/* The icon eye to show or hide the password is not in the sketch, ask if we are going to include it */}
 
             </StyledInput>
 

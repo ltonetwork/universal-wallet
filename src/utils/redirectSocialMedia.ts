@@ -9,7 +9,7 @@ export const navigateToFacebook = () => {
 }
 
 export const navigateToTelegram = () => {
-    WebBrowser.openBrowserAsync("https://www.telegram.com")
+    WebBrowser.openBrowserAsync("https://telegram.org")
 }
 
 export const navigateToLinkedin = () => {
