@@ -6,29 +6,8 @@ import { placeholderImage, socialMediaIcons } from '../utils/images'
 import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../utils/redirectSocialMedia'
 import { QRIcon } from '../components/styles/QRIcon.styles'
 import { View } from 'react-native'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function CredentialsTabScreen() {
-
-  useEffect(() => {
-
-    const getData = async () => {
-      let values
-      try {
-        values = await AsyncStorage.getItem('@appAuth')
-      } catch (e) {
-        console.log(e)
-      }
-      console.log(values)
-    }
-    getData()
-
-    // example console.log output:
-    // [ ['@MyApp_user', 'myUserValue'], ['@MyApp_key', 'myKeyValue'] ]
-  }, [])
-
-
-
 
   return (
     <View>
