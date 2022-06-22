@@ -89,7 +89,7 @@ function RootNavigator() {
   // }
 
   const skipOnboarding = async (): void => {
-    AsyncStorage.getItem('@AppFirstLaunch')
+    AsyncStorage.getItem('x')
       .then(value => {
         if (value === null) {
           setAppFirstLaunch(true)
@@ -102,7 +102,7 @@ function RootNavigator() {
   }
 
   // const skipImportAccount = (): void => {
-  //   LocalStorageService.getData('@appKey')
+  //   LocalStorageService.getData('@appAuth')
   //     .then(data => {
   //       if (data) {
   //         setAccountImported(true)
@@ -115,7 +115,7 @@ function RootNavigator() {
   // }
 
   const skipImportAccount = async (): void => {
-    AsyncStorage.getItem('@appKey')
+    AsyncStorage.getItem('@appAuth')
       .then(value => {
         if (value === null) {
           setAccountImported(false)

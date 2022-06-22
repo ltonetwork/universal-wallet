@@ -50,10 +50,11 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
                     onBarCodeScanned={({ type, data }) => {
                         try {
                             LocalStorageService
-                                .storeData('@appKey', data)
+                                .storeData('@appAuth', data)
                             setScanData(data)
-                            navigation.navigate('Import2')
-                            // navigation.navigate('Import', data)
+                            console.log('scanned data:', data)
+                            // navigation.navigate('Import2')
+                            navigation.navigate('Import')
                         } catch (err) {
                             setScanData(undefined)
                             console.log(err)

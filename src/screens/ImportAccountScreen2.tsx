@@ -29,7 +29,7 @@ export default function ImportAccountScreen2({ navigation }: RootStackScreenProp
     }, [])
 
     const getAccount = () => {
-        LocalStorageService.getData('@appKey')
+        LocalStorageService.getData('@appAuth')
             .then(data => {
                 const factory = require('@ltonetwork/lto').AccountFactoryED25519
                 const account = new factory('T').createFromPrivateKey(data)
