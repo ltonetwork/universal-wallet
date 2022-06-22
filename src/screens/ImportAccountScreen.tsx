@@ -9,23 +9,26 @@ import { Button } from 'react-native-paper'
 import Clipboard from '@react-native-clipboard/clipboard';
 
 export default function ImportAccountScreen({ navigation, route }: RootStackScreenProps<'Import'>) {
+    const [word, setWord] = useState([])
     const [copiedText, setCopiedText] = useState('')
-    const [words, setWords] = useState([])
-    const [seedPhrase, setSeedPhrase] = useState<string[]>([])
+    const [showedPhrase, setShowedPhrase] = useState(false)
+    const [seedPhrase, setSeedPhrase] = useState<string[]>([]) 
 
-    const copyToClipboard = () => {
-        Clipboard.setString('hello world')
-    }
+    let splitWords = seedPhrase[0]?.split(' ')
 
-    const fetchCopiedText = async () => {
-        const text = await Clipboard.getString()
-        setCopiedText(text)
-    }
+    // const copyToClipboard = () => {
+    //     Clipboard.setString(copiedText)
+    //     setShowedPhrase(!showedPhrase)
+    // }
 
-
+    // const fetchCopiedText = async () => {
+    //     const text = seedPhrase
+    //     setCopiedText(text)
+    // }
 
     useEffect(() => {
         getSeedWords()
+        
     }, [])
 
     const getSeedWords = () => {
@@ -40,7 +43,7 @@ export default function ImportAccountScreen({ navigation, route }: RootStackScre
                 return data.seed
             })
             .then(accountSeed => {
-                setSeedPhrase(accountSeed)
+                setSeedPhrase([accountSeed])
             })
             .catch(err => console.log(err))
     }
@@ -54,15 +57,16 @@ export default function ImportAccountScreen({ navigation, route }: RootStackScre
                 style={{ marginBottom: 70 }}
                 label="Add your backup phrase"
                 value=''
-                onChangeText={words => setWords(words)}
+                onChangeText={words => setWord(word)}
                 placeholder="Tap your backup phrase in the correct order"
             >
 
             </StyledInput>
 
 
-            <SafeAreaView style={{ flex: 1 }}>
+            {/* <SafeAreaView style={{ flex: 1 }}>
                 <View style={styles.container}>
+                    <Text style={styles.copiedText}>{word}{copiedText}</Text>
                     <TouchableOpacity onPress={copyToClipboard}>
                         <Text>Click here to copy to Clipboard</Text>
                     </TouchableOpacity>
@@ -70,15 +74,14 @@ export default function ImportAccountScreen({ navigation, route }: RootStackScre
                         <Text>View copied text</Text>
                     </TouchableOpacity>
 
-                    <Text style={styles.copiedText}>{copiedText}</Text>
                 </View>
-            </SafeAreaView>
-            {/* {seedPhrase?.map((word) => {
-                <SafeAreaView>
-                    <Button>{word}</Button>
-                </SafeAreaView>
-            })} */}
+            </SafeAreaView> */}
 
+            <View style={{flex: 1, alignItems: 'center'}}>
+            {splitWords?.map((word, idx) => {
+                   return <Button mode='outlined' style={{width: 120, borderRadius: 20, borderColor: '#A017B7'}} idx={idx}>{word}</Button>
+                }) }
+                </View>
             <StyledView flexEnd>
 
                 <StyledButton
@@ -88,7 +91,7 @@ export default function ImportAccountScreen({ navigation, route }: RootStackScre
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                     onPress={() => {
                         // console.log(account2)
-                        console.log('seed words :', seedPhrase)
+                        console.log('seed words :', typeof splitWords)
                         // navigation.navigate('Import2')
                     }}>
                     Import your account
