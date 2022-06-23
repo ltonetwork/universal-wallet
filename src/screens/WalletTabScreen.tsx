@@ -27,10 +27,10 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
     }, [])
 
     const readStorage = () => {
-        LocalStorageService.getData('@appAuth')
+        LocalStorageService.getData('@accountPublicKey')
             .then(data => {
                 const factory = require('@ltonetwork/lto').AccountFactoryED25519
-                const account = new factory('T').createFromPrivateKey(data)
+                const account = new factory('T').createFromPublicKey(data)
                 return account.address
             })
             .then(address => {

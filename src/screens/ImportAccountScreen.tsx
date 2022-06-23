@@ -6,29 +6,20 @@ import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
 import LocalStorageService from '../services/LocalStorage.service'
 import { Button } from 'react-native-paper'
-import Clipboard from '@react-native-clipboard/clipboard';
+import Clipboard from '@react-native-clipboard/clipboard'
+import { SeedButton } from '../components/styles/SeedButton.styles'
+import Spinner from '../components/Spinner'
 
 export default function ImportAccountScreen({ navigation, route }: RootStackScreenProps<'Import'>) {
-    const [word, setWord] = useState([])
-    const [copiedText, setCopiedText] = useState('')
-    const [showedPhrase, setShowedPhrase] = useState(false)
-    const [seedPhrase, setSeedPhrase] = useState<string[]>([]) 
+    const [seedPhrase, setSeedPhrase] = useState<string[]>([])
+    const [showedPhrase, setShowedPhrase] = useState<string[]>([])
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [showButton, setShowButton] = useState<boolean>(true)
 
     let splitWords = seedPhrase[0]?.split(' ')
 
-    // const copyToClipboard = () => {
-    //     Clipboard.setString(copiedText)
-    //     setShowedPhrase(!showedPhrase)
-    // }
-
-    // const fetchCopiedText = async () => {
-    //     const text = seedPhrase
-    //     setCopiedText(text)
-    // }
-
     useEffect(() => {
         getSeedWords()
-        
     }, [])
 
     const getSeedWords = () => {
@@ -40,78 +31,83 @@ export default function ImportAccountScreen({ navigation, route }: RootStackScre
                 const auth = response
                 const signature = account.sign(`lto:sign:${auth.url}`).base58
                 const data = { address: account.address, publicKey: account.publicKey, signature, seed: account.seed }
-                return data.seed
+                return data
+            })
+            .then(accountData => {
+                LocalStorageService.storeData('@accountPublicKey', accountData.publicKey)
+                return accountData.seed
             })
             .then(accountSeed => {
                 setSeedPhrase([accountSeed])
+                setIsLoading(false)
+                console.log('type of seed data :', typeof accountSeed)
+                console.log('seed data :', accountSeed)
             })
             .catch(err => console.log(err))
     }
 
+    const handlePress = (word: string) => {
+        setShowedPhrase(prev => [...prev, word])
+        setShowButton(false)
+    }
+
+    const arraysEqual = (array1: string[], array2: string[]): boolean => {
+        return JSON.stringify(array1) == JSON.stringify(array2)
+    }
+
     return (
-        <StyledView marginTop={'0'}>
+        <StyledView>
 
             <StyledTitle>Import account</StyledTitle>
 
-            <StyledInput
-                style={{ marginBottom: 70 }}
-                label="Add your backup phrase"
-                value=''
-                onChangeText={words => setWord(word)}
-                placeholder="Tap your backup phrase in the correct order"
-            >
+            <View>
+                <StyledInput
+                    style={{ marginBottom: 140 }}
+                    editable={false}
+                    multiline
+                    caretHidden
+                    label="Add your backup phrase"
+                    value={showedPhrase.toString()}
+                    placeholder="Tap your backup phrase in the correct order"
+                >
+                </StyledInput>
 
-            </StyledInput>
 
-
-            {/* <SafeAreaView style={{ flex: 1 }}>
-                <View style={styles.container}>
-                    <Text style={styles.copiedText}>{word}{copiedText}</Text>
-                    <TouchableOpacity onPress={copyToClipboard}>
-                        <Text>Click here to copy to Clipboard</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={fetchCopiedText}>
-                        <Text>View copied text</Text>
-                    </TouchableOpacity>
-
+                <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                    {isLoading ? <Spinner /> : splitWords?.map((word, idx) => {
+                        return <SeedButton
+                            key={idx}
+                            mode='outlined'
+                            uppercase={false}
+                            onPress={() => {
+                                handlePress(word)
+                            }}>
+                            {word}
+                        </SeedButton>
+                    })}
                 </View>
-            </SafeAreaView> */}
 
-            <View style={{flex: 1, alignItems: 'center'}}>
-            {splitWords?.map((word, idx) => {
-                   return <Button mode='outlined' style={{width: 120, borderRadius: 20, borderColor: '#A017B7'}} idx={idx}>{word}</Button>
-                }) }
-                </View>
+            </View>
+
             <StyledView flexEnd>
 
                 <StyledButton
                     mode="contained"
-                    disabled={false} // must be disable until we implement the import words
+                    disabled={!arraysEqual(splitWords, showedPhrase)} // Activate button if showed phrase is equal to seed phrase
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                     onPress={() => {
-                        // console.log(account2)
-                        console.log('seed words :', typeof splitWords)
-                        // navigation.navigate('Import2')
+                        console.log('seed words: ', splitWords)
+                        console.log('showPhrase: ', showedPhrase)
+                        navigation.navigate('Import2')
                     }}>
                     Import your account
                 </StyledButton>
 
             </StyledView>
-        </StyledView>
+        </StyledView >
     )
 }
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    copiedText: {
-      marginTop: 10,
-      color: 'red',
-    },
-  });
-  
+
 
 

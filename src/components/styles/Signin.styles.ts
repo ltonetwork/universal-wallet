@@ -4,7 +4,7 @@ import { Text, Title } from "react-native-paper"
 
 export const StyledView = styled.View`
     flex: 1;
-    margin: 70px 40px 20px 40px;
+    margin: 0px 40px 20px 40px;
     ${props => props.flexEnd && `justify-content: flex-end;`}
     ${props => props.marginTop && `margin-top: ${props.marginTop}px;`}
 `

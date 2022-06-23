@@ -12,7 +12,7 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
     const handleSignIn = () => { }
 
     return (
-        <StyledView>
+        <StyledView marginTop={70}>
 
             <StyledTitle>Sign in</StyledTitle>
 

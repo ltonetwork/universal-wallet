@@ -14,25 +14,17 @@ export default function ImportAccountScreen2({ navigation }: RootStackScreenProp
     const [passwordVisible, setPasswordVisible] = useState(true)
     const [checked, setChecked] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
-    const [account, setAccount] = useState<string | Account>()
-
-    interface Account {
-        address: string
-        privateKey: string
-        publicKey: string
-        balance: number
-        nonce: number
-    }
+    const [account, setAccount] = useState(Object.create(null))
 
     useEffect(() => {
         getAccount()
     }, [])
 
     const getAccount = () => {
-        LocalStorageService.getData('@appAuth')
+        LocalStorageService.getData('@accountPublicKey')
             .then(data => {
                 const factory = require('@ltonetwork/lto').AccountFactoryED25519
-                const account = new factory('T').createFromPrivateKey(data)
+                const account = new factory('T').createFromPublicKey(data)
                 setAccount(account)
                 setIsLoading(false)
             })
