@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -6,14 +5,14 @@ import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { ColorSchemeName, Image, useWindowDimensions } from 'react-native'
 import { IconButton, Provider as PaperProvider } from 'react-native-paper'
-import { RootStackParamList, RootTabParamList, RootTabScreenProps } from '../../types'
+import { RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from '../../types'
 import LogoTitle from '../components/LogoTitle'
 import TabBarIcon from '../components/TabBarIcon'
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
 import CredentialsTabScreen from '../screens/CredentialsTabScreen'
 import ImportAccountScreen from '../screens/ImportAccountScreen'
-import ImportAccountScreen2 from '../screens/ImportAccountScreen2'
+import ImportSeedScreen from '../screens/ImportSeedScreen'
 import ModalScreen from '../screens/ModalScreen'
 import NotFoundScreen from '../screens/NotFoundScreen'
 import OnboardingScreen from '../screens/OnBoardingScreen'
@@ -59,106 +58,94 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function RootNavigator() {
+  const colorScheme = useColorScheme()
 
-  const [appFirstLaunch, setAppFirstLaunch] = useState(null)
-  const [accountImported, setAccountImported] = useState(null)
+  const [appFirstLaunch, setAppFirstLaunch] = useState<boolean | null>(null)
+  const [accountImported, setAccountImported] = useState<boolean | null>(null)
 
   useEffect(() => {
     skipOnboarding()
   }, [])
-
 
   useEffect(() => {
     skipImportAccount()
   }, [])
 
 
-
-  // const skipOnboarding = (): void => {
-  //   LocalStorageService.getData('@appFirstLaunch')
-  //     .then(data => {
-  //       if (data !== null) {
-  //         setAppFirstLaunch(false)
-  //       } else {
-  //         setAppFirstLaunch(true)
-  //         LocalStorageService.storeData('@appFirstLaunch', 'true')
-  //       }
-  //     }
-  //     )
-  //     .catch(err => console.log(err))
-  // }
-
-  const skipOnboarding = async (): void => {
-    AsyncStorage.getItem('x')
-      .then(value => {
-        if (value === null) {
-          setAppFirstLaunch(true)
-          AsyncStorage.setItem('@appFirstLaunch', 'false')
-        } else {
+  const skipOnboarding = (): void => {
+    LocalStorageService.getData('@appFirstLaunch')
+      .then(data => {
+        if (data !== null) {
           setAppFirstLaunch(false)
+        } else {
+          setAppFirstLaunch(true)
+          LocalStorageService.storeData('@appFirstLaunch', 'true')
         }
       })
       .catch(err => console.log(err))
   }
 
-  // const skipImportAccount = (): void => {
-  //   LocalStorageService.getData('@appAuth')
-  //     .then(data => {
-  //       if (data) {
-  //         setAccountImported(true)
-  //       } else {
-  //         setAccountImported(false)
-  //       }
-  //     }
-  //     )
-  //     .catch(err => console.log(err))
-  // }
 
-  const skipImportAccount = async (): void => {
-    AsyncStorage.getItem('@appAuth')
-      .then(value => {
-        if (value === null) {
+  const skipImportAccount = (): void => {
+    LocalStorageService.getData('@appAuth')
+      .then(data => {
+        if (data) {
+          setAccountImported(true)
+        } else {
           setAccountImported(false)
         }
-        else {
-          setAccountImported(true)
-        }
       })
       .catch(err => console.log(err))
   }
 
-  return (
-    appFirstLaunch !== null && (
-      <Stack.Navigator
-        screenOptions={{
-          headerTitleStyle: { color: '#A017B7', fontWeight: '400', fontSize: 16 },
-          headerTintColor: '#A017B7',
-          headerShadowVisible: false,
-          headerStyle: { backgroundColor: 'transparent' }
-        }}>
-        {/* REMOVE COMMENTS BELOW TO SKIP ONBOARDING AND IMPORT ACCOUNT SCREENS IF ALREADY
-      SEEN AND IMPORTED */}
-        {/* {appFirstLaunch
-          && */}
-        <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
-        {/* } */}
 
-        {/* {!accountImported
+  return (
+
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleStyle: { color: '#A017B7', fontWeight: '400', fontSize: 16 },
+        headerTintColor: '#A017B7',
+        headerShadowVisible: false,
+        headerStyle: { backgroundColor: 'transparent' }
+      }}>
+
+      {/* REMOVE COMMENTS BELOW TO SKIP ONBOARDING AND IMPORT ACCOUNT SCREENS IF ALREADY
+      SEEN AND IMPORTED */}
+      {/* {appFirstLaunch
+          && */}
+      <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
+      {/* } */}
+
+      {/* {!accountImported
           &&
           <> */}
-        <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', }} />
-        <Stack.Screen name="Import" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
-        <Stack.Screen name="Import2" component={ImportAccountScreen2} options={{ headerTitle: 'Back to Sign In' }} />
-        {/* </>
+      <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
+      <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', headerTransparent: true }} />
+      <Stack.Screen name="ImportSeed" component={ImportSeedScreen} options={{ headerTitle: 'Back to Sign In' }} />
+      <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
+      {/* </>
         } */}
-        <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-        <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-        <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name="Modal" component={ModalScreen} />
-        </Stack.Group>
-      </Stack.Navigator>)
-  )
+      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen
+          name="Modal"
+          component={ModalScreen}
+          options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
+            headerLeft: () => <LogoTitle />,
+            headerTitleStyle: { color: 'transparent' },
+            headerRight: () => (
+              <IconButton
+                icon='close'
+                color={Colors[colorScheme].tint}
+                size={25}
+                onPress={() => navigation.navigate('Root')}
+              />
+            )
+          })}
+        />
+      </Stack.Group>
+    </Stack.Navigator>)
 }
 
 
@@ -183,7 +170,7 @@ function BottomTabNavigator() {
         name="Wallet"
         component={WalletTabScreen}
         options={({ navigation }: RootTabScreenProps<'Wallet'>) => ({
-          headerTitle: (props) => <LogoTitle {...props} />,
+          headerTitle: () => <LogoTitle />,
           headerStyle: { height: 100 },
           tabBarIcon: ({ color }) => <TabBarIcon icon="wallet-outline" color={color} />,
           tabBarLabelStyle: { fontSize: 12 },

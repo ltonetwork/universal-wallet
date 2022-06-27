@@ -1,113 +1,124 @@
 import React, { useEffect, useState } from 'react'
-import { SafeAreaView, TouchableOpacity, Text, View, StyleSheet } from 'react-native'
 import { RootStackScreenProps } from '../../types'
+import CheckBox from '../components/CheckBox'
+import SnackbarMessage from '../components/Snackbar'
+import Spinner from '../components/Spinner'
 import { StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
+import TermsModal from '../components/TermsModal'
 import LocalStorageService from '../services/LocalStorage.service'
-import { Button } from 'react-native-paper'
-import Clipboard from '@react-native-clipboard/clipboard'
-import { SeedButton } from '../components/styles/SeedButton.styles'
-import Spinner from '../components/Spinner'
 
-export default function ImportAccountScreen({ navigation, route }: RootStackScreenProps<'Import'>) {
-    const [seedPhrase, setSeedPhrase] = useState<string[]>([])
-    const [showedPhrase, setShowedPhrase] = useState<string[]>([])
-    const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [showButton, setShowButton] = useState<boolean>(true)
 
-    let splitWords = seedPhrase[0]?.split(' ')
+export default function ImportAccountScreen({ navigation }: RootStackScreenProps<'ImportAccount'>) {
+    const [isLoading, setIsLoading] = useState(false)
+    const [password, setPassword] = useState("")
+    const [passwordVisible, setPasswordVisible] = useState(true)
+    const [checked, setChecked] = useState(false)
+    const [modalVisible, setModalVisible] = useState(false)
+    const [account, setAccount] = useState(Object.create(null))
+    const [snackbarVisible, setSnackbarVisible] = useState(false)
 
     useEffect(() => {
-        getSeedWords()
+        getAccount()
     }, [])
 
-    const getSeedWords = () => {
-        LocalStorageService.getData('@appAuth')
-            .then(response => {
-                const LTO = require("@ltonetwork/lto").LTO
-                const lto = new LTO('T')
-                const account = lto.account()
-                const auth = response
-                const signature = account.sign(`lto:sign:${auth.url}`).base58
-                const data = { address: account.address, publicKey: account.publicKey, signature, seed: account.seed }
-                return data
-            })
-            .then(accountData => {
-                LocalStorageService.storeData('@accountPublicKey', accountData.publicKey)
-                return accountData.seed
-            })
-            .then(accountSeed => {
-                setSeedPhrase([accountSeed])
+    const getAccount = () => {
+        LocalStorageService.getData('@accountPublicKey')
+            .then(data => {
+                const factory = require('@ltonetwork/lto').AccountFactoryED25519
+                const account = new factory('T').createFromPublicKey(data)
+                setAccount(account)
                 setIsLoading(false)
-                console.log('type of seed data :', typeof accountSeed)
-                console.log('seed data :', accountSeed)
             })
             .catch(err => console.log(err))
     }
 
-    const handlePress = (word: string) => {
-        setShowedPhrase(prev => [...prev, word])
-        setShowButton(false)
-    }
-
-    const arraysEqual = (array1: string[], array2: string[]): boolean => {
-        return JSON.stringify(array1) == JSON.stringify(array2)
+    const getAccountAddress = () => {
+        return account?.address
     }
 
     return (
-        <StyledView>
-
-            <StyledTitle>Import account</StyledTitle>
-
-            <View>
-                <StyledInput
-                    style={{ marginBottom: 140 }}
-                    editable={false}
-                    multiline
-                    caretHidden
-                    label="Add your backup phrase"
-                    value={showedPhrase.toString()}
-                    placeholder="Tap your backup phrase in the correct order"
-                >
-                </StyledInput>
+        <>
+            {isLoading
+                ?
+                <Spinner />
+                :
+                <StyledView marginTop={10}>
+                    <StyledTitle>Import account</StyledTitle>
 
 
-                <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
-                    {isLoading ? <Spinner /> : splitWords?.map((word, idx) => {
-                        return <SeedButton
-                            key={idx}
-                            mode='outlined'
+                    <StyledInput
+                        mode={'flat'}
+                        disabled={true}
+                        style={{ marginBottom: 15, backgroundColor: '#F5F5F5' }}
+                        label="Nickname"
+                        value={'@johndoe'}
+                    >
+                    </StyledInput>
+
+                    <StyledInput
+                        mode={'flat'}
+                        style={{ marginBottom: 15, backgroundColor: '#F5F5F5' }}
+                        disabled={true}
+                        label="Wallet address"
+                        value={getAccountAddress()}
+                    >
+                    </StyledInput>
+
+                    <StyledInput
+                        label="Wallet password"
+                        value={password}
+                        onChangeText={password => setPassword(password)}
+                        secureTextEntry={passwordVisible}
+                        placeholder="Type your password..."
+                        right={<StyledInput.Icon
+                            name={passwordVisible ? "eye" : "eye-off"}
+                            onPress={() => setPasswordVisible(!passwordVisible)} />}>
+                    </StyledInput>
+
+                    <CheckBox
+                        status={checked ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                            !checked && setModalVisible(true)
+                            setChecked(!checked)
+                        }}
+                    />
+
+                    <TermsModal
+                        modalVisible={modalVisible}
+                        setChecked={setChecked}
+                        visible={modalVisible}
+                        onRequestClose={() => {
+                            setModalVisible(!modalVisible)
+                        }}
+                        onClose={() => {
+                            setModalVisible(!modalVisible)
+                            setChecked(true)
+                        }}
+                    />
+
+                    <StyledView flexEnd>
+
+                        <StyledButton
+                            mode="contained"
+                            disabled={!checked && true}
                             uppercase={false}
+                            labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                             onPress={() => {
-                                handlePress(word)
+                                setSnackbarVisible(true)
+                                setTimeout(() => {
+                                    navigation.navigate('Root', { screen: 'Wallet' })
+                                }, 2000)
                             }}>
-                            {word}
-                        </SeedButton>
-                    })}
-                </View>
-
-            </View>
-
-            <StyledView flexEnd>
-
-                <StyledButton
-                    mode="contained"
-                    disabled={!arraysEqual(splitWords, showedPhrase)} // Activate button if showed phrase is equal to seed phrase
-                    uppercase={false}
-                    labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                    onPress={() => {
-                        console.log('seed words: ', splitWords)
-                        console.log('showPhrase: ', showedPhrase)
-                        navigation.navigate('Import2')
-                    }}>
-                    Import your account
-                </StyledButton>
-
-            </StyledView>
-        </StyledView >
+                            Import your account
+                        </StyledButton>
+                    </StyledView>
+                    {snackbarVisible && <SnackbarMessage text={'Wallet imported!'} />}
+                </StyledView >
+            }
+        </>
     )
 }
-
 
 

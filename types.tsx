@@ -16,8 +16,8 @@ declare global {
 export type RootStackParamList = {
   SignIn: undefined
   ScanKey: undefined
-  Import: undefined
-  Import2: undefined
+  ImportSeed: undefined
+  ImportAccount: undefined
   OnBoarding: undefined
   Root: NavigatorScreenParams<RootTabParamList> | undefined
   Modal: undefined

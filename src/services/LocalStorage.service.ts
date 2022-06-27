@@ -6,7 +6,7 @@ export default class LocalStorageService {
     try {
       await AsyncStorage.setItem(key, value)
     } catch (error) {
-      throw new Error('Error storing data in LocalStorage', error)
+      throw new Error('Error storing data in LocalStorage')
     }
   }
 

@@ -4,16 +4,17 @@ import { Button, Text } from 'react-native-paper'
 import { StyledScanner, StyledText } from '../components/styles/ScanScreen.styles'
 import LocalStorageService from '../services/LocalStorage.service'
 import { RootStackScreenProps } from '../../types'
+import { CenteredView } from '../components/styles/ScanScreen.styles'
 
 
 export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'ScanKey'>) {
-    const [isLoading, setIsLoading] = useState(true)
-    const [scanData, setScanData] = useState()
-    const [permission, setPermission] = useState(true)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [scanData, setScanData] = useState<string>()
+    const [permission, setPermission] = useState<boolean>(true)
 
     useEffect(() => {
         requestCameraPermission()
-    }, [])
+    }, [permission])
 
     const requestCameraPermission = () => {
         BarCodeScanner.requestPermissionsAsync()
@@ -28,18 +29,32 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
             })
     }
 
+    useEffect(() => {
+        handleQRScan
+    }, [scanData])
+
+    const handleQRScan = (input: any) => {
+        LocalStorageService
+            .storeData('@appAuth', input)
+        setScanData(input)
+        console.log('scanned data:', input)
+        navigation.navigate('ImportSeed')
+    }
+
+
+
     if (isLoading) {
         return <Text>Requesting permission...</Text>
     }
 
     if (scanData) {
         return (
-            <>
+            <CenteredView>
                 <Text>Your key: {scanData}</Text>
                 <Button onPress={() => setScanData(undefined)}>
                     Scan Again
                 </Button>
-            </>
+            </CenteredView>
         )
     }
 
@@ -49,12 +64,7 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
                 <StyledScanner
                     onBarCodeScanned={({ type, data }) => {
                         try {
-                            LocalStorageService
-                                .storeData('@appAuth', data)
-                            setScanData(data)
-                            console.log('scanned data:', data)
-                            // navigation.navigate('Import2')
-                            navigation.navigate('Import')
+                            handleQRScan(data)
                         } catch (err) {
                             setScanData(undefined)
                             console.log(err)

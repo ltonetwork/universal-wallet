@@ -1,36 +1,38 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useEffect } from 'react'
-import { Platform, StyleSheet } from 'react-native'
-import EditScreenInfo from '../components/EditScreenInfo'
-import { Text, View } from '../components/Themed'
-import { Menu, Drawer, Button, TextInput } from 'react-native-paper'
-import { StyledInput } from '../components/styles/StyledInput.styles'
+import React, { useState } from 'react'
+import { Platform } from 'react-native'
+import { TextInput } from 'react-native-paper'
+import { RootStackScreenProps } from '../../types'
 import ModalButtons from '../components/ModalButtons'
-import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../utils/redirectSocialMedia'
+import SnackbarMessage from '../components/Snackbar'
+import { StyledInput } from '../components/styles/StyledInput.styles'
+import { View } from '../components/Themed'
 import LocalStorageService from '../services/LocalStorage.service'
-import { useNavigation } from '@react-navigation/native'
+import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../utils/redirectSocialMedia'
 
+export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'>) {
 
-export default function ModalScreen() {
-
-  const navigation = useNavigation()
+  const [snackbarVisible, setSnackbarVisible] = useState(false)
 
   const logOut = () => {
     LocalStorageService.clear()
-    navigation.navigate('OnBoarding')
+    setSnackbarVisible(true)
+    setTimeout(() => {
+      navigation.navigate('SignIn')
+    }, 2000)
   }
 
   return (
-    <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+    <View style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
       <View>
         <StyledInput
           mode={'flat'}
           disabled={true}
-          style={{ marginBottom: 15, backgroundColor: '#F5F5F5' }}
+          underlineColor={'transparent'}
+          style={{ marginBottom: 15 }}
           label="@johndoe"
-          left={<TextInput.Icon name='account' />}
-          value={'la key'}
-        >
+          left={<TextInput.Icon name='account-outline' />}
+          value={'la key'}>
         </StyledInput>
 
         <ModalButtons text={'Profile'} onPress={() => alert('works')} />
@@ -40,11 +42,9 @@ export default function ModalScreen() {
         <ModalButtons text={'Telegram'} onPress={() => navigateToTelegram()} />
         <ModalButtons text={'Log out'} onPress={() => logOut()} />
 
-
-
-
       </View>
-
+      {snackbarVisible && <SnackbarMessage text={'Session closed!'} />}
+      <SnackbarMessage text={'Session closed succesfully!'} />
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
     </View>
