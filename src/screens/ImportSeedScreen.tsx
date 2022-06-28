@@ -16,7 +16,6 @@ export default function ImportSeedScreen({ navigation, route }: RootStackScreenP
 
     let splitWords = seedPhrase[0]?.split(' ')
 
-
     let seedPhraseCopy = seedPhrase[0]?.split(' ')
 
     const shuffleArray = (array: string[]) => {
@@ -46,11 +45,11 @@ export default function ImportSeedScreen({ navigation, route }: RootStackScreenP
                 const account = lto.account()
                 const auth = response
                 const signature = account.sign(`lto:sign:${auth.url}`).base58
-                const data = { address: account.address, publicKey: account.publicKey, signature, seed: account.seed }
+                const data = { address: account.address, privateKey: account.privateKey, publicKey: account.publicKey, signature, seed: account.seed }
                 return data
             })
             .then(accountData => {
-                LocalStorageService.storeData('@accountPublicKey', accountData.publicKey) // implement JSON stringify to get whole obj???
+                LocalStorageService.storeData('@accountData', accountData) // implement JSON stringify to get whole obj???
                 return accountData.seed
             })
             .then(accountSeed => {
@@ -95,7 +94,7 @@ export default function ImportSeedScreen({ navigation, route }: RootStackScreenP
                 <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
                     {isLoading ?
                         <Spinner /> :
-                        splitWords.map((word, idx) => {
+                        splitWords.map((word, idx) => { // apply shuffleArray Fn to splitWords
                             return <SeedButton text={word}
                                 key={idx}
                                 onPress={() => {
@@ -111,7 +110,8 @@ export default function ImportSeedScreen({ navigation, route }: RootStackScreenP
 
                 <StyledButton
                     mode="contained"
-                    disabled={false} // {!arraysEqual(seedPhraseCopy, showedPhrase)} Activate button if showed phrase is equal to seed phrase
+                    color='#A017B7'
+                    disabled={!arraysEqual(seedPhraseCopy, showedPhrase)} // Activate button if showed phrase is equal to seed phrase
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                     onPress={() => {

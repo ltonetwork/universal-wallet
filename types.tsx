@@ -21,6 +21,7 @@ export type RootStackParamList = {
   OnBoarding: undefined
   Root: NavigatorScreenParams<RootTabParamList> | undefined
   Modal: undefined
+  Profile: undefined
   NotFound: undefined
 }
 

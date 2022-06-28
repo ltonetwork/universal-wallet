@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import React from 'react'
+import { View } from 'react-native'
 import { Paragraph } from 'react-native-paper'
 import SocialMediaIcon from '../components/SocialMediaIcon'
 import { IconContainer, StyledImage, StyledTitle, StyledView } from '../components/styles/NextFunctionality.styles'
+import { QRIcon } from '../components/styles/QRIcon.styles'
 import { placeholderImage, socialMediaIcons } from '../utils/images'
 import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../utils/redirectSocialMedia'
-import { QRIcon } from '../components/styles/QRIcon.styles'
-import { View } from 'react-native'
 
 export default function CredentialsTabScreen() {
 

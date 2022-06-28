@@ -17,6 +17,7 @@ import ModalScreen from '../screens/ModalScreen'
 import NotFoundScreen from '../screens/NotFoundScreen'
 import OnboardingScreen from '../screens/OnBoardingScreen'
 import OwnablesTabScreen from '../screens/OwnablesTabScreen'
+import ProfileScreen from '../screens/ProfileScreen'
 import ScanKeyScreen from '../screens/ScanKeyScreen'
 import SignInScreen from '../screens/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen'
@@ -128,9 +129,7 @@ function RootNavigator() {
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen
-          name="Modal"
-          component={ModalScreen}
+        <Stack.Screen name="Modal" component={ModalScreen}
           options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
             headerLeft: () => <LogoTitle />,
             headerTitleStyle: { color: 'transparent' },
@@ -144,6 +143,7 @@ function RootNavigator() {
             )
           })}
         />
+        <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerTitle: 'Profile' }} />
       </Stack.Group>
     </Stack.Navigator>)
 }

@@ -28,6 +28,7 @@ export default function TermsModal(props: {
                             <CenteredView>
                                 <StyledButton
                                     mode='contained'
+                                    color="#A017B7"
                                     uppercase={false}
                                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                                     onPress={() => {

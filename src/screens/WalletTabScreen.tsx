@@ -27,19 +27,14 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
     }, [])
 
     const readStorage = () => {
-        LocalStorageService.getData('@accountPublicKey')
+        LocalStorageService.getData('@accountData')
             .then(data => {
-                const factory = require('@ltonetwork/lto').AccountFactoryED25519
-                const account = new factory('T').createFromPublicKey(data)
-                return account.address
+                return ApiClientService.getAccountDetails(data.address)
             })
-            .then(address => {
-                return ApiClientService.getAccountDetails(address)
-            })
-            .then(data => {
-                setDetails(data)
+            .then(accountDetails => {
+                setDetails(accountDetails)
                 setIsLoading(false)
-                console.log('Details: ', data)
+                console.log('Details: ', accountDetails)
             })
             .catch(err => console.log(err))
     }

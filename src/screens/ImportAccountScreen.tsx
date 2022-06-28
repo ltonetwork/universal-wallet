@@ -16,26 +16,20 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
     const [passwordVisible, setPasswordVisible] = useState(true)
     const [checked, setChecked] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
-    const [account, setAccount] = useState(Object.create(null))
+    const [accountAddress, setAccountAddress] = useState(Object.create(null))
     const [snackbarVisible, setSnackbarVisible] = useState(false)
 
     useEffect(() => {
-        getAccount()
+        getAccountAddress()
     }, [])
 
-    const getAccount = () => {
-        LocalStorageService.getData('@accountPublicKey')
+    const getAccountAddress = () => {
+        LocalStorageService.getData('@accountData')
             .then(data => {
-                const factory = require('@ltonetwork/lto').AccountFactoryED25519
-                const account = new factory('T').createFromPublicKey(data)
-                setAccount(account)
                 setIsLoading(false)
+                setAccountAddress(data.address)
             })
             .catch(err => console.log(err))
-    }
-
-    const getAccountAddress = () => {
-        return account?.address
     }
 
     return (
@@ -62,7 +56,7 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                         style={{ marginBottom: 15, backgroundColor: '#F5F5F5' }}
                         disabled={true}
                         label="Wallet address"
-                        value={getAccountAddress()}
+                        value={accountAddress}
                     >
                     </StyledInput>
 
