@@ -6,7 +6,6 @@ import { CenteredView, ModalView, ModalText } from '././styles/TermsModal.styles
 
 export default function TermsModal(props: {
     visible: boolean,
-    modalVisible: boolean
     onClose: any
     onRequestClose: any
     setChecked: any
@@ -17,8 +16,8 @@ export default function TermsModal(props: {
             <Modal
                 animationType="slide"
                 transparent={true}
-                visible={props.modalVisible}
-                onRequestClose={() => props.onRequestClose}
+                visible={props.visible}
+                onRequestClose={() => props.onRequestClose()}
             >
                 <CenteredView>
                     <ModalView>

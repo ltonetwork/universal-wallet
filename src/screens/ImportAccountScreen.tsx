@@ -11,17 +11,17 @@ import LocalStorageService from '../services/LocalStorage.service'
 
 
 export default function ImportAccountScreen({ navigation }: RootStackScreenProps<'ImportAccount'>) {
-    const [isLoading, setIsLoading] = useState(false)
-    const [password, setPassword] = useState("")
-    const [passwordVisible, setPasswordVisible] = useState(true)
-    const [checked, setChecked] = useState(false)
-    const [modalVisible, setModalVisible] = useState(false)
-    const [accountAddress, setAccountAddress] = useState(Object.create(null))
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [password, setPassword] = useState<string>("")
+    const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
+    const [checked, setChecked] = useState<boolean>(false)
+    const [modalVisible, setModalVisible] = useState<boolean>(false)
+    const [accountAddress, setAccountAddress] = useState('')
     const [snackbarVisible, setSnackbarVisible] = useState(false)
 
     useEffect(() => {
         getAccountAddress()
-    }, [])
+    }, [accountAddress])
 
     const getAccountAddress = () => {
         LocalStorageService.getData('@accountData')
@@ -40,8 +40,6 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                 :
                 <StyledView marginTop={10}>
                     <StyledTitle>Import account</StyledTitle>
-
-
                     <StyledInput
                         mode={'flat'}
                         disabled={true}
@@ -80,11 +78,11 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                     />
 
                     <TermsModal
-                        modalVisible={modalVisible}
-                        setChecked={setChecked}
                         visible={modalVisible}
+                        setChecked={setChecked}
                         onRequestClose={() => {
                             setModalVisible(!modalVisible)
+                            setChecked(false)
                         }}
                         onClose={() => {
                             setModalVisible(!modalVisible)
@@ -92,8 +90,7 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                         }}
                     />
 
-                    <StyledView flexEnd>
-
+                    <StyledView marginTop={70}>
                         <StyledButton
                             mode="contained"
                             disabled={!checked && true}
@@ -110,6 +107,7 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                     </StyledView>
                     {snackbarVisible && <SnackbarMessage text={'Wallet imported!'} />}
                 </StyledView >
+
             }
         </>
     )

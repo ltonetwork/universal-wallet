@@ -9,7 +9,7 @@ import { StyledInput } from '../components/styles/StyledInput.styles'
 import LocalStorageService from '../services/LocalStorage.service'
 
 
-export default function ImportSeedScreen({ navigation, route }: RootStackScreenProps<'ImportSeed'>) {
+export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'ImportSeed'>) {
     const [seedPhrase, setSeedPhrase] = useState<string[]>([])
     const [showedPhrase, setShowedPhrase] = useState<string[]>([])
     const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -49,7 +49,7 @@ export default function ImportSeedScreen({ navigation, route }: RootStackScreenP
                 return data
             })
             .then(accountData => {
-                LocalStorageService.storeData('@accountData', accountData) // implement JSON stringify to get whole obj???
+                LocalStorageService.storeData('@accountData', accountData)
                 return accountData.seed
             })
             .then(accountSeed => {
@@ -71,14 +71,13 @@ export default function ImportSeedScreen({ navigation, route }: RootStackScreenP
         ])
     }
 
-
-
     return (
         <StyledView>
 
             <StyledTitle>Import account</StyledTitle>
 
             <View>
+
                 <StyledInput
                     style={{ marginBottom: 140 }}
                     editable={false}
@@ -89,7 +88,6 @@ export default function ImportSeedScreen({ navigation, route }: RootStackScreenP
                     placeholder="Tap your backup phrase in the correct order"
                 >
                 </StyledInput>
-
 
                 <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
                     {isLoading ?
@@ -123,6 +121,7 @@ export default function ImportSeedScreen({ navigation, route }: RootStackScreenP
                 </StyledButton>
 
             </StyledView>
+
         </StyledView >
     )
 }

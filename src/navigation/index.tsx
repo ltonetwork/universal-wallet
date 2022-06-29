@@ -133,6 +133,7 @@ function RootNavigator() {
           options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
             headerLeft: () => <LogoTitle />,
             headerTitleStyle: { color: 'transparent' },
+            cardStyle: { backgroundColor: '#ffffff' },
             headerRight: () => (
               <IconButton
                 icon='close'

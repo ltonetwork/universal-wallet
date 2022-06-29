@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import { View } from 'react-native'
 import { RootStackScreenProps } from '../../types'
-import { StyledText, StyledTitle, StyledView } from '../components/styles/Signin.styles'
+import { StyledText, StyledTitle, Container, ButtonContainer } from '../components/styles/SignInScreen.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
 
@@ -12,27 +13,30 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
     const handleSignIn = () => { }
 
     return (
-        <StyledView marginTop={70}>
+        <Container>
+            <View>
 
-            <StyledTitle>Sign in</StyledTitle>
+                <StyledTitle>Sign in</StyledTitle>
 
-            <StyledText>Sign in with your account name and password</StyledText>
+                <StyledText>Sign in with your account name and password</StyledText>
 
-            <StyledInput
-                style={{ marginBottom: 70, marginTop: 15 }}
-                label="Wallet password"
-                value={password}
-                onChangeText={password => setPassword(password)}
-                secureTextEntry={passwordVisible}
-                placeholder="Type your password"
-                right={<StyledInput.Icon
-                    name={passwordVisible ? "eye" : "eye-off"}
-                    onPress={() => setPasswordVisible(!passwordVisible)} />}
-            >
+                <StyledInput
+                    label="Wallet password"
+                    value={password}
+                    onChangeText={password => setPassword(password)}
+                    secureTextEntry={passwordVisible}
+                    placeholder="Type your password"
+                    right={<StyledInput.Icon
+                        name={passwordVisible ? "eye" : "eye-off"}
+                        onPress={() => setPasswordVisible(!passwordVisible)} />}
+                >
 
-            </StyledInput>
+                </StyledInput>
 
-            <StyledView flexEnd>
+            </View>
+
+
+            <ButtonContainer>
                 <StyledButton
                     mode="contained"
                     color='#A017B7'
@@ -50,8 +54,9 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     Import your account
                 </StyledButton>
 
-            </StyledView>
-        </StyledView>
+            </ButtonContainer>
+
+        </Container>
     )
 }
 

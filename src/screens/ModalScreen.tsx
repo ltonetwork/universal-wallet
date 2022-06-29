@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState } from 'react'
 import { Platform } from 'react-native'
-import { TextInput } from 'react-native-paper'
+import { Card, TextInput } from 'react-native-paper'
 import { RootStackScreenProps } from '../../types'
 import ModalButton from '../components/ModalButton'
 import SnackbarMessage from '../components/Snackbar'
@@ -9,7 +9,10 @@ import { StyledInput } from '../components/styles/StyledInput.styles'
 import { View } from '../components/Themed'
 import LocalStorageService from '../services/LocalStorage.service'
 import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../utils/redirectSocialMedia'
-import { InputContainer, ButtonContainer } from '../components/styles/ModalScreen.styles'
+import { InfoContainer, ButtonContainer, Field, StyledNickname, Content } from '../components/styles/ModalScreen.styles'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { MainCard } from '../components/styles/ModalScreen.styles'
+
 
 export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'>) {
 
@@ -41,18 +44,22 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
   }
 
   return (
-    <>
-      <InputContainer>
-        <StyledInput
-          mode={'flat'}
-          disabled={true}
-          underlineColor={'transparent'}
-          style={{ marginBottom: 15 }}
-          label="@johndoe"
-          left={<TextInput.Icon name='account-circle-outline' />}
-          value={accountAddress}>
-        </StyledInput>
-      </InputContainer>
+    <SafeAreaView>
+      <InfoContainer>
+        <MainCard >
+          <Card.Content>
+
+            <Field>Your wallet</Field>
+            <View style={{ justifyContent: 'space-evenly' }}>
+              <StyledNickname>@johndoe</StyledNickname>
+            </View>
+            <Content>{accountAddress}</Content>
+
+          </Card.Content>
+
+        </MainCard>
+      </InfoContainer>
+
 
       <ButtonContainer>
         <ModalButton text={'Profile'} onPress={() => navigation.navigate('Profile')} />
@@ -61,11 +68,11 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
         <ModalButton text={'Linkedin'} onPress={() => navigateToLinkedin()} />
         <ModalButton text={'Telegram'} onPress={() => navigateToTelegram()} />
         <ModalButton text={'Log out'} onPress={() => logOut()} />
-        {snackbarVisible && <SnackbarMessage text={'Session closed!'} />}
         {/* Use a light status bar on iOS to account for the black space above the modal */}
-
       </ButtonContainer>
+
+      {snackbarVisible && <SnackbarMessage text={'Session closed!'} />}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-    </>
+    </SafeAreaView>
   )
 }

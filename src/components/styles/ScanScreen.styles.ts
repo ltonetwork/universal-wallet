@@ -11,7 +11,7 @@ width: 100%;
 height: 100%;
 `
 
-export const StyledText = styled(Text)`
+export const StyledText = styled(Text) <{ title?: any }>`
 color: #ffffff;
 font-weight: 900;
 ${props => props.title && `font-size: 20px; font-weight: bold;`} 
