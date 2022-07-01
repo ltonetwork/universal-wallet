@@ -12,12 +12,12 @@ export const InfoContainer = styled.View`
 export const ButtonContainer = styled.View`
     margin-top: 10px;
     align-items: center;
-    width: ${Dimensions.get("window").width * 0.9}px;
+    width: ${Dimensions.get("window").width * 1}px;
     height: ${Dimensions.get("window").height * 0.75}px;
     `
 
 export const MainCard = styled(Card)`
-    width: 300px;
+    width: 360px;
     height: auto;
     background-color: transparent;
     box-shadow: 0px 0px 0px #ffffff;

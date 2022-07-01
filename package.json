@@ -17,7 +17,6 @@
     "@expo/vector-icons": "^13.0.0",
     "@ltonetwork/lto": "^0.8.7",
     "@react-native-async-storage/async-storage": "^1.17.6",
-    "@react-native-clipboard/clipboard": "^1.10.0",
     "@react-navigation/bottom-tabs": "^6.0.5",
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",

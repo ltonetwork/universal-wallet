@@ -76,11 +76,11 @@ function RootNavigator() {
   const skipOnboarding = (): void => {
     LocalStorageService.getData('@appFirstLaunch')
       .then(data => {
-        if (data !== null) {
-          setAppFirstLaunch(false)
-        } else {
+        if (data === null) {
           setAppFirstLaunch(true)
-          LocalStorageService.storeData('@appFirstLaunch', 'true')
+          LocalStorageService.storeData('@appFirstLaunch', true)
+        } else {
+          setAppFirstLaunch(false)
         }
       })
       .catch(err => console.log(err))
@@ -90,7 +90,7 @@ function RootNavigator() {
   const skipImportAccount = (): void => {
     LocalStorageService.getData('@appAuth')
       .then(data => {
-        if (data) {
+        if (data === null) {
           setAccountImported(true)
         } else {
           setAccountImported(false)
@@ -112,20 +112,20 @@ function RootNavigator() {
 
       {/* REMOVE COMMENTS BELOW TO SKIP ONBOARDING AND IMPORT ACCOUNT SCREENS IF ALREADY
       SEEN AND IMPORTED */}
-      {/* {appFirstLaunch
-          && */}
+      {/* {appFirstLaunch === true
+        && */}
       <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
       {/* } */}
 
-      {/* {!accountImported
-          &&
-          <> */}
+      {/* {accountImported === false
+        &&
+        <> */}
       <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', headerTransparent: true }} />
       <Stack.Screen name="ImportSeed" component={ImportSeedScreen} options={{ headerTitle: 'Back to Sign In' }} />
       <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
       {/* </>
-        } */}
+      } */}
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -133,7 +133,7 @@ function RootNavigator() {
           options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
             headerLeft: () => <LogoTitle />,
             headerTitleStyle: { color: 'transparent' },
-            cardStyle: { backgroundColor: '#ffffff' },
+            headerStyle: { backgroundColor: 'white' },
             headerRight: () => (
               <IconButton
                 icon='close'

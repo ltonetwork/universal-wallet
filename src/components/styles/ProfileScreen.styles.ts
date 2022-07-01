@@ -1,6 +1,5 @@
 import styled from "styled-components/native"
 import { Card, Paragraph, Title } from "react-native-paper"
-Title
 
 export const CardsContainer = styled.SafeAreaView`
     margin-top: 5px;
@@ -12,11 +11,12 @@ export const CardsContainer = styled.SafeAreaView`
 `
 
 export const StyledTitle = styled(Title)`
-font-weight: bold;
+    font-weight: bold;
+    margin-bottom: 20px;
 `
 
 export const MainCard = styled(Card)`
-margin-top: 10px;
+    margin-top: 10px;
     shadow-color: #A9F2F7;
     shadow-offset: 5px 9px;
     shadow-opacity: 0.5;
@@ -26,7 +26,6 @@ margin-top: 10px;
     elevation: 5;
     width: 350px;
     height: auto;
-    
 `
 
 export const Field = styled(Paragraph)`
@@ -36,4 +35,9 @@ export const Field = styled(Paragraph)`
 export const Content = styled(Paragraph)`
     font-size: 15px;
     font-weight: bold;
+`
+export const HiddenTitle = styled(Title)`
+    color: #9e1eb6;
+    text-align: center;
+    width: 200px;
 `

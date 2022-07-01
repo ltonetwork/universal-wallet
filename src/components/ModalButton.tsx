@@ -9,7 +9,7 @@ export default function ModalButton(props: { onPress: () => void, text: string }
             uppercase={false}
             labelStyle={{ fontWeight: '400', fontSize: 15, color: '#303030' }}
             contentStyle={{ height: 45, justifyContent: 'flex-start' }}
-            style={{ width: 250, borderRadius: 20, marginBottom: 10 }}
+            style={{ width: 300, borderRadius: 20, marginBottom: 10 }}
             onPress={props.onPress}
         >{props.text}</Button>
     )

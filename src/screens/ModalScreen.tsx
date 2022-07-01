@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState } from 'react'
-import { Platform } from 'react-native'
+import { ImageBackground, Platform } from 'react-native'
 import { Card, TextInput } from 'react-native-paper'
 import { RootStackScreenProps } from '../../types'
 import ModalButton from '../components/ModalButton'
@@ -36,7 +36,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
   }
 
   const logOut = () => {
-    LocalStorageService.clear()
+    LocalStorageService.removeData('@accountData')
     setSnackbarVisible(true)
     setTimeout(() => {
       navigation.navigate('SignIn')
@@ -44,7 +44,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ backgroundColor: 'white' }}>
       <InfoContainer>
         <MainCard >
           <Card.Content>

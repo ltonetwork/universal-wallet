@@ -44,19 +44,23 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
 
 
     if (isLoading) {
-        return <Text>Requesting permission...</Text>
-    }
-
-    if (scanData) {
         return (
             <CenteredView>
-                <Text>Your key: {scanData}</Text>
-                <Button onPress={() => setScanData(undefined)}>
-                    Scan Again
-                </Button>
+                <Text>Requesting permission...</Text>
             </CenteredView>
         )
     }
+
+    // if (scanData) {
+    //     return (
+    //         <CenteredView>
+    //             <Text>Your key: {scanData}</Text>
+    //             <Button onPress={() => setScanData(undefined)}>
+    //                 Scan Again
+    //             </Button>
+    //         </CenteredView>
+    //     )
+    // }
 
     if (permission) {
         return (
