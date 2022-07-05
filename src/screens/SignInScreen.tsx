@@ -1,43 +1,80 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { View } from 'react-native'
 import { RootStackScreenProps } from '../../types'
-import { StyledText, StyledTitle, StyledView } from '../components/styles/Signin.styles'
+import { StyledText, StyledTitle, Container, ButtonContainer } from '../components/styles/SignInScreen.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
+import LocalStorageService from '../services/LocalStorage.service'
+
 
 
 export default function SignInScreen({ navigation }: RootStackScreenProps<'SignIn'>) {
-    const [password, setPassword] = useState("")
-    const [passwordVisible, setPasswordVisible] = useState(true)
+    const [userAlias, setUserAlias] = useState<any>()
+    const [password, setPassword] = useState<string>("")
+    const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
 
-    const handleSignIn = () => { }
+    useEffect(() => {
+        getAlias()
+    }, [])
+
+    const getAlias = () => {
+        LocalStorageService.getData('@userAlias')
+            .then(data => {
+                setUserAlias(data)
+            })
+            .catch(err => console.log(err))
+    }
+
+    const handleSignIn = () => {
+        if (password === userAlias?.password) {
+            navigation.navigate('Root')
+            console.log('aliases: ', userAlias)
+            setPassword("")
+        } else {
+            alert('Incorrect password')
+        }
+    }
 
     return (
-        <StyledView>
+        <Container>
+            <View>
 
-            <StyledTitle>Sign in</StyledTitle>
+                <StyledTitle>Sign in</StyledTitle>
 
-            <StyledText>Sign in with your account name and password</StyledText>
+                <StyledText>Sign in with your account name and password</StyledText>
 
-            <StyledInput
-                style={{ marginBottom: 70, marginTop: 15 }}
-                label="Wallet password"
-                value={password}
-                onChangeText={password => setPassword(password)}
-                secureTextEntry={passwordVisible}
-                placeholder="Type your password"
-                right={<StyledInput.Icon
-                    name={passwordVisible ? "eye" : "eye-off"}
-                    onPress={() => setPasswordVisible(!passwordVisible)} />}
-            >
+                <StyledInput
+                    mode={'flat'}
+                    style={{ marginBottom: 5 }}
+                    disabled={true}
+                    label="Nickname"
+                    value={userAlias?.nickname}
+                >
+                </StyledInput>
 
-            </StyledInput>
+                <StyledInput
+                    label="Wallet password"
+                    value={password}
+                    onChangeText={password => setPassword(password)}
+                    secureTextEntry={passwordVisible}
+                    placeholder="Type your password"
+                    right={<StyledInput.Icon
+                        name={passwordVisible ? "eye" : "eye-off"}
+                        onPress={() => setPasswordVisible(!passwordVisible)} />}
+                >
 
-            <StyledView flexEnd>
+                </StyledInput>
+
+            </View>
+
+
+            <ButtonContainer>
                 <StyledButton
                     mode="contained"
+                    color='#A017B7'
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                    onPress={() => navigation.navigate('Root')}>
+                    onPress={() => handleSignIn()}>
                     Sign in
                 </StyledButton>
 
@@ -49,8 +86,9 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     Import your account
                 </StyledButton>
 
-            </StyledView>
-        </StyledView>
+            </ButtonContainer>
+
+        </Container>
     )
 }
 

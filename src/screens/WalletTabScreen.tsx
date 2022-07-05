@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { StatusBar, View } from 'react-native'
+import { StatusBar } from 'react-native'
 import { Card, Paragraph, Title } from 'react-native-paper'
 import { RootTabScreenProps } from '../../types'
+import QRButton from '../components/QRIcon'
 import Spinner from '../components/Spinner'
-import { QRIcon } from '../components/styles/QRIcon.styles'
+import { AmountContainer, BottomCard, BottomCardsContainer, OverviewContainer, TopCard, TopCardsContainer } from '../components/styles/WalletTabScreen.styles'
 import ApiClientService from '../services/ApiClient.service'
 import LocalStorageService from '../services/LocalStorage.service'
 import { formatNumber } from '../utils/formatNumber'
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 
-    const [isLoading, setIsLoading] = useState(true)
-    const [details, setDetails] = useState(Object.create(null))
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [details, setDetails] = useState<TypedDetails>(new Object as TypedDetails)
 
     interface TypedDetails {
         available: number
@@ -20,26 +21,21 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
         regular: number
     }
 
-    const { available, effective, generating, regular } = details as unknown as TypedDetails
+    const { available, effective, generating, regular } = details
 
     useEffect(() => {
         readStorage()
     }, [])
 
     const readStorage = () => {
-        LocalStorageService.getData('@appKey')
+        LocalStorageService.getData('@accountData')
             .then(data => {
-                const factory = require('@ltonetwork/lto').AccountFactoryED25519
-                const account = new factory('T').createFromPrivateKey(data)
-                return account.address
+                return ApiClientService.getAccountDetails(data.address)
             })
-            .then(address => {
-                return ApiClientService.getAccountDetails(address)
-            })
-            .then(data => {
-                setDetails(data)
+            .then(accountDetails => {
+                setDetails(accountDetails)
                 setIsLoading(false)
-                console.log('Details: ', data)
+                console.log('Details: ', accountDetails)
             })
             .catch(err => console.log(err))
     }
@@ -58,123 +54,77 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                 ?
                 <Spinner />
                 :
-                <View style={{ alignContent: 'center' }}>
-                    < StatusBar backgroundColor={'#ffffff'} />
+                <OverviewContainer>
 
-                    <View style={{
-                        marginTop: -5,
-                        flexDirection: 'row',
-                        justifyContent: 'space-evenly',
-                        width: '100%',
-                        height: 120,
-                        backgroundColor: '#ffffff',
-                        borderWidth: 1,
-                        borderColor: '#ffffff',
-                        borderBottomRightRadius: 20,
-                        borderBottomLeftRadius: 25,
-                    }}>
-                        <Card
-                            style={{ borderColor: '#ffffff', elevation: 0 }}>
-                            <Card.Content>
+                    <StatusBar backgroundColor={'#ffffff'} />
+
+                    <TopCardsContainer>
+
+                        <TopCard>
+                            <Card.Content style={{ borderRadius: 80 }}>
                                 <Paragraph>Regular account</Paragraph>
-                                <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+                                <AmountContainer>
                                     <Title>{formatNumber(regular)}</Title><Paragraph>LTO</Paragraph>
-                                </View>
+                                </AmountContainer>
                                 <Paragraph>Equivalent to ...</Paragraph>
                             </Card.Content>
+                        </TopCard>
 
-                        </Card>
-
-                        <Card
-                            style={{ borderColor: '#ffffff', elevation: 0 }}>
+                        <TopCard>
                             <Card.Content>
                                 <Paragraph>Prize</Paragraph>
                                 <Title>?</Title>
                                 <Paragraph>... %(last 24h)</Paragraph>
                             </Card.Content>
-                        </Card>
+                        </TopCard>
 
-                    </View>
+                    </TopCardsContainer>
 
-                    <View style={{ marginTop: 10, flexDirection: 'row', justifyContent: 'space-evenly', width: '100%' }}>
-                        <Card style={{
-                            shadowColor: '#A9F2F7',
-                            shadowOffset: { width: 5, height: 9 },
-                            shadowOpacity: 0.4,
-                            shadowRadius: 9,
-                            elevation: 40,
-                            borderRadius: 20,
-                            width: 150
-                        }}>
+                    <BottomCardsContainer >
+
+                        <BottomCard>
                             <Card.Content>
                                 <Paragraph>Generating</Paragraph>
-                                <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+                                <AmountContainer>
                                     <Title>{formatNumber(generating)}</Title><Paragraph>LTO</Paragraph>
-                                </View>
+                                </AmountContainer>
                             </Card.Content>
+                        </BottomCard>
 
-                        </Card>
-
-                        <Card style={{
-                            shadowColor: '#A9F2F7',
-                            shadowOffset: { width: 5, height: 9 },
-                            shadowOpacity: 0.4,
-                            shadowRadius: 9,
-                            elevation: 40,
-                            borderRadius: 20,
-                            width: 160,
-                            height: 100
-                        }}>
+                        <BottomCard >
                             <Card.Content>
                                 <Paragraph>Available</Paragraph>
-                                <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+                                <AmountContainer>
                                     <Title>{formatNumber(available)}</Title><Paragraph>LTO</Paragraph>
-                                </View>
+                                </AmountContainer>
                             </Card.Content>
-                        </Card>
+                        </BottomCard>
 
-                    </View>
+                    </BottomCardsContainer>
 
-                    <View style={{ marginTop: 20, flexDirection: 'row', justifyContent: 'space-evenly', width: '100%' }}>
-                        <Card style={{
-                            shadowColor: '#A9F2F7',
-                            shadowOffset: { width: 5, height: 9 },
-                            shadowOpacity: 0.4,
-                            shadowRadius: 9,
-                            elevation: 40,
-                            borderRadius: 20,
-                            width: 150
-                        }}>
+                    <BottomCardsContainer>
+
+                        <BottomCard >
                             <Card.Content>
                                 <Paragraph>Effective</Paragraph>
-                                <View style={{ flexDirection: 'row', alignItems: 'baseline' }}>
+                                <AmountContainer>
                                     <Title>{convertLTOtoUSD(effective)}</Title><Paragraph>$</Paragraph>
-                                </View>
+                                </AmountContainer>
                             </Card.Content>
+                        </BottomCard>
 
-                        </Card>
-
-                        <Card style={{
-                            shadowColor: '#A9F2F7',
-                            shadowOffset: { width: 5, height: 9 },
-                            shadowOpacity: 0.4,
-                            shadowRadius: 9,
-                            elevation: 40,
-                            borderRadius: 20,
-                            width: 160,
-                            height: 100
-                        }}>
+                        <BottomCard >
                             <Card.Content>
                                 <Paragraph>No. of transactions</Paragraph>
                                 <Title>?</Title>
                             </Card.Content>
-                        </Card>
+                        </BottomCard>
 
-                    </View>
+                    </BottomCardsContainer>
 
-                    <QRIcon icon="qrcode-scan" color='#ffffff' onPress={() => alert('yeiiiii')} />
+                    <QRButton onPress={() => alert('Here QR code for transactions')} />
 
-                </View>
+                </OverviewContainer>
             }
         </>
     )

@@ -1,19 +1,19 @@
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import React, { useEffect, useState } from 'react'
-import { Button, Text } from 'react-native-paper'
-import { StyledScanner, StyledText } from '../components/styles/ScanScreen.styles'
-import LocalStorageService from '../services/LocalStorage.service'
+import { Text } from 'react-native-paper'
 import { RootStackScreenProps } from '../../types'
+import { CenteredView, StyledScanner, StyledText } from '../components/styles/ScanScreen.styles'
+import LocalStorageService from '../services/LocalStorage.service'
 
 
 export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'ScanKey'>) {
-    const [isLoading, setIsLoading] = useState(true)
-    const [scanData, setScanData] = useState()
-    const [permission, setPermission] = useState(true)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [scanData, setScanData] = useState<any>()
+    const [permission, setPermission] = useState<boolean>(true)
 
     useEffect(() => {
         requestCameraPermission()
-    }, [])
+    }, [permission])
 
     const requestCameraPermission = () => {
         BarCodeScanner.requestPermissionsAsync()
@@ -28,18 +28,30 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
             })
     }
 
-    if (isLoading) {
-        return <Text>Requesting permission...</Text>
+    useEffect(() => {
+        if (permission) {
+            handleQRScan
+        }
+    }, [])
+
+    const handleQRScan = (input: any) => {
+        const LTO = require("@ltonetwork/lto").LTO
+        const lto = new LTO('T')
+        const account = lto.account()
+        const auth = input
+        const signature = account.sign(`lto:sign:${auth.url}`).base58
+        const data = { address: account.address, privateKey: account.privateKey, publicKey: account.publicKey, signature, seed: account.seed }
+        LocalStorageService.storeData('@accountData', data)
+            .then(() => {
+                navigation.navigate('ImportAccount')
+            })
     }
 
-    if (scanData) {
+    if (isLoading) {
         return (
-            <>
-                <Text>Your key: {scanData}</Text>
-                <Button onPress={() => setScanData(undefined)}>
-                    Scan Again
-                </Button>
-            </>
+            <CenteredView>
+                <Text>Requesting permission...</Text>
+            </CenteredView>
         )
     }
 
@@ -47,15 +59,10 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
         return (
             <>
                 <StyledScanner
-                    onBarCodeScanned={({ type, data }) => {
+                    onBarCodeScanned={({ data }) => {
                         try {
-                            LocalStorageService
-                                .storeData('@appKey', data)
-                            setScanData(data)
-                            navigation.navigate('Import2')
-                            // navigation.navigate('Import', data)
+                            handleQRScan(data)
                         } catch (err) {
-                            setScanData(undefined)
                             console.log(err)
                         }
                     }}

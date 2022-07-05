@@ -1,9 +1,9 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Paragraph } from 'react-native-paper'
+import QRButton from '../components/QRIcon'
 import SocialMediaIcon from '../components/SocialMediaIcon'
 import { IconContainer, StyledImage, StyledTitle, StyledView } from '../components/styles/NextFunctionality.styles'
-import { QRIcon } from '../components/styles/QRIcon.styles'
 import { placeholderImage, socialMediaIcons } from '../utils/images'
 import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../utils/redirectSocialMedia'
 
@@ -22,7 +22,7 @@ export default function OwnablesTabScreen() {
           <SocialMediaIcon source={socialMediaIcons.telegram} onPress={() => navigateToTelegram()} />
         </IconContainer>
       </StyledView>
-      <QRIcon icon="qrcode-scan" color='#ffffff' onPress={() => alert('yaiii')} />
+      <QRButton onPress={() => alert('Here QR code for transactions')} />
     </View>
   )
 }

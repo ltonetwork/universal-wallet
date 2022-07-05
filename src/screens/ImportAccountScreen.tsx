@@ -1,82 +1,162 @@
 import React, { useEffect, useState } from 'react'
 import { RootStackScreenProps } from '../../types'
+import CheckBox from '../components/CheckBox'
+import SnackbarMessage from '../components/Snackbar'
+import Spinner from '../components/Spinner'
 import { StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
-import ApiClientService from '../services/ApiClient.service'
+import TermsModal from '../components/TermsModal'
+import LocalStorageService from '../services/LocalStorage.service'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-export default function ImportAccountScreen({ navigation, route }: RootStackScreenProps<'Import'>) {
+export default function ImportAccountScreen({ navigation }: RootStackScreenProps<'ImportAccount'>) {
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
-    const [words, setWords] = useState("")
+    const [loginForm, setloginForm] = useState({
+        nickname: '',
+        password: '',
+        passwordConfirmation: ''
+    })
 
+    const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
 
-    const factory = require('@ltonetwork/lto').AccountFactoryED25519
-    const scanData = route.params.data
-    // const account = new factory('T').createFromPrivateKey(scanData)
+    const [checked, setChecked] = useState<boolean>(false)
+    const [modalVisible, setModalVisible] = useState<boolean>(false)
+    const [snackbarVisible, setSnackbarVisible] = useState(false)
 
-    // INFO FROM LTO:
-    const LTO = require("@ltonetwork/lto").LTO
-    const lto = new LTO('T')
+    const [accountAddress, setAccountAddress] = useState('')
 
-    const account = lto.account()
-
-    const auth = { "@context": "http://schema.lto.network/simple-auth-v1.json", "url": "https://auth.lto.network/UkRihLPt8VA1" }
-    const signature = account.sign(`lto:sign:${auth.url}`).base58
-    const data = { address: account.address, publicKey: account.publicKey, signature }
-    //post(auth.url, data);
-
-
-    // create account from public key
-    const account2 = new factory('T').createFromPublicKey(data.publicKey)
-
-    // get account balance details
     useEffect(() => {
-        getBalance()
-    }, [])
+        getAccountAddress()
+    }, [accountAddress])
 
-    const getBalance = () => {
-        ApiClientService
-            .getAccountDetails(account2.address)
-            .then(res => {
-                console.log(res)
-            }
-            )
+
+    const getAccountAddress = () => {
+        LocalStorageService.getData('@accountData')
+            .then(data => {
+                setIsLoading(false)
+                setAccountAddress(data.address)
+            })
             .catch(err => console.log(err))
     }
 
+    const handleInputChange = (name: string, value: string) => {
+        setloginForm({ ...loginForm, [name]: value })
+    }
+
+    const getDataFromAsyncStorage = async () => {
+        try {
+            const value = await AsyncStorage.multiGet(['@userAlias', '@accountData'])
+            if (value !== null) {
+                console.log('Esto es lo que hay', value)
+            }
+        } catch (error) {
+        }
+    }
 
     return (
-        <StyledView marginTop={'0'}>
+        <>
+            {isLoading
+                ?
+                <Spinner />
+                :
+                <StyledView marginTop={10}>
+                    <StyledTitle>Import account</StyledTitle>
+                    <StyledInput
+                        mode={'flat'}
+                        style={{ marginBottom: 5 }}
+                        disabled={true}
+                        label="Wallet address"
+                        value={accountAddress}
+                    >
+                    </StyledInput>
 
-            <StyledTitle>Import account</StyledTitle>
+                    <StyledInput
+                        style={{ marginBottom: 5 }}
+                        label="Nickname"
+                        placeholder='Enter your nickname...'
+                        value={loginForm.nickname}
+                        onChangeText={(text) => handleInputChange('nickname', text)}
 
-            <StyledInput
-                style={{ marginBottom: 70 }}
-                label="Add your backup phrase"
-                value={words}
-                onChangeText={words => setWords(words)}
-                placeholder="Tap your backup phrase in the correct order"
-            >
+                    >
+                    </StyledInput>
 
-            </StyledInput>
+                    <StyledInput
+                        style={{ marginBottom: 5 }}
+                        label="Wallet password"
+                        value={loginForm.password}
+                        onChangeText={(text) => handleInputChange('password', text)}
+                        secureTextEntry={passwordVisible}
+                        placeholder="Type your password..."
+                        right={<StyledInput.Icon
+                            name={passwordVisible ? "eye" : "eye-off"}
+                            onPress={() => setPasswordVisible(!passwordVisible)} />}>
+                    </StyledInput>
 
-            <StyledView flexEnd>
+                    <StyledInput
+                        label="Repeat password"
+                        value={loginForm.passwordConfirmation}
+                        onChangeText={(text) => handleInputChange('passwordConfirmation', text)}
+                        secureTextEntry={passwordVisible}
+                        placeholder="Type your password again..."
+                        right={<StyledInput.Icon
+                            name={passwordVisible ? "eye" : "eye-off"}
+                            onPress={() => setPasswordVisible(!passwordVisible)} />}>
+                    </StyledInput>
 
-                <StyledButton
-                    mode="contained"
-                    disabled={false} // must be disable until we implement the import words
-                    uppercase={false}
-                    labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                    onPress={() => {
-                        // console.log(account2)
-                        // getBalance()
-                        // navigation.navigate('Import2')
-                    }}>
-                    Import your account
-                </StyledButton>
+                    <CheckBox
+                        status={checked ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                            !checked && setModalVisible(true)
+                            setChecked(!checked)
+                        }}
+                    />
 
-            </StyledView>
-        </StyledView>
+                    <TermsModal
+                        visible={modalVisible}
+                        setChecked={setChecked}
+                        onRequestClose={() => {
+                            setModalVisible(!modalVisible)
+                            setChecked(false)
+                        }}
+                        onClose={() => {
+                            setModalVisible(!modalVisible)
+                            setChecked(true)
+                        }}
+                    />
+
+                    <StyledView marginTop={70}>
+                        <StyledButton
+                            mode="contained"
+                            disabled={!checked && true}
+                            uppercase={false}
+                            labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
+                            onPress={() => {
+                                if (loginForm.password !== loginForm.passwordConfirmation) {
+                                    return alert('Passwords do not match')
+                                }
+                                if (loginForm.password.length === 0) {
+                                    return alert('Password is empty')
+                                } else {
+                                    setIsLoading(true)
+                                    LocalStorageService.storeData('@userAlias', loginForm)
+                                    setSnackbarVisible(true)
+                                    getDataFromAsyncStorage()
+                                    setTimeout(() => {
+                                        navigation.navigate('Root', { screen: 'Wallet' })
+                                    }, 2000)
+                                }
+                            }
+                            }>
+                            Import your account
+                        </StyledButton>
+                    </StyledView>
+                    {snackbarVisible && <SnackbarMessage text={'Wallet imported!'} />}
+                </StyledView >
+
+            }
+        </>
     )
 }
 

@@ -3,7 +3,7 @@ import { IconButton } from "react-native-paper"
 import { Dimensions } from "react-native"
 
 export const QRIcon = styled(IconButton)`
-flex: 1;
+    flex: 1;
     background-color: #A017B7;
     border-radius: 60px;
     width: 60px;

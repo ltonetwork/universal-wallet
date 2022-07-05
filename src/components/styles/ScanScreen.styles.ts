@@ -1,5 +1,5 @@
 import styled from "styled-components/native"
-import {Text} from "react-native-paper"
+import { Text } from "react-native-paper"
 import { BarCodeScanner } from "expo-barcode-scanner"
 
 export const StyledScanner = styled(BarCodeScanner)`
@@ -11,8 +11,14 @@ width: 100%;
 height: 100%;
 `
 
-export const StyledText = styled(Text)`
+export const StyledText = styled(Text) <{ title?: any }>`
 color: #ffffff;
 font-weight: 900;
 ${props => props.title && `font-size: 20px; font-weight: bold;`} 
+`
+
+export const CenteredView = styled.View`
+    flex: 1;
+    justify-content: center;
+    align-items: center;
 `

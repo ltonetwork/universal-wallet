@@ -8,10 +8,10 @@ import slides from '../utils/slideList'
 export default function OnboardingScreen() {
 
     const { width, height } = useWindowDimensions()
-    const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
-    const ref = useRef()
+    const [currentSlideIndex, setCurrentSlideIndex] = useState<number>(0)
+    const ref = useRef<string | any>()
 
-    const updateCurrentSlideIndex = e => {
+    const updateCurrentSlideIndex = (e: { nativeEvent: { contentOffset: { x: any } } }) => {
         const contentOffsetX = e.nativeEvent.contentOffset.x
         const currentIndex = Math.round(contentOffsetX / width)
         setCurrentSlideIndex(currentIndex)

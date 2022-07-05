@@ -11,6 +11,8 @@ export const StyledButton = styled(Button)`
     font-size: 16px;
     font-weight: 800;
     ${props => props.mode === `contained` && props.disabled === false
-        ? `background-color: #A017B7; border-color: #A017B7; border-width: 1px; color: #ffffff; `
-        : `border-width: 1px; color: #A017B7;`};
+        ? `background-color: #A017B7; border-color: #A017B7; border-width: 1px; color: #ffffff;`
+        : `border-width: 1px; color: #A017B7; border-color: #A017B7;`};
+    ${props => props.disabled === true && `border-color: transparent;`};
+    
 `
