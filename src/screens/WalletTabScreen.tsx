@@ -12,7 +12,7 @@ import { formatNumber } from '../utils/formatNumber'
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [details, setDetails] = useState(Object.create(null))
+    const [details, setDetails] = useState<TypedDetails>(new Object as TypedDetails)
 
     interface TypedDetails {
         available: number
@@ -21,7 +21,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
         regular: number
     }
 
-    const { available, effective, generating, regular } = details as unknown as TypedDetails
+    const { available, effective, generating, regular } = details
 
     useEffect(() => {
         readStorage()

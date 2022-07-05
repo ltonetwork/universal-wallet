@@ -14,3 +14,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 2022.07.05
 
 - [As a LTO user, I want to import my account succesfully](https://wealize.atlassian.net/browse/LTO22004-21)
+
+## 2022.07.05
+
+- [As a LTO user, I want to add a nickname and password when finish import wallet/account](https://wealize.atlassian.net/browse/LTO22004-40)
+
+## 2022.07.05
+
+- [As a LTO user, I want to log out the app](https://wealize.atlassian.net/browse/LTO22004-25)
