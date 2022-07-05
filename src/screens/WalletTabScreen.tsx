@@ -122,7 +122,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
                     </BottomCardsContainer>
 
-                    <QRButton onPress={() => alert('yaiiii')} />
+                    <QRButton onPress={() => alert('Here QR code for transactions')} />
 
                 </OverviewContainer>
             }

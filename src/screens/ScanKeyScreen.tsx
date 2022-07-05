@@ -1,15 +1,14 @@
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import React, { useEffect, useState } from 'react'
-import { Button, Text } from 'react-native-paper'
-import { StyledScanner, StyledText } from '../components/styles/ScanScreen.styles'
-import LocalStorageService from '../services/LocalStorage.service'
+import { Text } from 'react-native-paper'
 import { RootStackScreenProps } from '../../types'
-import { CenteredView } from '../components/styles/ScanScreen.styles'
+import { CenteredView, StyledScanner, StyledText } from '../components/styles/ScanScreen.styles'
+import LocalStorageService from '../services/LocalStorage.service'
 
 
 export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'ScanKey'>) {
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [scanData, setScanData] = useState<string>()
+    const [scanData, setScanData] = useState<any>()
     const [permission, setPermission] = useState<boolean>(true)
 
     useEffect(() => {
@@ -30,18 +29,23 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
     }
 
     useEffect(() => {
-        handleQRScan
-    }, [scanData])
+        if (permission) {
+            handleQRScan
+        }
+    }, [])
 
     const handleQRScan = (input: any) => {
-        LocalStorageService
-            .storeData('@appAuth', input)
-        setScanData(input)
-        console.log('scanned data:', input)
-        navigation.navigate('ImportSeed')
+        const LTO = require("@ltonetwork/lto").LTO
+        const lto = new LTO('T')
+        const account = lto.account()
+        const auth = input
+        const signature = account.sign(`lto:sign:${auth.url}`).base58
+        const data = { address: account.address, privateKey: account.privateKey, publicKey: account.publicKey, signature, seed: account.seed }
+        LocalStorageService.storeData('@accountData', data)
+            .then(() => {
+                navigation.navigate('ImportAccount')
+            })
     }
-
-
 
     if (isLoading) {
         return (
@@ -51,26 +55,14 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
         )
     }
 
-    // if (scanData) {
-    //     return (
-    //         <CenteredView>
-    //             <Text>Your key: {scanData}</Text>
-    //             <Button onPress={() => setScanData(undefined)}>
-    //                 Scan Again
-    //             </Button>
-    //         </CenteredView>
-    //     )
-    // }
-
     if (permission) {
         return (
             <>
                 <StyledScanner
-                    onBarCodeScanned={({ type, data }) => {
+                    onBarCodeScanned={({ data }) => {
                         try {
                             handleQRScan(data)
                         } catch (err) {
-                            setScanData(undefined)
                             console.log(err)
                         }
                     }}

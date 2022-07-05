@@ -8,20 +8,29 @@ import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
 import TermsModal from '../components/TermsModal'
 import LocalStorageService from '../services/LocalStorage.service'
-
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 export default function ImportAccountScreen({ navigation }: RootStackScreenProps<'ImportAccount'>) {
     const [isLoading, setIsLoading] = useState<boolean>(false)
-    const [password, setPassword] = useState<string>("")
+
+    const [loginForm, setloginForm] = useState({
+        nickname: '',
+        password: '',
+        passwordConfirmation: ''
+    })
+
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
+
     const [checked, setChecked] = useState<boolean>(false)
     const [modalVisible, setModalVisible] = useState<boolean>(false)
-    const [accountAddress, setAccountAddress] = useState('')
     const [snackbarVisible, setSnackbarVisible] = useState(false)
+
+    const [accountAddress, setAccountAddress] = useState('')
 
     useEffect(() => {
         getAccountAddress()
     }, [accountAddress])
+
 
     const getAccountAddress = () => {
         LocalStorageService.getData('@accountData')
@@ -30,6 +39,20 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                 setAccountAddress(data.address)
             })
             .catch(err => console.log(err))
+    }
+
+    const handleInputChange = (name: string, value: string) => {
+        setloginForm({ ...loginForm, [name]: value })
+    }
+
+    const getDataFromAsyncStorage = async () => {
+        try {
+            const value = await AsyncStorage.multiGet(['@password', '@nickname'])
+            if (value !== null) {
+                console.log('Esto es lo que hay', value)
+            }
+        } catch (error) {
+        }
     }
 
     return (
@@ -42,16 +65,7 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                     <StyledTitle>Import account</StyledTitle>
                     <StyledInput
                         mode={'flat'}
-                        disabled={true}
-                        style={{ marginBottom: 15, backgroundColor: '#F5F5F5' }}
-                        label="Nickname"
-                        value={'@johndoe'}
-                    >
-                    </StyledInput>
-
-                    <StyledInput
-                        mode={'flat'}
-                        style={{ marginBottom: 15, backgroundColor: '#F5F5F5' }}
+                        style={{ marginBottom: 5 }}
                         disabled={true}
                         label="Wallet address"
                         value={accountAddress}
@@ -59,11 +73,33 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                     </StyledInput>
 
                     <StyledInput
+                        style={{ marginBottom: 5 }}
+                        label="Nickname"
+                        placeholder='Enter your nickname...'
+                        value={loginForm.nickname}
+                        onChangeText={(text) => handleInputChange('nickname', text)}
+
+                    >
+                    </StyledInput>
+
+                    <StyledInput
+                        style={{ marginBottom: 5 }}
                         label="Wallet password"
-                        value={password}
-                        onChangeText={password => setPassword(password)}
+                        value={loginForm.password}
+                        onChangeText={(text) => handleInputChange('password', text)}
                         secureTextEntry={passwordVisible}
                         placeholder="Type your password..."
+                        right={<StyledInput.Icon
+                            name={passwordVisible ? "eye" : "eye-off"}
+                            onPress={() => setPasswordVisible(!passwordVisible)} />}>
+                    </StyledInput>
+
+                    <StyledInput
+                        label="Repeat password"
+                        value={loginForm.passwordConfirmation}
+                        onChangeText={(text) => handleInputChange('passwordConfirmation', text)}
+                        secureTextEntry={passwordVisible}
+                        placeholder="Type your password again..."
                         right={<StyledInput.Icon
                             name={passwordVisible ? "eye" : "eye-off"}
                             onPress={() => setPasswordVisible(!passwordVisible)} />}>
@@ -97,11 +133,23 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                             uppercase={false}
                             labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                             onPress={() => {
-                                setSnackbarVisible(true)
-                                setTimeout(() => {
-                                    navigation.navigate('Root', { screen: 'Wallet' })
-                                }, 2000)
-                            }}>
+                                if (loginForm.password !== loginForm.passwordConfirmation) {
+                                    return alert('Passwords do not match')
+                                }
+                                if (loginForm.password.length === 0) {
+                                    return alert('Password is empty')
+                                } else {
+                                    setIsLoading(true)
+                                    LocalStorageService.storeData('@nickname', loginForm.nickname)
+                                    LocalStorageService.storeData('@password', loginForm.password)
+                                    setSnackbarVisible(true)
+                                    getDataFromAsyncStorage()
+                                    setTimeout(() => {
+                                        navigation.navigate('Root', { screen: 'Wallet' })
+                                    }, 2000)
+                                }
+                            }
+                            }>
                             Import your account
                         </StyledButton>
                     </StyledView>

@@ -24,6 +24,7 @@ import WalletTabScreen from '../screens/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
 import { backgroundImage } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
+import { useNavigation } from '@react-navigation/native'
 
 const navTheme = {
   ...DefaultTheme,
@@ -60,6 +61,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function RootNavigator() {
   const colorScheme = useColorScheme()
+  const navigation = useNavigation()
 
   const [appFirstLaunch, setAppFirstLaunch] = useState<boolean | null>(null)
   const [accountImported, setAccountImported] = useState<boolean | null>(null)
@@ -81,6 +83,7 @@ function RootNavigator() {
           LocalStorageService.storeData('@appFirstLaunch', true)
         } else {
           setAppFirstLaunch(false)
+          navigation.navigate('SignIn')
         }
       })
       .catch(err => console.log(err))
@@ -88,12 +91,13 @@ function RootNavigator() {
 
 
   const skipImportAccount = (): void => {
-    LocalStorageService.getData('@appAuth')
+    LocalStorageService.getData('@accountData')
       .then(data => {
         if (data === null) {
-          setAccountImported(true)
-        } else {
           setAccountImported(false)
+        } else {
+          navigation.navigate('Root')
+          setAccountImported(true)
         }
       })
       .catch(err => console.log(err))
@@ -110,22 +114,11 @@ function RootNavigator() {
         headerStyle: { backgroundColor: 'transparent' }
       }}>
 
-      {/* REMOVE COMMENTS BELOW TO SKIP ONBOARDING AND IMPORT ACCOUNT SCREENS IF ALREADY
-      SEEN AND IMPORTED */}
-      {/* {appFirstLaunch === true
-        && */}
       <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
-      {/* } */}
-
-      {/* {accountImported === false
-        &&
-        <> */}
       <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', headerTransparent: true }} />
       <Stack.Screen name="ImportSeed" component={ImportSeedScreen} options={{ headerTitle: 'Back to Sign In' }} />
       <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
-      {/* </>
-      } */}
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
@@ -133,7 +126,7 @@ function RootNavigator() {
           options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
             headerLeft: () => <LogoTitle />,
             headerTitleStyle: { color: 'transparent' },
-            headerStyle: { backgroundColor: 'white' },
+            headerStyle: { backgroundColor: '#ffffff' },
             headerRight: () => (
               <IconButton
                 icon='close'
@@ -144,8 +137,9 @@ function RootNavigator() {
             )
           })}
         />
-        <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerTitle: 'Profile' }} />
+        <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerTitle: 'Profile', headerStyle: { backgroundColor: '#ffffff' } }} />
       </Stack.Group>
+
     </Stack.Navigator>)
 }
 
@@ -156,7 +150,6 @@ function RootNavigator() {
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
 const BottomTab = createBottomTabNavigator<RootTabParamList>()
-
 function BottomTabNavigator() {
   const colorScheme = useColorScheme()
 
@@ -165,8 +158,9 @@ function BottomTabNavigator() {
       initialRouteName="Wallet"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
-        tabBarStyle: { height: 60 }
+        tabBarStyle: { height: 65 },
       }}>
+
       <BottomTab.Screen
         name="Wallet"
         component={WalletTabScreen}
@@ -174,7 +168,7 @@ function BottomTabNavigator() {
           headerTitle: () => <LogoTitle />,
           headerStyle: { height: 100 },
           tabBarIcon: ({ color }) => <TabBarIcon icon="wallet-outline" color={color} />,
-          tabBarLabelStyle: { fontSize: 12 },
+          tabBarLabelStyle: { fontSize: 12, marginBottom: 5 },
           headerRight: () => (
             <IconButton
               icon="menu"
@@ -193,7 +187,7 @@ function BottomTabNavigator() {
           headerStyle: { height: 100 },
           headerTitleStyle: { fontWeight: '800', marginLeft: 20 },
           tabBarIcon: ({ color }) => <TabBarIcon icon="account-box-multiple-outline" color={color} />,
-          tabBarLabelStyle: { fontSize: 12 },
+          tabBarLabelStyle: { fontSize: 12, marginBottom: 5 },
           headerRight: () => (
             <IconButton
               icon="menu"
@@ -213,7 +207,7 @@ function BottomTabNavigator() {
           headerTitleStyle: { fontWeight: '800', marginLeft: 20 },
           headerTitleAllowFontScaling: true,
           tabBarIcon: ({ color }) => <TabBarIcon icon="bookmark-box-multiple-outline" color={color} />,
-          tabBarLabelStyle: { fontSize: 12 },
+          tabBarLabelStyle: { fontSize: 12, marginBottom: 5 },
           headerRight: () => (
             <IconButton
               icon="menu"
@@ -223,6 +217,7 @@ function BottomTabNavigator() {
             />
           ),
         })}
+
       />
     </BottomTab.Navigator>
   )

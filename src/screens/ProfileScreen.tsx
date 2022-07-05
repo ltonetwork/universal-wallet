@@ -5,6 +5,7 @@ import { CardsContainer, Content, Field, MainCard, StyledTitle } from '../compon
 import LocalStorageService from '../services/LocalStorage.service'
 import Spinner from '../components/Spinner'
 import { HiddenTitle } from '../components/styles/ProfileScreen.styles'
+import { StatusBar } from 'react-native'
 
 export default function ProfileScreen() {
 
@@ -99,7 +100,7 @@ export default function ProfileScreen() {
                             </MainCard>
                         }
                     </TouchableOpacity>
-
+                    <StatusBar backgroundColor={'#ffffff'} />
                 </CardsContainer>
             }
         </>

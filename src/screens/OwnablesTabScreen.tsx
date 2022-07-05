@@ -22,7 +22,7 @@ export default function OwnablesTabScreen() {
           <SocialMediaIcon source={socialMediaIcons.telegram} onPress={() => navigateToTelegram()} />
         </IconContainer>
       </StyledView>
-      <QRButton onPress={() => alert('yaiiii')} />
+      <QRButton onPress={() => alert('Here QR code for transactions')} />
     </View>
   )
 }
