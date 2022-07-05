@@ -36,10 +36,10 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
   }
 
   const logOut = () => {
-    LocalStorageService.removeData('@accountData')
+    // LocalStorageService.clear()
     setSnackbarVisible(true)
     setTimeout(() => {
-      navigation.navigate('SignIn')
+      navigation.replace('SignIn')
     }, 2000)
   }
 

@@ -47,7 +47,7 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
 
     const getDataFromAsyncStorage = async () => {
         try {
-            const value = await AsyncStorage.multiGet(['@password', '@nickname'])
+            const value = await AsyncStorage.multiGet(['@userAlias', '@accountData'])
             if (value !== null) {
                 console.log('Esto es lo que hay', value)
             }
@@ -140,8 +140,7 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                                     return alert('Password is empty')
                                 } else {
                                     setIsLoading(true)
-                                    LocalStorageService.storeData('@nickname', loginForm.nickname)
-                                    LocalStorageService.storeData('@password', loginForm.password)
+                                    LocalStorageService.storeData('@userAlias', loginForm)
                                     setSnackbarVisible(true)
                                     getDataFromAsyncStorage()
                                     setTimeout(() => {

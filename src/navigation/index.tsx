@@ -91,18 +91,17 @@ function RootNavigator() {
 
 
   const skipImportAccount = (): void => {
-    LocalStorageService.getData('@accountData')
+    LocalStorageService.getData('@password')
       .then(data => {
         if (data === null) {
           setAccountImported(false)
         } else {
-          navigation.navigate('Root')
+          navigation.navigate('SignIn')
           setAccountImported(true)
         }
       })
       .catch(err => console.log(err))
   }
-
 
   return (
 
