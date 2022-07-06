@@ -15,7 +15,7 @@ export const StyledTitle = styled(Title)`
     margin-bottom: 20px;
 `
 
-export const MainCard = styled(Card)`
+export const MainCard = styled(Card) <{ justifyContent?: string, alignItems?: string }>`
     margin-top: 10px;
     shadow-color: #A9F2F7;
     shadow-offset: 5px 9px;
@@ -26,6 +26,8 @@ export const MainCard = styled(Card)`
     elevation: 5;
     width: 350px;
     height: auto;
+    ${props => props.justifyContent && `justify-content: ${props.justifyContent}`}
+    ${props => props.alignItems && `align-items: ${props.alignItems}`}
 `
 
 export const Field = styled(Paragraph)`

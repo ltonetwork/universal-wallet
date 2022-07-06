@@ -13,11 +13,13 @@ export default function ProfileScreen() {
     const [accountInformation, setAccountInformation] = useState(Object.create(null))
     const [isKeyBlur, setIsKeyBlur] = useState<boolean>(true)
     const [isSeedBlur, setIsSeedBlur] = useState<boolean>(true)
+    const [accountNickname, setAccountNickname] = useState<string>("")
 
     const { address, publicKey, privateKey, seed } = accountInformation
 
     useEffect(() => {
         readStorage()
+        getNickname()
     }
         , [])
 
@@ -41,11 +43,18 @@ export default function ProfileScreen() {
             .catch(err => console.log(err))
     }
 
+    const getNickname = () => {
+        LocalStorageService.getData('@userAlias')
+            .then(data => setAccountNickname(data.nickname))
+            .catch(err => console.log(err))
+    }
+
     return (
         <>
             {isLoading ? <Spinner /> :
 
                 <CardsContainer>
+                    <StatusBar backgroundColor={'#ffffff'} />
 
                     <MainCard >
 
@@ -53,7 +62,7 @@ export default function ProfileScreen() {
                             <StyledTitle>Public information</StyledTitle>
 
                             <Field>Nickname</Field>
-                            <Content>@johndoe</Content>
+                            <Content>{accountNickname}</Content>
 
                             <Field>Wallet</Field>
                             <Content>{address}</Content>
@@ -67,7 +76,7 @@ export default function ProfileScreen() {
 
                     <TouchableOpacity onPress={() => setIsKeyBlur(!isKeyBlur)}>
                         {!isKeyBlur ?
-                            <MainCard style={styles.container}>
+                            <MainCard justifyContent='center' alignItems='center'>
 
                                 <Card.Content>
                                     <HiddenTitle>Press and discover your private key</HiddenTitle>
@@ -75,7 +84,7 @@ export default function ProfileScreen() {
 
                             </MainCard>
                             :
-                            <MainCard style={styles.container}>
+                            <MainCard justifyContent='center' alignItems='center'>
                                 <Card.Content>
                                     <Content>{privateKey}</Content>
                                 </Card.Content>
@@ -85,7 +94,7 @@ export default function ProfileScreen() {
 
                     <TouchableOpacity onPress={() => setIsSeedBlur(!isSeedBlur)}>
                         {!isSeedBlur ?
-                            <MainCard style={styles.container}>
+                            <MainCard justifyContent='center' alignItems='center'>
 
                                 <Card.Content>
                                     <HiddenTitle>Press and discover your backup phrase</HiddenTitle>
@@ -93,32 +102,16 @@ export default function ProfileScreen() {
 
                             </MainCard>
                             :
-                            <MainCard style={styles.container}>
+                            <MainCard justifyContent='center' alignItems='center'>
                                 <Card.Content>
                                     <Title >{seed}</Title>
                                 </Card.Content>
                             </MainCard>
                         }
                     </TouchableOpacity>
-                    <StatusBar backgroundColor={'#ffffff'} />
                 </CardsContainer>
             }
         </>
     )
 
 }
-
-
-const styles = StyleSheet.create({
-    container: {
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    absolute: {
-        position: "absolute",
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0
-    }
-})

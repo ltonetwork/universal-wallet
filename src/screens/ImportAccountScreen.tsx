@@ -31,7 +31,6 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
         getAccountAddress()
     }, [accountAddress])
 
-
     const getAccountAddress = () => {
         LocalStorageService.getData('@accountData')
             .then(data => {
@@ -54,6 +53,24 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
         } catch (error) {
         }
     }
+
+    const handleImportAccount = () => {
+        loginForm.nickname.length === 0 && alert('Nickname is empty')
+        loginForm.password.length === 0 && alert('Password is empty')
+        loginForm.password !== loginForm.passwordConfirmation && alert('Passwords do not match')
+        LocalStorageService.storeData('@userAlias', loginForm)
+            .then(() => {
+                setSnackbarVisible(true)
+                setTimeout(() => {
+                    setSnackbarVisible(false)
+                    navigation.navigate('Root', { screen: 'Wallet' })
+                }
+                    , 2000)
+            }
+            )
+            .catch(err => console.log(err))
+    }
+
 
     return (
         <>
@@ -132,22 +149,7 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                             disabled={!checked && true}
                             uppercase={false}
                             labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                            onPress={() => {
-                                if (loginForm.password !== loginForm.passwordConfirmation) {
-                                    return alert('Passwords do not match')
-                                }
-                                if (loginForm.password.length === 0) {
-                                    return alert('Password is empty')
-                                } else {
-                                    setIsLoading(true)
-                                    LocalStorageService.storeData('@userAlias', loginForm)
-                                    setSnackbarVisible(true)
-                                    getDataFromAsyncStorage()
-                                    setTimeout(() => {
-                                        navigation.navigate('Root', { screen: 'Wallet' })
-                                    }, 2000)
-                                }
-                            }
+                            onPress={() => handleImportAccount()
                             }>
                             Import your account
                         </StyledButton>
