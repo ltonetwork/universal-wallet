@@ -19,9 +19,10 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
         effective: number
         generating: number
         regular: number
+        unbonding: number
     }
 
-    const { available, effective, generating, regular } = details
+    const { available, effective, generating, regular, unbonding } = details
 
     useEffect(() => {
         readStorage()
@@ -115,8 +116,8 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
                         <BottomCard >
                             <Card.Content>
-                                <Paragraph>No. of transactions</Paragraph>
-                                <Title>?</Title>
+                                <Paragraph>Unbonding</Paragraph>
+                                <Title>{formatNumber(unbonding)}</Title>
                             </Card.Content>
                         </BottomCard>
 
