@@ -48,27 +48,31 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
         try {
             const value = await AsyncStorage.multiGet(['@userAlias', '@accountData'])
             if (value !== null) {
-                console.log('Esto es lo que hay', value)
+                console.log('VALORES GUARDADOS EN STORAGE: ', value)
             }
         } catch (error) {
         }
     }
 
     const handleImportAccount = () => {
-        loginForm.nickname.length === 0 && alert('Nickname is empty')
-        loginForm.password.length === 0 && alert('Password is empty')
-        loginForm.password !== loginForm.passwordConfirmation && alert('Passwords do not match')
-        LocalStorageService.storeData('@userAlias', loginForm)
-            .then(() => {
-                setSnackbarVisible(true)
-                setTimeout(() => {
-                    setSnackbarVisible(false)
-                    navigation.navigate('Root', { screen: 'Wallet' })
-                }
-                    , 2000)
-            }
-            )
-            .catch(err => console.log(err))
+        if (loginForm.nickname === '') {
+            alert('Nickname is required')
+        } else if (loginForm.password === '') {
+            alert('Password is required')
+        } else if (loginForm.password !== loginForm.passwordConfirmation) {
+            alert('Passwords do not match')
+        } else {
+            LocalStorageService.storeData('@userAlias', loginForm)
+                .then(() => {
+                    setSnackbarVisible(true)
+                    setTimeout(() => {
+                        setSnackbarVisible(false)
+                        navigation.navigate('Root', { screen: 'Wallet' })
+                    }
+                        , 2000)
+                })
+                .catch(err => console.log(err))
+        }
     }
 
 
