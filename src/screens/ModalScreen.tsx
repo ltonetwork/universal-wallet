@@ -1,42 +1,43 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState } from 'react'
-import { ImageBackground, Platform } from 'react-native'
-import { Card, TextInput } from 'react-native-paper'
+import { Platform } from 'react-native'
+import { Card } from 'react-native-paper'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { RootStackScreenProps } from '../../types'
 import ModalButton from '../components/ModalButton'
 import SnackbarMessage from '../components/Snackbar'
-import { StyledInput } from '../components/styles/StyledInput.styles'
+import { ButtonContainer, Content, Field, InfoContainer, MainCard, StyledNickname } from '../components/styles/ModalScreen.styles'
 import { View } from '../components/Themed'
 import LocalStorageService from '../services/LocalStorage.service'
 import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../utils/redirectSocialMedia'
-import { InfoContainer, ButtonContainer, Field, StyledNickname, Content } from '../components/styles/ModalScreen.styles'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { MainCard } from '../components/styles/ModalScreen.styles'
 
 
 export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'>) {
 
   const [snackbarVisible, setSnackbarVisible] = useState(false)
   const [accountAddress, setAccountAddress] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [accountNickname, setAccountNickname] = useState('')
 
 
   useEffect(() => {
     getAccountAddress()
+    getNickname()
   }, [])
+
+  const getNickname = () => {
+    LocalStorageService.getData('@userAlias')
+      .then(data => setAccountNickname(data.nickname))
+      .catch(err => console.log(err))
+  }
 
 
   const getAccountAddress = () => {
     LocalStorageService.getData('@accountData')
-      .then(data => {
-        setIsLoading(false)
-        setAccountAddress(data.address)
-      })
+      .then(data => setAccountAddress(data.address))
       .catch(err => console.log(err))
   }
 
   const logOut = () => {
-    // LocalStorageService.clear()
     setSnackbarVisible(true)
     setTimeout(() => {
       navigation.replace('SignIn')
@@ -45,21 +46,19 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
 
   return (
     <SafeAreaView style={{ backgroundColor: 'white' }}>
+      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+
       <InfoContainer>
         <MainCard >
           <Card.Content>
-
             <Field>Your wallet</Field>
             <View style={{ justifyContent: 'space-evenly' }}>
-              <StyledNickname>@johndoe</StyledNickname>
+              <StyledNickname>{accountNickname}</StyledNickname>
             </View>
             <Content>{accountAddress}</Content>
-
           </Card.Content>
-
         </MainCard>
       </InfoContainer>
-
 
       <ButtonContainer>
         <ModalButton text={'Profile'} onPress={() => navigation.navigate('Profile')} />
@@ -68,11 +67,10 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
         <ModalButton text={'Linkedin'} onPress={() => navigateToLinkedin()} />
         <ModalButton text={'Telegram'} onPress={() => navigateToTelegram()} />
         <ModalButton text={'Log out'} onPress={() => logOut()} />
-        {/* Use a light status bar on iOS to account for the black space above the modal */}
       </ButtonContainer>
 
       {snackbarVisible && <SnackbarMessage text={'Session closed!'} />}
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+
     </SafeAreaView>
   )
 }

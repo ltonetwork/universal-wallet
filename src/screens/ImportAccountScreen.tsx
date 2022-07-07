@@ -31,7 +31,6 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
         getAccountAddress()
     }, [accountAddress])
 
-
     const getAccountAddress = () => {
         LocalStorageService.getData('@accountData')
             .then(data => {
@@ -49,11 +48,33 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
         try {
             const value = await AsyncStorage.multiGet(['@userAlias', '@accountData'])
             if (value !== null) {
-                console.log('Esto es lo que hay', value)
+                console.log('VALORES GUARDADOS EN STORAGE: ', value)
             }
         } catch (error) {
         }
     }
+
+    const handleImportAccount = () => {
+        if (loginForm.nickname === '') {
+            alert('Nickname is required')
+        } else if (loginForm.password === '') {
+            alert('Password is required')
+        } else if (loginForm.password !== loginForm.passwordConfirmation) {
+            alert('Passwords do not match')
+        } else {
+            LocalStorageService.storeData('@userAlias', loginForm)
+                .then(() => {
+                    setSnackbarVisible(true)
+                    setTimeout(() => {
+                        setSnackbarVisible(false)
+                        navigation.navigate('Root', { screen: 'Wallet' })
+                    }
+                        , 2000)
+                })
+                .catch(err => console.log(err))
+        }
+    }
+
 
     return (
         <>
@@ -132,22 +153,7 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                             disabled={!checked && true}
                             uppercase={false}
                             labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                            onPress={() => {
-                                if (loginForm.password !== loginForm.passwordConfirmation) {
-                                    return alert('Passwords do not match')
-                                }
-                                if (loginForm.password.length === 0) {
-                                    return alert('Password is empty')
-                                } else {
-                                    setIsLoading(true)
-                                    LocalStorageService.storeData('@userAlias', loginForm)
-                                    setSnackbarVisible(true)
-                                    getDataFromAsyncStorage()
-                                    setTimeout(() => {
-                                        navigation.navigate('Root', { screen: 'Wallet' })
-                                    }, 2000)
-                                }
-                            }
+                            onPress={() => handleImportAccount()
                             }>
                             Import your account
                         </StyledButton>

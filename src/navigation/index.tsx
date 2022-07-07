@@ -12,7 +12,6 @@ import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
 import CredentialsTabScreen from '../screens/CredentialsTabScreen'
 import ImportAccountScreen from '../screens/ImportAccountScreen'
-import ImportSeedScreen from '../screens/ImportSeedScreen'
 import ModalScreen from '../screens/ModalScreen'
 import NotFoundScreen from '../screens/NotFoundScreen'
 import OnboardingScreen from '../screens/OnBoardingScreen'
@@ -64,16 +63,10 @@ function RootNavigator() {
   const navigation = useNavigation()
 
   const [appFirstLaunch, setAppFirstLaunch] = useState<boolean | null>(null)
-  const [accountImported, setAccountImported] = useState<boolean | null>(null)
 
   useEffect(() => {
     skipOnboarding()
   }, [])
-
-  useEffect(() => {
-    skipImportAccount()
-  }, [])
-
 
   const skipOnboarding = (): void => {
     LocalStorageService.getData('@appFirstLaunch')
@@ -90,19 +83,6 @@ function RootNavigator() {
   }
 
 
-  const skipImportAccount = (): void => {
-    LocalStorageService.getData('@password')
-      .then(data => {
-        if (data === null) {
-          setAccountImported(false)
-        } else {
-          navigation.navigate('SignIn')
-          setAccountImported(true)
-        }
-      })
-      .catch(err => console.log(err))
-  }
-
   return (
 
     <Stack.Navigator
@@ -116,7 +96,6 @@ function RootNavigator() {
       <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
       <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
       <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', headerTransparent: true }} />
-      <Stack.Screen name="ImportSeed" component={ImportSeedScreen} options={{ headerTitle: 'Back to Sign In' }} />
       <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
@@ -141,7 +120,6 @@ function RootNavigator() {
 
     </Stack.Navigator>)
 }
-
 
 
 /**
