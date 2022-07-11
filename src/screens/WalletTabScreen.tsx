@@ -41,6 +41,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
     const readStorage = () => {
         LocalStorageService.getData('@accountData')
             .then(data => {
+                console.log('accountData: ', data)
                 return ApiClientService.getAccountDetails(data.address)
             })
             .then(accountDetails => {
@@ -139,7 +140,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
                     </BottomCardsContainer>
 
-                    <QRButton onPress={() => alert('Here QR code for transactions')} />
+                    <QRButton onPress={() => navigation.navigate('ScanTransaction')} />
 
                 </OverviewContainer>
             }

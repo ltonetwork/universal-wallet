@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
+import { DarkTheme, DefaultTheme, NavigationContainer, useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
@@ -18,12 +18,13 @@ import OnboardingScreen from '../screens/OnBoardingScreen'
 import OwnablesTabScreen from '../screens/OwnablesTabScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 import ScanKeyScreen from '../screens/ScanKeyScreen'
+import ScanTransactionScreen from '../screens/ScanTransactionScreen'
 import SignInScreen from '../screens/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
 import { backgroundImage } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
-import { useNavigation } from '@react-navigation/native'
+
 
 const navTheme = {
   ...DefaultTheme,
@@ -99,6 +100,10 @@ function RootNavigator() {
       <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
       <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen} options={{
+        headerTitle: 'Go back',
+
+      }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen}
           options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
