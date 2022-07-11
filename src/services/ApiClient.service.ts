@@ -1,15 +1,18 @@
 import { LTO } from "@ltonetwork/lto"
-// import { LTO_API_URL } from "@env"
 
 export default class ApiClientService {
 
     public static getAccountDetails = async (address: string) => {
-        return fetch(process.env.LTO_API_URL + address)
-            .then(response => response.json())
+        try {
+            const response = await fetch(process.env.LTO_API_URL + address)
+            return await response.json()
+        } catch (error) {
+            return console.log(error)
+        }
     }
 
-    public static getAccountBalance = async (account: string) => {
+    public static getAccountBalance = (account: string) => {
         const lto = new LTO('T')
-        lto.getBalance(account)
+        return lto.getBalance(account)
     }
 }
