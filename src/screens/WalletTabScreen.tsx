@@ -8,23 +8,34 @@ import { AmountContainer, BottomCard, BottomCardsContainer, OverviewContainer, T
 import ApiClientService from '../services/ApiClient.service'
 import LocalStorageService from '../services/LocalStorage.service'
 import { formatNumber } from '../utils/formatNumber'
+import CoinMarketCapService from '../services/CoinMarketCap.service'
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [details, setDetails] = useState<TypedDetails>(new Object as TypedDetails)
+    const [coinData, setCoinData] = useState<TypedCoinData>(new Object as TypedCoinData)
+
+    const { available, effective, generating, regular, unbonding } = details
+    const { price, percent_change_24h } = coinData
+
+    interface TypedCoinData {
+        price: number
+        percent_change_24h: number
+    }
 
     interface TypedDetails {
         available: number
         effective: number
         generating: number
         regular: number
+        unbonding: number
     }
 
-    const { available, effective, generating, regular } = details
 
     useEffect(() => {
         readStorage()
+        getPrizeInfo()
     }, [])
 
     const readStorage = () => {
@@ -40,13 +51,19 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
             .catch(err => console.log(err))
     }
 
-    //Hardcoded for now
-    const convertLTOtoUSD = (lto: Number | any): string => {
-        const ltoPrice = 0.079821
-        const usd = ltoPrice * lto
-        const formated = (usd / 100000000).toFixed(2)
-        return formated
+    const getPrizeInfo = () => {
+        CoinMarketCapService.getCoinInfo()
+            .then(data => data.data[3714].quote.USD)
+            .then(price => setCoinData(price))
+            .catch(err => console.log(err))
     }
+
+    const effectiveAmount = () => {
+        return regular * price
+    }
+
+    const change = effectiveAmount()
+
 
     return (
         <>
@@ -66,15 +83,15 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                                 <AmountContainer>
                                     <Title>{formatNumber(regular)}</Title><Paragraph>LTO</Paragraph>
                                 </AmountContainer>
-                                <Paragraph>Equivalent to ...</Paragraph>
+                                <Paragraph>Equivalent to {change.toFixed(2)}</Paragraph>
                             </Card.Content>
                         </TopCard>
 
                         <TopCard>
                             <Card.Content>
                                 <Paragraph>Prize</Paragraph>
-                                <Title>?</Title>
-                                <Paragraph>... %(last 24h)</Paragraph>
+                                <Title>{price?.toFixed(6)}</Title>
+                                <Paragraph>{percent_change_24h?.toFixed(2)}%(last 24h)</Paragraph>
                             </Card.Content>
                         </TopCard>
 
@@ -108,15 +125,15 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                             <Card.Content>
                                 <Paragraph>Effective</Paragraph>
                                 <AmountContainer>
-                                    <Title>{convertLTOtoUSD(effective)}</Title><Paragraph>$</Paragraph>
+                                    <Title>{effective?.toFixed(2)}</Title><Paragraph>$</Paragraph>
                                 </AmountContainer>
                             </Card.Content>
                         </BottomCard>
 
                         <BottomCard >
                             <Card.Content>
-                                <Paragraph>No. of transactions</Paragraph>
-                                <Title>?</Title>
+                                <Paragraph>Unbonding</Paragraph>
+                                <Title>{formatNumber(unbonding)}</Title>
                             </Card.Content>
                         </BottomCard>
 
