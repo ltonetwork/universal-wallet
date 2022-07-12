@@ -16,6 +16,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
     const [details, setDetails] = useState<TypedDetails>(new Object as TypedDetails)
     const [coinData, setCoinData] = useState<TypedCoinData>(new Object as TypedCoinData)
 
+    const { available, effective, generating, regular, unbonding } = details
     const { price, percent_change_24h } = coinData
 
     interface TypedCoinData {
@@ -31,13 +32,9 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
         unbonding: number
     }
 
-    const { available, effective, generating, regular, unbonding } = details
 
     useEffect(() => {
         readStorage()
-    }, [])
-
-    useEffect(() => {
         getPrizeInfo()
     }, [])
 

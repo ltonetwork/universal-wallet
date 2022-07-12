@@ -5,9 +5,9 @@ export default class ApiClientService {
     public static getAccountDetails = async (address: string) => {
         try {
             const response = await fetch(process.env.LTO_API_URL + address)
-            return await response.json()
+            return response.json()
         } catch (error) {
-            return console.log(error)
+            throw new Error('Error fetching account details')
         }
     }
 
