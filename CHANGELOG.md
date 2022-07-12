@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- [As a LTO user, I want to read a QR (JSON with the transfer information) displayed in the web app to confirm the transaction from my mobile app.](https://wealize.atlassian.net/browse/LTO22004-33)
 - [As a LTO user, I want to see information about Unbonding, staking in main page](https://wealize.atlassian.net/browse/LTO22004-38)
 - [Remove ask backup phrase in import wallet process from QR](https://wealize.atlassian.net/browse/LTO22004-39)
 - [As a LTO user, I want to see some slide to know the objectives of the application and how start to use it](https://wealize.atlassian.net/browse/LTO22004-17)
