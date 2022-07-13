@@ -84,14 +84,14 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                                 <AmountContainer>
                                     <Title>{formatNumber(regular)}</Title><Paragraph>LTO</Paragraph>
                                 </AmountContainer>
-                                <Paragraph>Equivalent to {change.toFixed(2)}</Paragraph>
+                                <Paragraph>Equivalent to {formatNumber(change)}$</Paragraph>
                             </Card.Content>
                         </TopCard>
 
                         <TopCard>
                             <Card.Content>
                                 <Paragraph>Prize</Paragraph>
-                                <Title>{price?.toFixed(6)}</Title>
+                                <Title>{price?.toFixed(3)}</Title>
                                 <Paragraph>{percent_change_24h?.toFixed(2)}%(last 24h)</Paragraph>
                             </Card.Content>
                         </TopCard>
@@ -126,7 +126,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                             <Card.Content>
                                 <Paragraph>Effective</Paragraph>
                                 <AmountContainer>
-                                    <Title>{effective?.toFixed(2)}</Title><Paragraph>$</Paragraph>
+                                    <Title>{formatNumber(change)}</Title><Paragraph>$</Paragraph>
                                 </AmountContainer>
                             </Card.Content>
                         </BottomCard>
