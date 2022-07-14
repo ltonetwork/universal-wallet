@@ -16,7 +16,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
     const [details, setDetails] = useState<TypedDetails>(new Object as TypedDetails)
     const [coinData, setCoinData] = useState<TypedCoinData>(new Object as TypedCoinData)
 
-    const { available, effective, generating, regular, unbonding } = details
+    const { available, generating, regular, unbonding } = details
     const { price, percent_change_24h } = coinData
 
     interface TypedCoinData {
@@ -40,9 +40,9 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
     const readStorage = () => {
         LocalStorageService.getData('@accountData')
-            .then(data => {
-                console.log('accountData: ', data)
-                return ApiClientService.getAccountDetails(data.address)
+            .then(account => {
+                console.log('accountData: ', account)
+                return ApiClientService.getAccountDetails(account.address)
             })
             .then(accountDetails => {
                 setDetails(accountDetails)

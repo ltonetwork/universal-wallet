@@ -34,8 +34,9 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
     const getAccountAddress = () => {
         LocalStorageService.getData('@accountData')
             .then(data => {
+                const account = data
                 setIsLoading(false)
-                setAccountAddress(data.address)
+                setAccountAddress(account.address)
             })
             .catch(err => console.log(err))
     }
