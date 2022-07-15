@@ -1,11 +1,12 @@
-import { Transfer } from '@ltonetwork/lto'
+import { txFromData } from '@ltonetwork/lto'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import React, { useEffect, useState } from 'react'
-import { Dimensions, StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { Text } from 'react-native-paper'
 import { RootStackScreenProps } from '../../types'
-import { CenteredView } from '../components/styles/ScanScreen.styles'
+import { CenteredView, ScannerContainer, StyledScanner, StyledText } from '../components/styles/ScanScreen.styles'
 import LocalStorageService from '../services/LocalStorage.service'
+
 
 export default function ScanTransactionScreen({ navigation }: RootStackScreenProps<'ScanTransaction'>) {
     const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -30,40 +31,31 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
 
     useEffect(() => {
         if (permission)
-            handleSignature
+            handleConfirmation
     }, [])
 
-    // CREATING A TRANSFER FROM SCRATCH
-    const amount = 1300000000
-    const recipient = "3NAuHWZ7hcyN6Yh7oEuzasTFXa95XMV9baV"
-    const trans = new Transfer(recipient, amount)
-    //
-
-    const handleSignature = async (input: any) => {
+    const handleConfirmation = async (input: any) => {
         try {
-            const myAccount = await LocalStorageService.getData('@accountData')
+            const myAccount = await LocalStorageService.getData('@accountData') // SO I CAN GET SEED AND RECONSTRUCT ACCOUNT OBJECT
 
-            // IMPORTING ACCOUNT AGAIN (WITH ITS SEEDS) JUST TO HAVE ".sign" METHOD (SIGNATURE)
+            // IMPORTING ACCOUNT AGAIN (WITH ITS SEEDS) JUST TO HAVE ITS METHODS AVAILABLE
             const LTO = require("@ltonetwork/lto").LTO
             const lto = new LTO('T')
-            const seed = 'amount embark season idea hero truck exile guilt neck member basket input timber violin amount'
             const account = lto.account({ seed: myAccount.seed })
 
-            // GET SIGNATURE FROM ACCOUNT BUT NOT USING IT AT THE MOMENT
-            const auth = { "@context": "http://schema.lto.network/simple-auth-v1.json", "url": "https://auth.lto.network/UkRihLPt8VA1" }
-            const signature = account.sign(`lto:sign:${auth.url}`).base58
-
             const transfer = JSON.parse(input) // TRANSFER FROM QR CODE
-            // transfer.senderPublicKey = account2.publicKey
-            console.log('TRANSFER BEFORE SIGNATURE: ', trans)
-            await account.sign(trans)
-            // transfer.signature = signature
-            console.log('TRANSFER AFTER SIGNATURE: ', trans)
-            console.log(myAccount.seed)
+
+            transfer.timestamp = undefined // REMOVING TIMESTAMP BECAUSE THE ONE IN QR CODE IS TOO OLD
+            transfer.recipient = "3NAuHWZ7hcyN6Yh7oEuzasTFXa95XMV9baV" // JAVI'S ACCOUNT test purposes
+            transfer.amount = 1200000000 // test purposes
+
+            const transferObject = txFromData(transfer)
+
+            // SIGNATURE
+            const signedTransfer = transferObject.signWith(account)
 
             // BROADCASTING TRANSFER
-            await lto.node.broadcast(trans)
-            console.log('TRANSFER AFTER BROADCAST: ', trans)
+            const broadcastTx = await lto.node.broadcast(signedTransfer)
         } catch (error) {
             console.log(error)
         }
@@ -79,34 +71,24 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
 
     if (permission) {
         return (
-            <View style={styles.container}>
+            <ScannerContainer>
 
-                <BarCodeScanner
-                    style={{
-                        width: Dimensions.get('window').width,
-                        height: Dimensions.get('window').height
-
-                    }}
+                <StyledScanner
                     onBarCodeScanned={({ data }) => {
                         try {
-                            console.log('QR DATA: ', JSON.parse(data))
-                            handleSignature(data)
-                            setIsLoading(false)
+                            handleConfirmation(data)
                             navigation.goBack()
                         }
                         catch (err) {
                             console.log(err)
                         }
-                        finally {
-                            setIsLoading(false)
-                        }
                     }}
                 >
-                    <Text>QR Scanner</Text>
-                    <Text >Scan the QR code from LTO's web application to import your wallet into your mobile phone</Text>
-                </BarCodeScanner>
+                    <StyledText>QR Scanner</StyledText>
+                    <StyledText >Scan the QR code from LTO's web application to import your wallet into your mobile phone</StyledText>
+                </StyledScanner>
 
-            </View>
+            </ScannerContainer>
 
 
         )

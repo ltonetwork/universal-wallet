@@ -2,7 +2,7 @@ import { BarCodeScanner } from 'expo-barcode-scanner'
 import React, { useEffect, useState } from 'react'
 import { Text } from 'react-native-paper'
 import { RootStackScreenProps } from '../../types'
-import { CenteredView, StyledScanner, StyledText } from '../components/styles/ScanScreen.styles'
+import { CenteredView, StyledScanner, StyledText, ScannerContainer } from '../components/styles/ScanScreen.styles'
 import LocalStorageService from '../services/LocalStorage.service'
 
 
@@ -57,7 +57,7 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
 
     if (permission) {
         return (
-            <>
+            <ScannerContainer>
                 <StyledScanner
                     onBarCodeScanned={({ data }) => {
                         try {
@@ -71,7 +71,7 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
                     <StyledText >Scan the QR code from LTO's web application to import your wallet into your mobile phone</StyledText>
                 </StyledScanner>
 
-            </>
+            </ScannerContainer>
         )
     } else {
         return <Text>Permission denied</Text>
