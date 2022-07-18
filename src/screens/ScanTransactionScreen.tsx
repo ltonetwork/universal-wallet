@@ -1,12 +1,13 @@
+import { txFromData } from '@ltonetwork/lto'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import React, { useEffect, useState } from 'react'
 import { Text } from 'react-native-paper'
 import { RootStackScreenProps } from '../../types'
-import { CenteredView, StyledScanner, StyledText, ScannerContainer } from '../components/styles/ScanScreen.styles'
+import { CenteredView, ScannerContainer, StyledScanner, StyledText } from '../components/styles/ScanScreen.styles'
 import LocalStorageService from '../services/LocalStorage.service'
 
 
-export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'ScanKey'>) {
+export default function ScanTransactionScreen({ navigation }: RootStackScreenProps<'ScanTransaction'>) {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [permission, setPermission] = useState<boolean>(true)
 
@@ -28,22 +29,23 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
     }
 
     useEffect(() => {
-        if (permission) {
-            handleQRScan
-        }
+        if (permission)
+            handleConfirmation
     }, [])
 
-    const handleQRScan = (input: any) => {
-        const LTO = require("@ltonetwork/lto").LTO
-        const lto = new LTO('T')
-        const account = lto.account()
-        const auth = input
-        const signature = account.sign(`lto:sign:${auth.url}`).base58
-        const data = { address: account.address, privateKey: account.privateKey, publicKey: account.publicKey, signature, seed: account.seed }
-        LocalStorageService.storeData('@accountData', data)
-            .then(() => {
-                navigation.navigate('ImportAccount')
-            })
+    const handleConfirmation = async (input: any) => {
+        try {
+            const myAccount = await LocalStorageService.getData('@accountData')
+            const LTO = require("@ltonetwork/lto").LTO
+            const lto = new LTO('T')
+            const account = lto.account({ seed: myAccount.seed })
+            const transfer = JSON.parse(input)
+            const transferObject = txFromData(transfer)
+            const signedTransfer = transferObject.signWith(account)
+            await lto.node.broadcast(signedTransfer)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     if (isLoading) {
@@ -60,19 +62,17 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
                 <StyledScanner
                     onBarCodeScanned={({ data }) => {
                         try {
-                            handleQRScan(data)
-                        } catch (err) {
+                            handleConfirmation(data)
+                            navigation.goBack()
+                        }
+                        catch (err) {
                             console.log(err)
                         }
-                    }}
-                >
-                    <StyledText title >QR Scanner</StyledText>
+                    }}>
+                    <StyledText>QR Scanner</StyledText>
                     <StyledText >Scan the QR code from LTO's web application to import your wallet into your mobile phone</StyledText>
                 </StyledScanner>
-
             </ScannerContainer>
         )
-    } else {
-        return <Text>Permission denied</Text>
     }
 }

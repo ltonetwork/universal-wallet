@@ -1,0 +1,1 @@
+export const LTO_REPRESENTATION = 100000000

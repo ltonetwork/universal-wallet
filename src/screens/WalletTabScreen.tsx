@@ -16,7 +16,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
     const [details, setDetails] = useState<TypedDetails>(new Object as TypedDetails)
     const [coinData, setCoinData] = useState<TypedCoinData>(new Object as TypedCoinData)
 
-    const { available, effective, generating, regular, unbonding } = details
+    const { available, generating, regular, unbonding } = details
     const { price, percent_change_24h } = coinData
 
     interface TypedCoinData {
@@ -40,13 +40,12 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
     const readStorage = () => {
         LocalStorageService.getData('@accountData')
-            .then(data => {
-                return ApiClientService.getAccountDetails(data.address)
+            .then(account => {
+                return ApiClientService.getAccountDetails(account.address)
             })
             .then(accountDetails => {
                 setDetails(accountDetails)
                 setIsLoading(false)
-                console.log('Details: ', accountDetails)
             })
             .catch(err => console.log(err))
     }
@@ -83,14 +82,14 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                                 <AmountContainer>
                                     <Title>{formatNumber(regular)}</Title><Paragraph>LTO</Paragraph>
                                 </AmountContainer>
-                                <Paragraph>Equivalent to {change.toFixed(2)}</Paragraph>
+                                <Paragraph>Equivalent to {formatNumber(change)}$</Paragraph>
                             </Card.Content>
                         </TopCard>
 
                         <TopCard>
                             <Card.Content>
                                 <Paragraph>Prize</Paragraph>
-                                <Title>{price?.toFixed(6)}</Title>
+                                <Title>{price?.toFixed(3)}</Title>
                                 <Paragraph>{percent_change_24h?.toFixed(2)}%(last 24h)</Paragraph>
                             </Card.Content>
                         </TopCard>
@@ -125,7 +124,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                             <Card.Content>
                                 <Paragraph>Effective</Paragraph>
                                 <AmountContainer>
-                                    <Title>{effective?.toFixed(2)}</Title><Paragraph>$</Paragraph>
+                                    <Title>{formatNumber(change)}</Title><Paragraph>$</Paragraph>
                                 </AmountContainer>
                             </Card.Content>
                         </BottomCard>
@@ -139,7 +138,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
                     </BottomCardsContainer>
 
-                    <QRButton onPress={() => alert('Here QR code for transactions')} />
+                    <QRButton onPress={() => navigation.navigate('ScanTransaction')} />
 
                 </OverviewContainer>
             }
