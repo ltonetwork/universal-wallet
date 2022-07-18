@@ -1,6 +1,8 @@
+import { useClipboard } from '@react-native-community/clipboard'
 import React, { useEffect, useState } from 'react'
-import { StatusBar, TouchableOpacity } from 'react-native'
+import { Pressable, StatusBar, TouchableOpacity } from 'react-native'
 import { Card, Title } from 'react-native-paper'
+import SnackbarMessage from '../components/Snackbar'
 import Spinner from '../components/Spinner'
 import { CardsContainer, Content, Field, HiddenTitle, MainCard, StyledTitle } from '../components/styles/ProfileScreen.styles'
 import LocalStorageService from '../services/LocalStorage.service'
@@ -12,6 +14,8 @@ export default function ProfileScreen() {
     const [isKeyBlur, setIsKeyBlur] = useState<boolean>(true)
     const [isSeedBlur, setIsSeedBlur] = useState<boolean>(true)
     const [accountNickname, setAccountNickname] = useState<string>("")
+    const [data, setString] = useClipboard()
+    const [snackbarVisible, setSnackbarVisible] = useState(false)
 
     const { address, publicKey, privateKey, seed } = accountInformation
 
@@ -30,7 +34,11 @@ export default function ProfileScreen() {
         }
     }, [])
 
+    useEffect(() => {
 
+        setString(data)
+
+    }, [data])
 
     const readStorage = () => {
         LocalStorageService.getData('@accountData')
@@ -47,6 +55,14 @@ export default function ProfileScreen() {
             .catch(err => console.log(err))
     }
 
+    const copyToClipboard = (data: string) => {
+        setString(data)
+        setSnackbarVisible(true)
+        setTimeout(() => {
+            setSnackbarVisible(false)
+        }, 2000)
+    }
+
     return (
         <>
             {isLoading ? <Spinner /> :
@@ -60,17 +76,29 @@ export default function ProfileScreen() {
                             <StyledTitle>Public information</StyledTitle>
 
                             <Field>Nickname</Field>
-                            <Content>{accountNickname}</Content>
+                            <Pressable
+                                style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
+                                onLongPress={() => copyToClipboard(accountNickname)}>
+                                <Content>{accountNickname}</Content>
+                            </Pressable>
+
 
                             <Field>Wallet</Field>
-                            <Content>{address}</Content>
+                            <Pressable
+                                style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
+                                onLongPress={() => copyToClipboard(address)}>
+                                <Content>{address}</Content>
+                            </Pressable>
 
                             <Field>Public Key</Field>
-                            <Content>{publicKey}</Content>
+                            <Pressable
+                                style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
+                                onLongPress={() => copyToClipboard(publicKey)}>
+                                <Content>{publicKey}</Content>
+                            </Pressable>
                         </Card.Content>
 
                     </MainCard>
-
 
                     <TouchableOpacity onPress={() => setIsKeyBlur(!isKeyBlur)}>
                         {!isKeyBlur ?
@@ -107,6 +135,7 @@ export default function ProfileScreen() {
                             </MainCard>
                         }
                     </TouchableOpacity>
+                    {snackbarVisible && <SnackbarMessage text={'Copied to clipboard!'} />}
                 </CardsContainer>
             }
         </>
