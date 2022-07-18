@@ -8,7 +8,6 @@ import LocalStorageService from '../services/LocalStorage.service'
 
 export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'ScanKey'>) {
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [scanData, setScanData] = useState<any>()
     const [permission, setPermission] = useState<boolean>(true)
 
     useEffect(() => {

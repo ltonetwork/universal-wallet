@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import { StatusBar, TouchableOpacity } from 'react-native'
 import { Card, Title } from 'react-native-paper'
-import { CardsContainer, Content, Field, MainCard, StyledTitle } from '../components/styles/ProfileScreen.styles'
-import LocalStorageService from '../services/LocalStorage.service'
 import Spinner from '../components/Spinner'
-import { HiddenTitle } from '../components/styles/ProfileScreen.styles'
-import { StatusBar } from 'react-native'
+import { CardsContainer, Content, Field, HiddenTitle, MainCard, StyledTitle } from '../components/styles/ProfileScreen.styles'
+import LocalStorageService from '../services/LocalStorage.service'
 
 export default function ProfileScreen() {
 

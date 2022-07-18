@@ -7,7 +7,6 @@ import { StyledInput } from '../components/styles/StyledInput.styles'
 import LocalStorageService from '../services/LocalStorage.service'
 
 
-
 export default function SignInScreen({ navigation }: RootStackScreenProps<'SignIn'>) {
     const [userAlias, setUserAlias] = useState<any>()
     const [password, setPassword] = useState<string>("")
@@ -28,7 +27,6 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
     const handleSignIn = () => {
         if (password === userAlias?.password) {
             navigation.navigate('Root')
-            console.log('aliases: ', userAlias)
             setPassword("")
         } else {
             alert('Incorrect password')
@@ -40,9 +38,7 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
             <View>
 
                 <StyledTitle>Sign in</StyledTitle>
-
                 <StyledText>Sign in with your account name and password</StyledText>
-
                 <StyledInput
                     mode={'flat'}
                     style={{ marginBottom: 5 }}
@@ -51,7 +47,6 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     value={userAlias?.nickname}
                 >
                 </StyledInput>
-
                 <StyledInput
                     label="Wallet password"
                     value={password}
@@ -62,7 +57,6 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                         name={passwordVisible ? "eye" : "eye-off"}
                         onPress={() => setPasswordVisible(!passwordVisible)} />}
                 >
-
                 </StyledInput>
 
             </View>
@@ -77,7 +71,6 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     onPress={() => handleSignIn()}>
                     Sign in
                 </StyledButton>
-
                 <StyledButton
                     mode="outlined"
                     uppercase={false}
@@ -85,7 +78,6 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     onPress={() => navigation.navigate('ScanKey')}>
                     Import your account
                 </StyledButton>
-
             </ButtonContainer>
 
         </Container>

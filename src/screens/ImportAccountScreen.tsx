@@ -20,11 +20,9 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
     })
 
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
-
     const [checked, setChecked] = useState<boolean>(false)
     const [modalVisible, setModalVisible] = useState<boolean>(false)
     const [snackbarVisible, setSnackbarVisible] = useState(false)
-
     const [accountAddress, setAccountAddress] = useState('')
 
     useEffect(() => {
@@ -43,16 +41,6 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
 
     const handleInputChange = (name: string, value: string) => {
         setloginForm({ ...loginForm, [name]: value })
-    }
-
-    const getDataFromAsyncStorage = async () => {
-        try {
-            const value = await AsyncStorage.multiGet(['@userAlias', '@accountData'])
-            if (value !== null) {
-                console.log('VALORES GUARDADOS EN STORAGE: ', value)
-            }
-        } catch (error) {
-        }
     }
 
     const handleImportAccount = () => {
@@ -75,7 +63,6 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                 .catch(err => console.log(err))
         }
     }
-
 
     return (
         <>

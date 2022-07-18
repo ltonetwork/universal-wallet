@@ -41,13 +41,11 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
     const readStorage = () => {
         LocalStorageService.getData('@accountData')
             .then(account => {
-                console.log('accountData: ', account)
                 return ApiClientService.getAccountDetails(account.address)
             })
             .then(accountDetails => {
                 setDetails(accountDetails)
                 setIsLoading(false)
-                console.log('Details: ', accountDetails)
             })
             .catch(err => console.log(err))
     }
