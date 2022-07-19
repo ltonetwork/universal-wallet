@@ -32,11 +32,13 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
         unbonding: number
     }
 
+    useEffect(() => {
+        getPrizeInfo()
+    }, [])
 
     useEffect(() => {
         readStorage()
-        getPrizeInfo()
-    }, [])
+    }, [details])
 
     const readStorage = () => {
         LocalStorageService.getData('@accountData')

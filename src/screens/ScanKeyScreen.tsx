@@ -61,11 +61,11 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
                     onBarCodeScanned={({ data }) => {
                         try {
                             handleQRScan(data)
-                        } catch (err) {
+                        }
+                        catch (err) {
                             console.log(err)
                         }
-                    }}
-                >
+                    }}>
                     <StyledText title >QR Scanner</StyledText>
                     <StyledText >Scan the QR code from LTO's web application to import your wallet into your mobile phone</StyledText>
                 </StyledScanner>

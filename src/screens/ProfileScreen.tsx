@@ -22,8 +22,7 @@ export default function ProfileScreen() {
     useEffect(() => {
         readStorage()
         getNickname()
-    }
-        , [])
+    }, [])
 
     useEffect(() => {
         if (isKeyBlur) {
@@ -35,9 +34,7 @@ export default function ProfileScreen() {
     }, [])
 
     useEffect(() => {
-
         setString(data)
-
     }, [data])
 
     const readStorage = () => {

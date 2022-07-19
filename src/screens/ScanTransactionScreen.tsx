@@ -40,6 +40,14 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
             const lto = new LTO('T')
             const account = lto.account({ seed: myAccount.seed })
             const transfer = JSON.parse(input)
+
+            // JUST FOR TESTING PURPOSES
+            transfer.timestamp = undefined
+            transfer.recipient = "3NAuHWZ7hcyN6Yh7oEuzasTFXa95XMV9baV" // JAVI'S ACCOUNT test purposes
+            transfer.amount = 500000000
+            //
+
+
             const transferObject = txFromData(transfer)
             const signedTransfer = transferObject.signWith(account)
             await lto.node.broadcast(signedTransfer)
@@ -63,7 +71,7 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
                     onBarCodeScanned={({ data }) => {
                         try {
                             handleConfirmation(data)
-                            navigation.goBack()
+                            navigation.navigate('Root', { screen: 'Wallet' })
                         }
                         catch (err) {
                             console.log(err)

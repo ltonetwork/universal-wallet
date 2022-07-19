@@ -1,7 +1,7 @@
 export default class CoinMarketCapService {
 
     public static getCoinInfo = async () => {
-        try {                                           // Add '_URL' after API do this can work
+        try {
             const response = await fetch(`${process.env.CMC_API_URL}`)
             return response.json()
         } catch (error) {

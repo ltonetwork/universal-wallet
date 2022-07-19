@@ -6,8 +6,9 @@ import SocialMediaIcon from '../components/SocialMediaIcon'
 import { IconContainer, StyledImage, StyledTitle, StyledView } from '../components/styles/NextFunctionality.styles'
 import { placeholderImage, socialMediaIcons } from '../utils/images'
 import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../utils/redirectSocialMedia'
+import { RootTabScreenProps } from '../../types'
 
-export default function CredentialsTabScreen() {
+export default function CredentialsTabScreen({ navigation }: RootTabScreenProps<'Credentials'>) {
 
   return (
     <View>
@@ -22,7 +23,7 @@ export default function CredentialsTabScreen() {
           <SocialMediaIcon source={socialMediaIcons.telegram} onPress={() => navigateToTelegram()} />
         </IconContainer>
       </StyledView>
-      <QRButton onPress={() => alert('Here QR code for transactions')} />
+      <QRButton onPress={() => navigation.navigate('ScanTransaction')} />
     </View>
   )
 }
