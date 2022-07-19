@@ -74,5 +74,11 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
                 </StyledScanner>
             </ScannerContainer>
         )
+    } else {
+        return (
+            <CenteredView>
+                <Text>Permission denied!</Text>
+            </CenteredView>
+        )
     }
 }

@@ -52,7 +52,6 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 }
 
 
-
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -77,7 +76,6 @@ function RootNavigator() {
           LocalStorageService.storeData('@appFirstLaunch', true)
         } else {
           setAppFirstLaunch(false)
-          navigation.navigate('SignIn')
         }
       })
       .catch(err => console.log(err))
@@ -93,37 +91,72 @@ function RootNavigator() {
         headerShadowVisible: false,
         headerStyle: { backgroundColor: 'transparent' }
       }}>
+      {appFirstLaunch === true
+        ?
+        <>
+          <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', headerTransparent: true }} />
+          <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
+          <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+          <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen} options={{ headerTitle: 'Go back', }} />
+          <Stack.Group screenOptions={{ presentation: 'modal' }}>
+            <Stack.Screen name="Modal" component={ModalScreen}
+              options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
+                headerLeft: () => <LogoTitle />,
+                headerTitleStyle: { color: 'transparent' },
+                headerStyle: { backgroundColor: '#ffffff' },
+                headerRight: () => (
+                  <IconButton
+                    icon='close'
+                    color={Colors[colorScheme].tint}
+                    size={25}
+                    onPress={() => navigation.navigate('Root')}
+                  />
+                )
+              })}
+            />
+            <Stack.Screen name="Profile" component={ProfileScreen}
+              options={{
+                headerTitle: 'Profile',
+                headerStyle: { backgroundColor: '#ffffff' }
+              }} />
+          </Stack.Group>
+        </>
+        :
+        <>
+          <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', headerTransparent: true }} />
+          <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
+          <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+          <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen} options={{ headerTitle: 'Go back', }} />
+          <Stack.Group screenOptions={{ presentation: 'modal' }}>
+            <Stack.Screen name="Modal" component={ModalScreen}
+              options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
+                headerLeft: () => <LogoTitle />,
+                headerTitleStyle: { color: 'transparent' },
+                headerStyle: { backgroundColor: '#ffffff' },
+                headerRight: () => (
+                  <IconButton
+                    icon='close'
+                    color={Colors[colorScheme].tint}
+                    size={25}
+                    onPress={() => navigation.navigate('Root')} />
+                )
+              })} />
+            <Stack.Screen name="Profile" component={ProfileScreen}
+              options={{
+                headerTitle: 'Profile',
+                headerStyle: { backgroundColor: '#ffffff' }
+              }} />
+          </Stack.Group>
+        </>
+      }
 
-      <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', headerTransparent: true }} />
-      <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-      <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen} options={{
-        headerTitle: 'Go back',
-
-      }} />
-      <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen}
-          options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
-            headerLeft: () => <LogoTitle />,
-            headerTitleStyle: { color: 'transparent' },
-            headerStyle: { backgroundColor: '#ffffff' },
-            headerRight: () => (
-              <IconButton
-                icon='close'
-                color={Colors[colorScheme].tint}
-                size={25}
-                onPress={() => navigation.navigate('Root')}
-              />
-            )
-          })}
-        />
-        <Stack.Screen name="Profile" component={ProfileScreen} options={{ headerTitle: 'Profile', headerStyle: { backgroundColor: '#ffffff' } }} />
-      </Stack.Group>
-
-    </Stack.Navigator>)
+    </Stack.Navigator>
+  )
 }
 
 
