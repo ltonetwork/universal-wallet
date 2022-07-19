@@ -25,5 +25,5 @@ yarn run android
 Or...
 
 ```bash
-yarn run android
+yarn run ios
 ```
