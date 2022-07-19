@@ -11,8 +11,8 @@ export default function useCachedResources() {
   useEffect(() => {
     async function loadResourcesAndDataAsync() {
       try {
+        setStatusBarHidden(true, 'none') // Hide status bar on splash screen
         SplashScreen.preventAutoHideAsync()
-        setStatusBarHidden(false, 'fade') // Hide status bar on splash screen
         // Load fonts
         await Font.loadAsync({
           ...FontAwesome.font,
@@ -24,6 +24,7 @@ export default function useCachedResources() {
       } finally {
         setLoadingComplete(true)
         SplashScreen.hideAsync()
+        setStatusBarHidden(false, 'fade')
       }
     }
 
