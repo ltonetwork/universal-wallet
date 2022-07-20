@@ -1,9 +1,9 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
 import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { ColorSchemeName, Image, useWindowDimensions } from 'react-native'
+import { ColorSchemeName, Dimensions, Image, useWindowDimensions } from 'react-native'
 import { IconButton, Provider as PaperProvider } from 'react-native-paper'
 import { RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from '../../types'
 import LogoTitle from '../components/LogoTitle'
@@ -24,6 +24,7 @@ import WalletTabScreen from '../screens/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
 import { backgroundImage } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
+
 
 
 const navTheme = {
@@ -132,56 +133,41 @@ function RootNavigator(): any {
  * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
  * https://reactnavigation.org/docs/bottom-tab-navigator
  */
-const BottomTab = createBottomTabNavigator<RootTabParamList>()
+const Tab = createMaterialTopTabNavigator<RootTabParamList>()
 function BottomTabNavigator() {
   const colorScheme = useColorScheme()
 
   return (
-    <BottomTab.Navigator
+
+    <Tab.Navigator
       initialRouteName="Wallet"
+      tabBarPosition='bottom'
+      initialLayout={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
         tabBarStyle: { height: 65 },
-      }}>
-
-      <BottomTab.Screen
+      }}
+    >
+      <Tab.Screen
         name="Wallet"
         component={WalletTabScreen}
         options={({ navigation }: RootTabScreenProps<'Wallet'>) => ({
-          headerTitle: () => <LogoTitle />,
-          headerStyle: { height: 100 },
+          tabBarShowIcon: true,
           tabBarIcon: ({ color }) => <TabBarIcon icon="wallet-outline" color={color} />,
-          tabBarLabelStyle: { fontSize: 12, marginBottom: 5 },
-          headerRight: () => (
-            <IconButton
-              icon="menu"
-              color={Colors[colorScheme].tint}
-              size={25}
-              onPress={() => navigation.navigate('Modal')}
-            />
-          ),
+          tabBarLabelStyle: { fontSize: 12 },
+          tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0 },
         })}
       />
-      <BottomTab.Screen
+      <Tab.Screen
         name="Credentials"
         component={CredentialsTabScreen}
         options={({ navigation }: RootTabScreenProps<'Credentials'>) => ({
-          headerTitle: 'Credentials',
-          headerStyle: { height: 100 },
-          headerTitleStyle: { fontWeight: '800', marginLeft: 20 },
           tabBarIcon: ({ color }) => <TabBarIcon icon="account-box-multiple-outline" color={color} />,
-          tabBarLabelStyle: { fontSize: 12, marginBottom: 5 },
-          headerRight: () => (
-            <IconButton
-              icon="menu"
-              color={Colors[colorScheme].tint}
-              size={25}
-              onPress={() => navigation.navigate('Modal')}
-            />
-          ),
+          tabBarLabelStyle: { fontSize: 12 },
+          tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0 },
         })}
       />
-      <BottomTab.Screen
+      <Tab.Screen
         name="Ownables"
         component={OwnablesTabScreen}
         options={({ navigation }: RootTabScreenProps<'Ownables'>) => ({
@@ -190,17 +176,10 @@ function BottomTabNavigator() {
           headerTitleStyle: { fontWeight: '800', marginLeft: 20 },
           headerTitleAllowFontScaling: true,
           tabBarIcon: ({ color }) => <TabBarIcon icon="bookmark-box-multiple-outline" color={color} />,
-          tabBarLabelStyle: { fontSize: 12, marginBottom: 5 },
-          headerRight: () => (
-            <IconButton
-              icon="menu"
-              color={Colors[colorScheme].tint}
-              size={25}
-              onPress={() => navigation.navigate('Modal')}
-            />
-          ),
+          tabBarLabelStyle: { fontSize: 12 },
+          tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0 },
         })}
       />
-    </BottomTab.Navigator>
+    </Tab.Navigator>
   )
 }

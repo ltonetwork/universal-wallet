@@ -3,8 +3,9 @@ import { Image } from 'react-native'
 
 
 export const StyledImage = styled(Image)`
-    width: 190px;
-    height: 190px;
-    position: absolute;
+    width: 50%;
+    height: 60%;
+    margin-top: 10px;
+    background-color: #ffffff;
     resize-mode: contain;
 `

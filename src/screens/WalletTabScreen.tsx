@@ -9,6 +9,10 @@ import ApiClientService from '../services/ApiClient.service'
 import LocalStorageService from '../services/LocalStorage.service'
 import { formatNumber } from '../utils/formatNumber'
 import CoinMarketCapService from '../services/CoinMarketCap.service'
+import LogoTitle from '../components/LogoTitle'
+import { Text } from '../components/Themed'
+import { StyledImage } from '../components/styles/LogoTitle.styles'
+import { logoTitle } from "../utils/images"
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 
@@ -72,77 +76,80 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                 ?
                 <Spinner />
                 :
-                <OverviewContainer>
+                <>
+                    <LogoTitle input={<StyledImage testID="logo-title" source={logoTitle} />} />
+                    <OverviewContainer>
 
-                    <StatusBar backgroundColor={'#ffffff'} />
+                        <StatusBar backgroundColor={'#ffffff'} />
 
-                    <TopCardsContainer>
+                        <TopCardsContainer>
 
-                        <TopCard>
-                            <Card.Content style={{ borderRadius: 80 }}>
-                                <Paragraph>Regular account</Paragraph>
-                                <AmountContainer>
-                                    <Title>{formatNumber(regular)}</Title><Paragraph>LTO</Paragraph>
-                                </AmountContainer>
-                                <Paragraph>Equivalent to {formatNumber(change)}$</Paragraph>
-                            </Card.Content>
-                        </TopCard>
+                            <TopCard>
+                                <Card.Content style={{ borderRadius: 80 }}>
+                                    <Paragraph>Regular account</Paragraph>
+                                    <AmountContainer>
+                                        <Title>{formatNumber(regular)}</Title><Paragraph>LTO</Paragraph>
+                                    </AmountContainer>
+                                    <Paragraph>Equivalent to {formatNumber(change)}$</Paragraph>
+                                </Card.Content>
+                            </TopCard>
 
-                        <TopCard>
-                            <Card.Content>
-                                <Paragraph>Prize</Paragraph>
-                                <Title>{price?.toFixed(3)}</Title>
-                                <Paragraph>{percent_change_24h?.toFixed(2)}%(last 24h)</Paragraph>
-                            </Card.Content>
-                        </TopCard>
+                            <TopCard>
+                                <Card.Content>
+                                    <Paragraph>Prize</Paragraph>
+                                    <Title>{price?.toFixed(3)}</Title>
+                                    <Paragraph>{percent_change_24h?.toFixed(2)}%(last 24h)</Paragraph>
+                                </Card.Content>
+                            </TopCard>
 
-                    </TopCardsContainer>
+                        </TopCardsContainer>
 
-                    <BottomCardsContainer >
+                        <BottomCardsContainer >
 
-                        <BottomCard>
-                            <Card.Content>
-                                <Paragraph>Generating</Paragraph>
-                                <AmountContainer>
-                                    <Title>{formatNumber(generating)}</Title><Paragraph>LTO</Paragraph>
-                                </AmountContainer>
-                            </Card.Content>
-                        </BottomCard>
+                            <BottomCard>
+                                <Card.Content>
+                                    <Paragraph>Generating</Paragraph>
+                                    <AmountContainer>
+                                        <Title>{formatNumber(generating)}</Title><Paragraph>LTO</Paragraph>
+                                    </AmountContainer>
+                                </Card.Content>
+                            </BottomCard>
 
-                        <BottomCard >
-                            <Card.Content>
-                                <Paragraph>Available</Paragraph>
-                                <AmountContainer>
-                                    <Title>{formatNumber(available)}</Title><Paragraph>LTO</Paragraph>
-                                </AmountContainer>
-                            </Card.Content>
-                        </BottomCard>
+                            <BottomCard >
+                                <Card.Content>
+                                    <Paragraph>Available</Paragraph>
+                                    <AmountContainer>
+                                        <Title>{formatNumber(available)}</Title><Paragraph>LTO</Paragraph>
+                                    </AmountContainer>
+                                </Card.Content>
+                            </BottomCard>
 
-                    </BottomCardsContainer>
+                        </BottomCardsContainer>
 
-                    <BottomCardsContainer>
+                        <BottomCardsContainer>
 
-                        <BottomCard >
-                            <Card.Content>
-                                <Paragraph>Effective</Paragraph>
-                                <AmountContainer>
-                                    <Title>{formatNumber(change)}</Title><Paragraph>$</Paragraph>
-                                </AmountContainer>
-                            </Card.Content>
-                        </BottomCard>
+                            <BottomCard >
+                                <Card.Content>
+                                    <Paragraph>Effective</Paragraph>
+                                    <AmountContainer>
+                                        <Title>{formatNumber(change)}</Title><Paragraph>$</Paragraph>
+                                    </AmountContainer>
+                                </Card.Content>
+                            </BottomCard>
 
-                        <BottomCard >
-                            <Card.Content>
-                                <Paragraph>Unbonding</Paragraph>
-                                <Title>{formatNumber(unbonding)}</Title>
-                            </Card.Content>
-                        </BottomCard>
+                            <BottomCard >
+                                <Card.Content>
+                                    <Paragraph>Unbonding</Paragraph>
+                                    <Title>{formatNumber(unbonding)}</Title>
+                                </Card.Content>
+                            </BottomCard>
 
-                    </BottomCardsContainer>
+                        </BottomCardsContainer>
 
-                    <QRButton onPress={() => navigation.navigate('ScanTransaction')} />
+                        <QRButton onPress={() => navigation.navigate('ScanTransaction')} />
 
-                </OverviewContainer>
+                    </OverviewContainer>
+                </>
             }
         </>
     )
