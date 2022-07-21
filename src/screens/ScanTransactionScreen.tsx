@@ -46,12 +46,6 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
             const lto = new LTO('T')
             const account = lto.account({ seed: myAccount.seed })
             const transfer = JSON.parse(input)
-            // JUST FOR TESTING PURPOSES
-            transfer.sender = '3MuDkM9nu396vbmEvN6y7uqNPhot7s6ZVaL' // wrong sender
-            transfer.timestamp = undefined
-            transfer.recipient = "3NAuHWZ7hcyN6Yh7oEuzasTFXa95XMV9baV" // JAVI'S ACCOUNT test purposes
-            transfer.amount = 500000000
-            //
 
             if (transfer.sender !== account.address) {
                 setSnackbarMessage('Sender address is not valid')
@@ -64,6 +58,7 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
                 setSnackbarMessage('Transfer sent successfully')
                 setSnackbarVisible(true)
             }
+
         } catch (error) {
             console.log(error)
         }
