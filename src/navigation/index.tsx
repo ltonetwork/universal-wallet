@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { ColorSchemeName, Dimensions, Image, useWindowDimensions } from 'react-native'
 import { IconButton, Provider as PaperProvider } from 'react-native-paper'
 import { RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from '../../types'
-import LogoTitle from '../components/LogoTitle'
+import { ModalImage } from '../components/styles/OverviewHeader.styles'
 import TabBarIcon from '../components/TabBarIcon'
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
@@ -22,9 +22,8 @@ import ScanTransactionScreen from '../screens/ScanTransactionScreen'
 import SignInScreen from '../screens/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
-import { backgroundImage } from '../utils/images'
+import { backgroundImage, logoTitle } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
-
 
 
 const navTheme = {

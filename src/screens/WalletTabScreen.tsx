@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'react-native'
 import { Card, Paragraph, Title } from 'react-native-paper'
 import { RootTabScreenProps } from '../../types'
+import OverviewHeader from '../components/OverviewHeader'
 import QRButton from '../components/QRIcon'
 import Spinner from '../components/Spinner'
+import { StyledImage } from '../components/styles/OverviewHeader.styles'
 import { AmountContainer, BottomCard, BottomCardsContainer, OverviewContainer, TopCard, TopCardsContainer } from '../components/styles/WalletTabScreen.styles'
 import ApiClientService from '../services/ApiClient.service'
+import CoinMarketCapService from '../services/CoinMarketCap.service'
 import LocalStorageService from '../services/LocalStorage.service'
 import { formatNumber } from '../utils/formatNumber'
-import CoinMarketCapService from '../services/CoinMarketCap.service'
-import LogoTitle from '../components/LogoTitle'
-import { Text } from '../components/Themed'
-import { StyledImage } from '../components/styles/LogoTitle.styles'
 import { logoTitle } from "../utils/images"
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
@@ -77,7 +76,10 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                 <Spinner />
                 :
                 <>
-                    <LogoTitle input={<StyledImage testID="logo-title" source={logoTitle} />} />
+                    <OverviewHeader
+                        icon={"menu"}
+                        onPress={() => navigation.navigate('Modal')}
+                        input={<StyledImage testID="logo-title" source={logoTitle} />} />
                     <OverviewContainer>
 
                         <StatusBar backgroundColor={'#ffffff'} />
@@ -146,9 +148,9 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
                         </BottomCardsContainer>
 
-                        <QRButton onPress={() => navigation.navigate('ScanTransaction')} />
 
                     </OverviewContainer>
+                    <QRButton onPress={() => navigation.navigate('ScanTransaction')} />
                 </>
             }
         </>
