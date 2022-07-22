@@ -1,5 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { DarkTheme, DefaultTheme, NavigationContainer, useNavigation } from '@react-navigation/native'
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
@@ -58,9 +58,8 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  */
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
-function RootNavigator() {
+function RootNavigator(): any {
   const colorScheme = useColorScheme()
-  const navigation = useNavigation()
 
   const [appFirstLaunch, setAppFirstLaunch] = useState<boolean | null>(null)
 
@@ -73,7 +72,7 @@ function RootNavigator() {
       .then(data => {
         if (data === null) {
           setAppFirstLaunch(true)
-          LocalStorageService.storeData('@appFirstLaunch', true)
+          LocalStorageService.storeData('@appFirstLaunch', 'false')
         } else {
           setAppFirstLaunch(false)
         }
@@ -83,79 +82,48 @@ function RootNavigator() {
 
 
   return (
+    appFirstLaunch !== null && (
 
-    <Stack.Navigator
-      screenOptions={{
-        headerTitleStyle: { color: '#A017B7', fontWeight: '400', fontSize: 16 },
-        headerTintColor: '#A017B7',
-        headerShadowVisible: false,
-        headerStyle: { backgroundColor: 'transparent' }
-      }}>
-      {appFirstLaunch === true
-        ?
-        <>
+      <Stack.Navigator
+        screenOptions={{
+          headerTitleStyle: { color: '#A017B7', fontWeight: '400', fontSize: 16 },
+          headerTintColor: '#A017B7',
+          headerShadowVisible: false,
+          headerStyle: { backgroundColor: 'transparent' }
+        }}>
+        {appFirstLaunch && (
           <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', headerTransparent: true }} />
-          <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
-          <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-          <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen} options={{ headerTitle: 'Go back', }} />
-          <Stack.Group screenOptions={{ presentation: 'modal' }}>
-            <Stack.Screen name="Modal" component={ModalScreen}
-              options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
-                headerLeft: () => <LogoTitle />,
-                headerTitleStyle: { color: 'transparent' },
-                headerStyle: { backgroundColor: '#ffffff' },
-                headerRight: () => (
-                  <IconButton
-                    icon='close'
-                    color={Colors[colorScheme].tint}
-                    size={25}
-                    onPress={() => navigation.navigate('Root')}
-                  />
-                )
-              })}
-            />
-            <Stack.Screen name="Profile" component={ProfileScreen}
-              options={{
-                headerTitle: 'Profile',
-                headerStyle: { backgroundColor: '#ffffff' }
-              }} />
-          </Stack.Group>
-        </>
-        :
-        <>
-          <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', headerTransparent: true }} />
-          <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
-          <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-          <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen} options={{ headerTitle: 'Go back', }} />
-          <Stack.Group screenOptions={{ presentation: 'modal' }}>
-            <Stack.Screen name="Modal" component={ModalScreen}
-              options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
-                headerLeft: () => <LogoTitle />,
-                headerTitleStyle: { color: 'transparent' },
-                headerStyle: { backgroundColor: '#ffffff' },
-                headerRight: () => (
-                  <IconButton
-                    icon='close'
-                    color={Colors[colorScheme].tint}
-                    size={25}
-                    onPress={() => navigation.navigate('Root')} />
-                )
-              })} />
-            <Stack.Screen name="Profile" component={ProfileScreen}
-              options={{
-                headerTitle: 'Profile',
-                headerStyle: { backgroundColor: '#ffffff' }
-              }} />
-          </Stack.Group>
-        </>
-      }
-
-    </Stack.Navigator>
+        )}
+        <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', headerTransparent: true }} />
+        <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
+        <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+        <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen} options={{ headerTitle: 'Go back', }} />
+        <Stack.Group screenOptions={{ presentation: 'modal' }}>
+          <Stack.Screen name="Modal" component={ModalScreen}
+            options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
+              headerLeft: () => <LogoTitle />,
+              headerTitleStyle: { color: 'transparent' },
+              headerStyle: { backgroundColor: '#ffffff' },
+              headerRight: () => (
+                <IconButton
+                  icon='close'
+                  color={Colors[colorScheme].tint}
+                  size={25}
+                  onPress={() => navigation.navigate('Root')}
+                />
+              )
+            })}
+          />
+          <Stack.Screen name="Profile" component={ProfileScreen}
+            options={{
+              headerTitle: 'Profile',
+              headerStyle: { backgroundColor: '#ffffff' }
+            }} />
+        </Stack.Group>
+      </Stack.Navigator>
+    )
   )
 }
 
@@ -232,14 +200,7 @@ function BottomTabNavigator() {
             />
           ),
         })}
-
       />
     </BottomTab.Navigator>
   )
 }
-
-
-
-
-
-
