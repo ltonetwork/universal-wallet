@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'react-native'
 import { Card, Paragraph, Title } from 'react-native-paper'
 import { RootTabScreenProps } from '../../types'
+import OverviewHeader from '../components/OverviewHeader'
 import QRButton from '../components/QRIcon'
 import Spinner from '../components/Spinner'
+import { StyledImage } from '../components/styles/OverviewHeader.styles'
 import { AmountContainer, BottomCard, BottomCardsContainer, OverviewContainer, TopCard, TopCardsContainer } from '../components/styles/WalletTabScreen.styles'
 import ApiClientService from '../services/ApiClient.service'
+import CoinMarketCapService from '../services/CoinMarketCap.service'
 import LocalStorageService from '../services/LocalStorage.service'
 import { formatNumber } from '../utils/formatNumber'
-import CoinMarketCapService from '../services/CoinMarketCap.service'
+import { logoTitle } from "../utils/images"
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 
@@ -72,77 +75,83 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                 ?
                 <Spinner />
                 :
-                <OverviewContainer>
+                <>
+                    <OverviewHeader
+                        icon={"menu"}
+                        onPress={() => navigation.navigate('Modal')}
+                        input={<StyledImage testID="logo-title" source={logoTitle} />} />
+                    <OverviewContainer>
 
-                    <StatusBar backgroundColor={'#ffffff'} />
+                        <StatusBar backgroundColor={'#ffffff'} />
 
-                    <TopCardsContainer>
+                        <TopCardsContainer>
 
-                        <TopCard>
-                            <Card.Content style={{ borderRadius: 80 }}>
-                                <Paragraph>Regular account</Paragraph>
-                                <AmountContainer>
-                                    <Title>{formatNumber(regular)}</Title><Paragraph>LTO</Paragraph>
-                                </AmountContainer>
-                                <Paragraph>Equivalent to {formatNumber(change)}$</Paragraph>
-                            </Card.Content>
-                        </TopCard>
+                            <TopCard>
+                                <Card.Content style={{ borderRadius: 80 }}>
+                                    <Paragraph>Regular account</Paragraph>
+                                    <AmountContainer>
+                                        <Title>{formatNumber(regular)}</Title><Paragraph>LTO</Paragraph>
+                                    </AmountContainer>
+                                    <Paragraph>Equivalent to {formatNumber(change)}$</Paragraph>
+                                </Card.Content>
+                            </TopCard>
 
-                        <TopCard>
-                            <Card.Content>
-                                <Paragraph>Prize</Paragraph>
-                                <Title>{price?.toFixed(3)}</Title>
-                                <Paragraph>{percent_change_24h?.toFixed(2)}%(last 24h)</Paragraph>
-                            </Card.Content>
-                        </TopCard>
+                            <TopCard>
+                                <Card.Content>
+                                    <Paragraph>Prize</Paragraph>
+                                    <Title>{price?.toFixed(3)}</Title>
+                                    <Paragraph>{percent_change_24h?.toFixed(2)}%(last 24h)</Paragraph>
+                                </Card.Content>
+                            </TopCard>
 
-                    </TopCardsContainer>
+                        </TopCardsContainer>
 
-                    <BottomCardsContainer >
+                        <BottomCardsContainer >
 
-                        <BottomCard>
-                            <Card.Content>
-                                <Paragraph>Generating</Paragraph>
-                                <AmountContainer>
-                                    <Title>{formatNumber(generating)}</Title><Paragraph>LTO</Paragraph>
-                                </AmountContainer>
-                            </Card.Content>
-                        </BottomCard>
+                            <BottomCard>
+                                <Card.Content>
+                                    <Paragraph>Generating</Paragraph>
+                                    <AmountContainer>
+                                        <Title>{formatNumber(generating)}</Title><Paragraph>LTO</Paragraph>
+                                    </AmountContainer>
+                                </Card.Content>
+                            </BottomCard>
 
-                        <BottomCard >
-                            <Card.Content>
-                                <Paragraph>Available</Paragraph>
-                                <AmountContainer>
-                                    <Title>{formatNumber(available)}</Title><Paragraph>LTO</Paragraph>
-                                </AmountContainer>
-                            </Card.Content>
-                        </BottomCard>
+                            <BottomCard >
+                                <Card.Content>
+                                    <Paragraph>Available</Paragraph>
+                                    <AmountContainer>
+                                        <Title>{formatNumber(available)}</Title><Paragraph>LTO</Paragraph>
+                                    </AmountContainer>
+                                </Card.Content>
+                            </BottomCard>
 
-                    </BottomCardsContainer>
+                        </BottomCardsContainer>
 
-                    <BottomCardsContainer>
+                        <BottomCardsContainer>
 
-                        <BottomCard >
-                            <Card.Content>
-                                <Paragraph>Effective</Paragraph>
-                                <AmountContainer>
-                                    <Title>{formatNumber(change)}</Title><Paragraph>$</Paragraph>
-                                </AmountContainer>
-                            </Card.Content>
-                        </BottomCard>
+                            <BottomCard >
+                                <Card.Content>
+                                    <Paragraph>Effective</Paragraph>
+                                    <AmountContainer>
+                                        <Title>{formatNumber(change)}</Title><Paragraph>$</Paragraph>
+                                    </AmountContainer>
+                                </Card.Content>
+                            </BottomCard>
 
-                        <BottomCard >
-                            <Card.Content>
-                                <Paragraph>Unbonding</Paragraph>
-                                <Title>{formatNumber(unbonding)}</Title>
-                            </Card.Content>
-                        </BottomCard>
+                            <BottomCard >
+                                <Card.Content>
+                                    <Paragraph>Unbonding</Paragraph>
+                                    <Title>{formatNumber(unbonding)}</Title>
+                                </Card.Content>
+                            </BottomCard>
 
-                    </BottomCardsContainer>
+                        </BottomCardsContainer>
 
+
+                    </OverviewContainer>
                     <QRButton onPress={() => navigation.navigate('ScanTransaction')} />
-
-                </OverviewContainer>
+                </>
             }
         </>
     )

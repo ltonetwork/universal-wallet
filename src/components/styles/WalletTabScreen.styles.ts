@@ -12,7 +12,7 @@ export const AmountContainer = styled.View`
 
 export const TopCardsContainer = styled.View`
     display: flex;
-    margin-top: -5px;
+    margin-top: -7px;
     flex-direction: row;
     justify-content: space-around;
     width: 100%;

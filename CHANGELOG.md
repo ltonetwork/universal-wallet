@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 - [As a LTO user, I want to confirm sender matches from my mobile app](https://wealize.atlassian.net/browse/LTO22004-34)
+- [Refactor Bottom Tab navigator](https://wealize.atlassian.net/browse/LTO22004-46)
+- [Fix skip onboarding screen feature](https://wealize.atlassian.net/browse/LTO22004-45)
 - [As a LTO user, I want to copy public data account (wallet address)](https://wealize.atlassian.net/browse/LTO22004-28)
 - [As a LTO user, I want to sign and send (broadcast) the transfer from the mobile app](https://wealize.atlassian.net/browse/LTO22004-35)
 - [As a LTO user, I want to read a QR (JSON with the transfer information) displayed in the web app to confirm the transaction from my mobile app.](https://wealize.atlassian.net/browse/LTO22004-33)

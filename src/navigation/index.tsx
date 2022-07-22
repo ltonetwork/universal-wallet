@@ -1,12 +1,12 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { DarkTheme, DefaultTheme, NavigationContainer, useNavigation } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { ColorSchemeName, Image, useWindowDimensions } from 'react-native'
+import { ColorSchemeName, Dimensions, Image, useWindowDimensions } from 'react-native'
 import { IconButton, Provider as PaperProvider } from 'react-native-paper'
 import { RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from '../../types'
-import LogoTitle from '../components/LogoTitle'
+import { ModalImage } from '../components/styles/OverviewHeader.styles'
 import TabBarIcon from '../components/TabBarIcon'
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
@@ -22,7 +22,7 @@ import ScanTransactionScreen from '../screens/ScanTransactionScreen'
 import SignInScreen from '../screens/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
-import { backgroundImage } from '../utils/images'
+import { backgroundImage, logoTitle } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
 
 
@@ -58,8 +58,9 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
  */
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
-function RootNavigator(): any {
+function RootNavigator() {
   const colorScheme = useColorScheme()
+  const navigation = useNavigation()
 
   const [appFirstLaunch, setAppFirstLaunch] = useState<boolean | null>(null)
 
@@ -72,7 +73,7 @@ function RootNavigator(): any {
       .then(data => {
         if (data === null) {
           setAppFirstLaunch(true)
-          LocalStorageService.storeData('@appFirstLaunch', 'false')
+          LocalStorageService.storeData('@appFirstLaunch', true)
         } else {
           setAppFirstLaunch(false)
         }
@@ -82,125 +83,138 @@ function RootNavigator(): any {
 
 
   return (
-    appFirstLaunch !== null && (
 
-      <Stack.Navigator
-        screenOptions={{
-          headerTitleStyle: { color: '#A017B7', fontWeight: '400', fontSize: 16 },
-          headerTintColor: '#A017B7',
-          headerShadowVisible: false,
-          headerStyle: { backgroundColor: 'transparent' }
-        }}>
-        {appFirstLaunch && (
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleStyle: { color: '#A017B7', fontWeight: '400', fontSize: 16 },
+        headerTintColor: '#A017B7',
+        headerShadowVisible: false,
+        headerStyle: { backgroundColor: 'transparent' }
+      }}>
+      {appFirstLaunch === true
+        ?
+        <>
           <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
-        )}
-        <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', headerTransparent: true }} />
-        <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
-        <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-        <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-        <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen} options={{ headerTitle: 'Go back', }} />
-        <Stack.Group screenOptions={{ presentation: 'modal' }}>
-          <Stack.Screen name="Modal" component={ModalScreen}
-            options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
-              headerLeft: () => <LogoTitle />,
-              headerTitleStyle: { color: 'transparent' },
-              headerStyle: { backgroundColor: '#ffffff' },
-              headerRight: () => (
-                <IconButton
-                  icon='close'
-                  color={Colors[colorScheme].tint}
-                  size={25}
-                  onPress={() => navigation.navigate('Root')}
-                />
-              )
-            })}
-          />
-          <Stack.Screen name="Profile" component={ProfileScreen}
-            options={{
-              headerTitle: 'Profile',
-              headerStyle: { backgroundColor: '#ffffff' }
-            }} />
-        </Stack.Group>
-      </Stack.Navigator>
-    )
+          <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', headerTransparent: true }} />
+          <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
+          <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+          <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen} options={{ headerTitle: 'Go back', }} />
+          <Stack.Group screenOptions={{ presentation: 'modal' }}>
+            <Stack.Screen name="Modal" component={ModalScreen}
+              options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
+                headerBackVisible: false,
+                headerLeft: () => (<ModalImage testID="logo-title" source={logoTitle} />),
+                headerTitleStyle: { color: 'transparent' },
+                headerStyle: { backgroundColor: '#ffffff' },
+                headerRight: () => (
+                  <IconButton
+                    icon='close'
+                    color={Colors[colorScheme].tint}
+                    size={25}
+                    onPress={() => navigation.navigate('Root')} />
+                )
+              })} />
+            <Stack.Screen name="Profile" component={ProfileScreen}
+              options={{
+                headerTitle: 'Profile',
+                headerStyle: { backgroundColor: '#ffffff' }
+              }} />
+          </Stack.Group>
+        </>
+        :
+        <>
+          <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', headerTransparent: true }} />
+          <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
+          <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+          <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+          <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen} options={{ headerTitle: 'Go back', }} />
+          <Stack.Group screenOptions={{ presentation: 'modal' }}>
+            <Stack.Screen name="Modal" component={ModalScreen}
+              options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
+                headerBackVisible: false,
+                headerLeft: () => (<ModalImage testID="logo-title" source={logoTitle} />),
+                headerTitleStyle: { color: 'transparent' },
+                headerStyle: { backgroundColor: '#ffffff' },
+                headerRight: () => (
+                  <IconButton
+                    icon='close'
+                    color={Colors[colorScheme].tint}
+                    size={25}
+                    onPress={() => navigation.navigate('Root')} />
+                )
+              })} />
+            <Stack.Screen name="Profile" component={ProfileScreen}
+              options={{
+                headerTitle: 'Profile',
+                headerStyle: { backgroundColor: '#ffffff' }
+              }} />
+          </Stack.Group>
+        </>
+      }
+    </Stack.Navigator>
   )
 }
 
 
-/**
- * A bottom tab navigator displays tab buttons on the bottom of the display to switch screens.
- * https://reactnavigation.org/docs/bottom-tab-navigator
- */
-const BottomTab = createBottomTabNavigator<RootTabParamList>()
+
+
+const Tab = createMaterialTopTabNavigator<RootTabParamList>()
 function BottomTabNavigator() {
   const colorScheme = useColorScheme()
 
   return (
-    <BottomTab.Navigator
-      initialRouteName="Wallet"
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme].tint,
-        tabBarStyle: { height: 65 },
-      }}>
-
-      <BottomTab.Screen
-        name="Wallet"
-        component={WalletTabScreen}
-        options={({ navigation }: RootTabScreenProps<'Wallet'>) => ({
-          headerTitle: () => <LogoTitle />,
-          headerStyle: { height: 100 },
-          tabBarIcon: ({ color }) => <TabBarIcon icon="wallet-outline" color={color} />,
-          tabBarLabelStyle: { fontSize: 12, marginBottom: 5 },
-          headerRight: () => (
-            <IconButton
-              icon="menu"
-              color={Colors[colorScheme].tint}
-              size={25}
-              onPress={() => navigation.navigate('Modal')}
-            />
-          ),
-        })}
-      />
-      <BottomTab.Screen
-        name="Credentials"
-        component={CredentialsTabScreen}
-        options={({ navigation }: RootTabScreenProps<'Credentials'>) => ({
-          headerTitle: 'Credentials',
-          headerStyle: { height: 100 },
-          headerTitleStyle: { fontWeight: '800', marginLeft: 20 },
-          tabBarIcon: ({ color }) => <TabBarIcon icon="account-box-multiple-outline" color={color} />,
-          tabBarLabelStyle: { fontSize: 12, marginBottom: 5 },
-          headerRight: () => (
-            <IconButton
-              icon="menu"
-              color={Colors[colorScheme].tint}
-              size={25}
-              onPress={() => navigation.navigate('Modal')}
-            />
-          ),
-        })}
-      />
-      <BottomTab.Screen
-        name="Ownables"
-        component={OwnablesTabScreen}
-        options={({ navigation }: RootTabScreenProps<'Ownables'>) => ({
-          headerTitle: 'Ownables',
-          headerStyle: { height: 100 },
-          headerTitleStyle: { fontWeight: '800', marginLeft: 20 },
-          headerTitleAllowFontScaling: true,
-          tabBarIcon: ({ color }) => <TabBarIcon icon="bookmark-box-multiple-outline" color={color} />,
-          tabBarLabelStyle: { fontSize: 12, marginBottom: 5 },
-          headerRight: () => (
-            <IconButton
-              icon="menu"
-              color={Colors[colorScheme].tint}
-              size={25}
-              onPress={() => navigation.navigate('Modal')}
-            />
-          ),
-        })}
-      />
-    </BottomTab.Navigator>
+    <>
+      <Tab.Navigator
+        initialRouteName="Wallet"
+        tabBarPosition='bottom'
+        initialLayout={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
+        screenOptions={{
+          tabBarActiveTintColor: Colors[colorScheme].tint,
+          tabBarStyle: { height: 65 },
+        }}
+      >
+        <Tab.Screen
+          name="Wallet"
+          component={WalletTabScreen}
+          options={({ navigation }: RootTabScreenProps<'Wallet'>) => ({
+            tabBarShowIcon: true,
+            tabBarIcon: ({ color }) => <TabBarIcon icon="wallet-outline" color={color} />,
+            tabBarLabelStyle: { fontSize: 12 },
+            tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0 },
+          })}
+        />
+        <Tab.Screen
+          name="Credentials"
+          component={CredentialsTabScreen}
+          options={({ navigation }: RootTabScreenProps<'Credentials'>) => ({
+            tabBarIcon: ({ color }) => <TabBarIcon icon="account-box-multiple-outline" color={color} />,
+            tabBarLabelStyle: { fontSize: 12 },
+            tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0 },
+          })}
+        />
+        <Tab.Screen
+          name="Ownables"
+          component={OwnablesTabScreen}
+          options={({ navigation }: RootTabScreenProps<'Ownables'>) => ({
+            headerTitle: 'Ownables',
+            headerStyle: { height: 100 },
+            headerTitleStyle: { fontWeight: '800', marginLeft: 20 },
+            headerTitleAllowFontScaling: true,
+            tabBarIcon: ({ color }) => <TabBarIcon icon="bookmark-box-multiple-outline" color={color} />,
+            tabBarLabelStyle: { fontSize: 12 },
+            tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0 },
+          })}
+        />
+      </Tab.Navigator>
+    </>
   )
 }
+
+
+
+
+
+

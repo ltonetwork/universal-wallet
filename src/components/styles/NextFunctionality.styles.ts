@@ -4,7 +4,7 @@ import { Dimensions } from "react-native"
 
 export const StyledView = styled.View`
     align-items: center;
-    margin-top: -30px;
+    margin-top: 0px;
     margin-left: ${Dimensions.get("window").width * 0.12}px;
     margin-right: ${Dimensions.get("window").width * 0.12}px;
  `
@@ -21,6 +21,15 @@ export const StyledTitle = styled(Title)`
     font-size: 17px;
     font-weight: bold;
     margin-top: 5px;
+`
+
+export const MainTitle = styled(Title)`
+    color: #000000;
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-left: ${Dimensions.get("window").width * 0.12}px;
+    
 `
 
 export const StyledIcon = styled.Image`

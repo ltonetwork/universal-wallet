@@ -6,7 +6,7 @@ export default function TabBarIcon(props: { icon: React.ComponentProps<typeof Ic
         <IconButton
             testID='tab-bar-icon'
             size={35}
-            style={{ marginBottom: 3 }} {...props}
+            style={{ marginHorizontal: -15, marginVertical: -15 }} {...props}
         />
     )
 }

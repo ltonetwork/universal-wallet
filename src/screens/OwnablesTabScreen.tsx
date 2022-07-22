@@ -1,17 +1,22 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Paragraph } from 'react-native-paper'
+import { RootTabScreenProps } from '../../types'
+import OverviewHeader from '../components/OverviewHeader'
 import QRButton from '../components/QRIcon'
 import SocialMediaIcon from '../components/SocialMediaIcon'
-import { IconContainer, StyledImage, StyledTitle, StyledView } from '../components/styles/NextFunctionality.styles'
+import { IconContainer, MainTitle, StyledImage, StyledTitle, StyledView } from '../components/styles/NextFunctionality.styles'
 import { placeholderImage, socialMediaIcons } from '../utils/images'
 import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../utils/redirectSocialMedia'
-import { RootTabScreenProps } from '../../types'
 
 export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ownables'>) {
 
   return (
     <View>
+      <OverviewHeader
+        icon={"menu"}
+        onPress={() => navigation.navigate('Modal')}
+        input={<MainTitle>Ownables</MainTitle>} />
       <StyledView>
         <StyledImage source={placeholderImage}></StyledImage>
         <StyledTitle>This functionality will soon be available</StyledTitle>

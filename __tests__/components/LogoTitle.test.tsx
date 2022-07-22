@@ -1,9 +1,8 @@
 import React from "react"
-import LogoTitle from "../../src/components/LogoTitle"
+import OverviewHeader from "../../src/components/OverviewHeader"
 import { render } from "@testing-library/react-native"
 
 it("Should renders correctly", () => {
-    const { getByTestId } = render(<LogoTitle />)
-
+    const { getByTestId } = render(<OverviewHeader icon={""} input={undefined} />)
     expect(getByTestId("logo-title")).toBeTruthy()
 })
