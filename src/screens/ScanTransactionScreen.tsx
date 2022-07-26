@@ -1,18 +1,16 @@
 import { txFromData } from '@ltonetwork/lto'
 import { BarCodeScanner } from 'expo-barcode-scanner'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Text } from 'react-native-paper'
 import { RootStackScreenProps } from '../../types'
 import { CenteredView, ScannerContainer, StyledScanner, StyledText } from '../components/styles/ScanScreen.styles'
+import { MessageContext } from '../context/UserMessage.context'
 import LocalStorageService from '../services/LocalStorage.service'
-import SnackbarMessage from '../components/Snackbar'
 
 
 export default function ScanTransactionScreen({ navigation }: RootStackScreenProps<'ScanTransaction'>) {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [permission, setPermission] = useState<boolean>(true)
-    const [snackbarVisible, setSnackbarVisible] = useState(false)
-    const [snackbarMessage, setSnackbarMessage] = useState('')
 
     useEffect(() => {
         requestCameraPermission()
@@ -39,6 +37,8 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
 
     }, [])
 
+    const { setShowMessage, setMessageInfo } = useContext(MessageContext)
+
     const handleConfirmation = async (input: any) => {
         try {
             const myAccount = await LocalStorageService.getData('@accountData')
@@ -48,15 +48,15 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
             const transfer = JSON.parse(input)
 
             if (transfer.sender !== account.address) {
-                setSnackbarMessage('Sender address is not valid')
-                setSnackbarVisible(true)
+                setMessageInfo('Sender address is not valid!')
+                setShowMessage(true)
             } else {
                 transfer.sender = undefined
                 const transferObject = txFromData(transfer)
                 const signedTransfer = transferObject.signWith(account)
                 await lto.node.broadcast(signedTransfer)
-                setSnackbarMessage('Transfer sent successfully')
-                setSnackbarVisible(true)
+                setMessageInfo('Transfer sent successfully!')
+                setShowMessage(true)
             }
 
         } catch (error) {
@@ -87,7 +87,7 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
                     }}>
                     <StyledText>QR Scanner</StyledText>
                     <StyledText >Scan the QR code from LTO's web application to import your wallet into your mobile phone</StyledText>
-                    {snackbarVisible && <SnackbarMessage text={snackbarMessage} />}
+                    {/* {snackbarVisible && <SnackbarMessage text={snackbarMessage} />} */}
                 </StyledScanner>
             </ScannerContainer>
         )

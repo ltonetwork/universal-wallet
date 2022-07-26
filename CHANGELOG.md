@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- [Review and add user messages(notifications)](https://wealize.atlassian.net/browse/LTO22004-43)
 - [As a LTO user, I want to confirm sender matches from my mobile app](https://wealize.atlassian.net/browse/LTO22004-34)
 - [Refactor Bottom Tab navigator](https://wealize.atlassian.net/browse/LTO22004-46)
 - [Fix skip onboarding screen feature](https://wealize.atlassian.net/browse/LTO22004-45)

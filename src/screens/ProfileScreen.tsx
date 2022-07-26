@@ -1,10 +1,10 @@
 import { useClipboard } from '@react-native-community/clipboard'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Pressable, StatusBar, TouchableOpacity } from 'react-native'
 import { Card, Title } from 'react-native-paper'
-import SnackbarMessage from '../components/Snackbar'
 import Spinner from '../components/Spinner'
 import { CardsContainer, Content, Field, HiddenTitle, MainCard, StyledTitle } from '../components/styles/ProfileScreen.styles'
+import { MessageContext } from '../context/UserMessage.context'
 import LocalStorageService from '../services/LocalStorage.service'
 
 export default function ProfileScreen() {
@@ -15,7 +15,6 @@ export default function ProfileScreen() {
     const [isSeedBlur, setIsSeedBlur] = useState<boolean>(true)
     const [accountNickname, setAccountNickname] = useState<string>("")
     const [data, setString] = useClipboard()
-    const [snackbarVisible, setSnackbarVisible] = useState(false)
 
     const { address, publicKey, privateKey, seed } = accountInformation
 
@@ -52,12 +51,12 @@ export default function ProfileScreen() {
             .catch(err => console.log(err))
     }
 
+    const { setShowMessage, setMessageInfo } = useContext(MessageContext)
+
     const copyToClipboard = (data: string) => {
         setString(data)
-        setSnackbarVisible(true)
-        setTimeout(() => {
-            setSnackbarVisible(false)
-        }, 2000)
+        setShowMessage(true)
+        setMessageInfo('Copied to clipboard!')
     }
 
     return (
@@ -132,7 +131,6 @@ export default function ProfileScreen() {
                             </MainCard>
                         }
                     </TouchableOpacity>
-                    {snackbarVisible && <SnackbarMessage text={'Copied to clipboard!'} />}
                 </CardsContainer>
             }
         </>
