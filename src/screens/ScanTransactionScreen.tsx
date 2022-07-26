@@ -1,11 +1,11 @@
 import { txFromData } from '@ltonetwork/lto'
 import { BarCodeScanner } from 'expo-barcode-scanner'
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Text } from 'react-native-paper'
 import { RootStackScreenProps } from '../../types'
 import { CenteredView, ScannerContainer, StyledScanner, StyledText } from '../components/styles/ScanScreen.styles'
-import LocalStorageService from '../services/LocalStorage.service'
 import { MessageContext } from '../context/UserMessage.context'
+import LocalStorageService from '../services/LocalStorage.service'
 
 
 export default function ScanTransactionScreen({ navigation }: RootStackScreenProps<'ScanTransaction'>) {
@@ -46,6 +46,12 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
             const lto = new LTO('T')
             const account = lto.account({ seed: myAccount.seed })
             const transfer = JSON.parse(input)
+
+            // JUST FOR TESTING PURPOSES
+            transfer.sender = '3MuDkM9nu39623mEvN457uqNPhot7s6ZVaL' // wrong sender
+            transfer.timestamp = undefined
+            transfer.amount = 400000000
+            //
 
             if (transfer.sender !== account.address) {
                 setMessageInfo('Sender address is not valid!')

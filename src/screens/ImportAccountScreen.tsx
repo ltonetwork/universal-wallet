@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { RootStackScreenProps } from '../../types'
 import CheckBox from '../components/CheckBox'
-import SnackbarMessage from '../components/Snackbar'
 import Spinner from '../components/Spinner'
 import { StyledTitle, StyledView } from '../components/styles/Signin.styles'
 import { StyledButton } from '../components/styles/StyledButton.styles'
 import { StyledInput } from '../components/styles/StyledInput.styles'
 import TermsModal from '../components/TermsModal'
+import { MessageContext } from '../context/UserMessage.context'
 import LocalStorageService from '../services/LocalStorage.service'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+
 
 export default function ImportAccountScreen({ navigation }: RootStackScreenProps<'ImportAccount'>) {
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -22,7 +22,6 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
     const [checked, setChecked] = useState<boolean>(false)
     const [modalVisible, setModalVisible] = useState<boolean>(false)
-    const [snackbarVisible, setSnackbarVisible] = useState(false)
     const [accountAddress, setAccountAddress] = useState('')
 
     useEffect(() => {
@@ -43,6 +42,8 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
         setloginForm({ ...loginForm, [name]: value })
     }
 
+    const { setShowMessage, setMessageInfo } = useContext(MessageContext)
+
     const handleImportAccount = () => {
         if (loginForm.nickname === '') {
             alert('Nickname is required')
@@ -53,9 +54,9 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
         } else {
             LocalStorageService.storeData('@userAlias', loginForm)
                 .then(() => {
-                    setSnackbarVisible(true)
+                    setMessageInfo('Account imported successfully!')
                     setTimeout(() => {
-                        setSnackbarVisible(false)
+                        setShowMessage(true)
                         navigation.navigate('Root', { screen: 'Wallet' })
                     }
                         , 2000)
@@ -146,7 +147,6 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                             Import your account
                         </StyledButton>
                     </StyledView>
-                    {snackbarVisible && <SnackbarMessage text={'Wallet imported!'} />}
                 </StyledView >
 
             }

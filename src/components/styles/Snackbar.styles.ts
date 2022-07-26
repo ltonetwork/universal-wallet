@@ -7,7 +7,8 @@ export const SnackbarContainer = styled.View`
     position: absolute;
     justify-content: space-between;
     width: 100%;
-    height: ${Dimensions.get("window").height * 0.7}px;
+    height: ${Dimensions.get("window").height * 0.9}px;
+    
 `
 
 export const StyledSnackbar = styled(Snackbar)`
