@@ -1,21 +1,20 @@
 
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { MessageContext } from '../context/UserMessage.context'
 import { SnackbarContainer, StyledSnackbar } from './styles/Snackbar.styles'
 
 
-export default function SnackbarMessage(props: { text: string }) {
+export default function SnackbarMessage() {
 
-    const [visible, setVisible] = useState(true)
-
-    const onDismissSnackBar = () => setVisible(false)
+    const { showMessage, setShowMessage, messageInfo } = useContext(MessageContext)
 
     return (
         <SnackbarContainer>
             <StyledSnackbar
-                visible={visible}
-                duration={2000}
-                onDismiss={onDismissSnackBar}>
-                {props.text}
+                visible={showMessage}
+                duration={3000}
+                onDismiss={() => setShowMessage(false)}>
+                {messageInfo}
             </StyledSnackbar>
         </SnackbarContainer>
     )

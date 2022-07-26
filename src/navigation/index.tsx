@@ -24,7 +24,7 @@ import WalletTabScreen from '../screens/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
 import { backgroundImage, logoTitle } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
-
+import SnackbarMessage from '../components/Snackbar'
 
 const navTheme = {
   ...DefaultTheme,
@@ -43,6 +43,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : navTheme}>
       <Image source={backgroundImage} style={{ width, height, position: "absolute" }} />
+      <SnackbarMessage />
       <RootNavigator />
     </NavigationContainer >
   )
