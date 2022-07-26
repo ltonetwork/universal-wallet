@@ -1,8 +1,8 @@
 
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
+import { THREE_SECONDS_SNACK_DURATION } from '../constants/Quantities'
 import { MessageContext } from '../context/UserMessage.context'
 import { SnackbarContainer, StyledSnackbar } from './styles/Snackbar.styles'
-
 
 export default function SnackbarMessage() {
 
@@ -12,7 +12,7 @@ export default function SnackbarMessage() {
         <SnackbarContainer>
             <StyledSnackbar
                 visible={showMessage}
-                duration={3000}
+                duration={THREE_SECONDS_SNACK_DURATION}
                 onDismiss={() => setShowMessage(false)}>
                 {messageInfo}
             </StyledSnackbar>

@@ -71,7 +71,7 @@ function RootNavigator(): any {
       .then(data => {
         if (data === null) {
           setAppFirstLaunch(true)
-          LocalStorageService.storeData('@appFirstLaunch', 'false')
+          LocalStorageService.storeData('@appFirstLaunch', false)
         } else {
           setAppFirstLaunch(false)
         }

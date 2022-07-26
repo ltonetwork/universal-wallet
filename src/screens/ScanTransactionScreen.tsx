@@ -47,12 +47,6 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
             const account = lto.account({ seed: myAccount.seed })
             const transfer = JSON.parse(input)
 
-            // JUST FOR TESTING PURPOSES
-            transfer.sender = '3MuDkM9nu39623mEvN457uqNPhot7s6ZVaL' // wrong sender
-            transfer.timestamp = undefined
-            transfer.amount = 400000000
-            //
-
             if (transfer.sender !== account.address) {
                 setMessageInfo('Sender address is not valid!')
                 setShowMessage(true)
