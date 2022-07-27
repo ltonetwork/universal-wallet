@@ -4,6 +4,7 @@ import Footer from '../components/Footer'
 import Header from '../components/Header'
 import Slide from '../components/Slide'
 import slides from '../utils/slideList'
+import { StyledSafeAreaView } from '../components/styles/OnBoardingScreen.styles'
 
 export default function OnboardingScreen() {
 
@@ -29,13 +30,13 @@ export default function OnboardingScreen() {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, paddingTop: 50 }}>
+        <StyledSafeAreaView >
             <StatusBar backgroundColor='#F9E7FD' />
             <Header changeSlide={changeSlide} currentSlideIndex={currentSlideIndex} />
             <FlatList
                 ref={ref}
                 onMomentumScrollEnd={updateCurrentSlideIndex}
-                contentContainerStyle={{ height: height * 0.9, marginTop: 50 }}
+                contentContainerStyle={{ height: '100%', marginTop: 50 }}
                 showsHorizontalScrollIndicator={false}
                 horizontal
                 data={slides}
@@ -44,6 +45,6 @@ export default function OnboardingScreen() {
                 bounces={false}
             />
             <Footer currentSlideIndex={currentSlideIndex} />
-        </SafeAreaView>
+        </StyledSafeAreaView>
     )
 }
