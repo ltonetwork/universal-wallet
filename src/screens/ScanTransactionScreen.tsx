@@ -86,8 +86,7 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
                         }
                     }}>
                     <StyledText>QR Scanner</StyledText>
-                    <StyledText >Scan the QR code from LTO's web application to import your wallet into your mobile phone</StyledText>
-                    {/* {snackbarVisible && <SnackbarMessage text={snackbarMessage} />} */}
+                    <StyledText >Scan the QR code from LTO's web application to confirm your transfer with your mobile phone</StyledText>
                 </StyledScanner>
             </ScannerContainer>
         )
