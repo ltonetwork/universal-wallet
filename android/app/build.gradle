@@ -148,7 +148,7 @@ def getPassword(String currentUser, String keyChain) {
       stdout.toString().trim()
 }
 
-def pass = getPassword("javaguirre", "lto-android")
+def pass = getPassword(LTO_MAC_USERNAME, LTO_MAC_KEYSTORE_NAME)
 
 android {
     ndkVersion rootProject.ext.ndkVersion
