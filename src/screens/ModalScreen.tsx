@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Platform } from 'react-native'
 import { Card } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -10,6 +10,7 @@ import { ButtonContainer, Content, Field, InfoContainer, MainCard, StyledNicknam
 import { View } from '../components/Themed'
 import LocalStorageService from '../services/LocalStorage.service'
 import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../utils/redirectSocialMedia'
+import { MessageContext } from '../context/UserMessage.context'
 
 
 export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'>) {
@@ -37,12 +38,14 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
       .catch(err => console.log(err))
   }
 
+  const { setShowMessage, setMessageInfo } = useContext(MessageContext)
+
   const logOut = () => {
-    setSnackbarVisible(true)
-    setTimeout(() => {
-      navigation.replace('SignIn')
-    }, 2000)
+    setMessageInfo('Logout successful!')
+    setShowMessage(true)
+    navigation.replace('SignIn')
   }
+
 
   return (
     <SafeAreaView style={{ backgroundColor: 'white' }}>
@@ -68,8 +71,6 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
         <ModalButton text={'Telegram'} onPress={() => navigateToTelegram()} />
         <ModalButton text={'Log out'} onPress={() => logOut()} />
       </ButtonContainer>
-
-      {snackbarVisible && <SnackbarMessage text={'Session closed!'} />}
 
     </SafeAreaView>
   )

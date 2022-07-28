@@ -1,8 +1,9 @@
 import { BarCodeScanner } from 'expo-barcode-scanner'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Text } from 'react-native-paper'
 import { RootStackScreenProps } from '../../types'
 import { CenteredView, StyledScanner, StyledText, ScannerContainer } from '../components/styles/ScanScreen.styles'
+import { MessageContext } from '../context/UserMessage.context'
 import LocalStorageService from '../services/LocalStorage.service'
 
 
@@ -33,6 +34,8 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
         }
     }, [])
 
+    const { setShowMessage, setMessageInfo } = useContext(MessageContext)
+
     const handleQRScan = (input: any) => {
         const LTO = require("@ltonetwork/lto").LTO
         const lto = new LTO('T')
@@ -40,10 +43,18 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
         const auth = input
         const signature = account.sign(`lto:sign:${auth.url}`).base58
         const data = { address: account.address, privateKey: account.privateKey, publicKey: account.publicKey, signature, seed: account.seed }
-        LocalStorageService.storeData('@accountData', data)
-            .then(() => {
-                navigation.navigate('ImportAccount')
-            })
+        if (data) {
+            LocalStorageService.storeData('@accountData', data)
+                .then(() => {
+                    navigation.navigate('ImportAccount')
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+        } else {
+            setMessageInfo('Invalid QR code!')
+            setShowMessage(true)
+        }
     }
 
     if (isLoading) {
@@ -73,6 +84,10 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
             </ScannerContainer>
         )
     } else {
-        return <Text>Permission denied</Text>
+        return (
+            <CenteredView>
+                <Text>Permission denied</Text>
+            </CenteredView>
+        )
     }
 }
