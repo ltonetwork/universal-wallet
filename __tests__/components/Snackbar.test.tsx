@@ -1,21 +1,28 @@
 import React from "react"
 import { fireEvent, render } from "@testing-library/react-native"
+import { MessageContext } from "../../src/context/UserMessage.context"
+import { MessageProviderWrapper } from "../../src/context/UserMessage.context"
 import SnackbarMessage from "../../src/components/Snackbar"
 
+jest.useFakeTimers()
 
-const mockedProps = {
-    open: true,
-    message: "Test message",
-    onClose: jest.fn(),
-}
+jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper')
 
-it("should render correctly and hide after 2 seconds", () => {
-    const { getByText } = render(<SnackbarMessage text={mockedProps.message} {...mockedProps} />)
 
-    const SnackbarText = getByText(mockedProps.message)
+it("Should renders correctly", () => {
+    const { getByRole, getByText } = render(
+        <MessageProviderWrapper>
+            <SnackbarMessage />
+        </MessageProviderWrapper>
+    )
 
-    expect(SnackbarText).toBeTruthy()
+    const iconButton = getByRole("button")
+    const input = getByText("")
+
+    expect(iconButton).toBeTruthy()
+    expect(input).toBeTruthy()
 })
+
 
 
 
