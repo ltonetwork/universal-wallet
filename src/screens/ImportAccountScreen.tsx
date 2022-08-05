@@ -20,6 +20,7 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
     })
 
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
+    const [repeatedPasswordVisible, setRepeatedPasswordVisible] = useState<boolean>(true)
     const [checked, setChecked] = useState<boolean>(false)
     const [modalVisible, setModalVisible] = useState<boolean>(false)
     const [accountAddress, setAccountAddress] = useState('')
@@ -108,11 +109,11 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                         label="Repeat password"
                         value={loginForm.passwordConfirmation}
                         onChangeText={(text) => handleInputChange('passwordConfirmation', text)}
-                        secureTextEntry={passwordVisible}
+                        secureTextEntry={repeatedPasswordVisible}
                         placeholder="Type your password again..."
                         right={<StyledInput.Icon
-                            name={passwordVisible ? "eye" : "eye-off"}
-                            onPress={() => setPasswordVisible(!passwordVisible)} />}>
+                            name={repeatedPasswordVisible ? "eye" : "eye-off"}
+                            onPress={() => setRepeatedPasswordVisible(!repeatedPasswordVisible)} />}>
                     </StyledInput>
 
                     <CheckBox
