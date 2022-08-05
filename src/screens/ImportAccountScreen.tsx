@@ -47,20 +47,21 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
 
     const handleImportAccount = () => {
         if (loginForm.nickname === '') {
-            alert('Nickname is required')
+            setShowMessage(true)
+            setMessageInfo('Nickname is required!')
         } else if (loginForm.password === '') {
-            alert('Password is required')
+            setShowMessage(true)
+            setMessageInfo('Password is required!')
         } else if (loginForm.password !== loginForm.passwordConfirmation) {
-            alert('Passwords do not match')
+            setShowMessage(true)
+            setMessageInfo('Passwords do not match!')
         } else {
             LocalStorageService.storeData('@userAlias', loginForm)
                 .then(() => {
-                    setMessageInfo('Account imported successfully!')
-                    setTimeout(() => {
-                        setShowMessage(true)
-                        navigation.navigate('Root', { screen: 'Wallet' })
-                    }
-                        , 2000)
+                    setIsLoading(true)
+                    setShowMessage(true)
+                    setMessageInfo('Account imported succesfully!')
+                    navigation.navigate('Root', { screen: 'Wallet' })
                 })
                 .catch(err => console.log(err))
         }
