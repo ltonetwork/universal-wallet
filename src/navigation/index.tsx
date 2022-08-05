@@ -98,7 +98,7 @@ function RootNavigator(): any {
         <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen} options={{ headerTitle: 'Go back', }} />
-        <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Group>
           <Stack.Screen name="Modal" component={ModalScreen}
             options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
               headerBackVisible: false,
@@ -115,9 +115,11 @@ function RootNavigator(): any {
             })} />
           <Stack.Screen name="Profile" component={ProfileScreen}
             options={{
-              headerTitle: 'Profile',
+              headerTitle: '',
+              headerBackTitle: 'Profile',
               headerStyle: { backgroundColor: '#ffffff' }
             }} />
+
         </Stack.Group>
       </Stack.Navigator>
     )
