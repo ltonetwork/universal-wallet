@@ -1,21 +1,20 @@
 import { StatusBar } from 'expo-status-bar'
-import React, { useEffect, useState, useContext } from 'react'
-import { Platform } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
 import { Card } from 'react-native-paper'
-import { SafeAreaView } from 'react-native-safe-area-context'
 import { RootStackScreenProps } from '../../types'
 import ModalButton from '../components/ModalButton'
-import SnackbarMessage from '../components/Snackbar'
-import { ButtonContainer, Content, Field, InfoContainer, MainCard, StyledNickname } from '../components/styles/ModalScreen.styles'
+import OverviewHeader from '../components/OverviewHeader'
+import { ButtonContainer, Container, Content, Field, InfoContainer, MainCard, StyledNickname } from '../components/styles/ModalScreen.styles'
+import { StyledImage } from '../components/styles/OverviewHeader.styles'
 import { View } from '../components/Themed'
-import LocalStorageService from '../services/LocalStorage.service'
-import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../utils/redirectSocialMedia'
 import { MessageContext } from '../context/UserMessage.context'
+import LocalStorageService from '../services/LocalStorage.service'
+import { logoTitle } from '../utils/images'
+import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../utils/redirectSocialMedia'
 
 
 export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'>) {
 
-  const [snackbarVisible, setSnackbarVisible] = useState(false)
   const [accountAddress, setAccountAddress] = useState('')
   const [accountNickname, setAccountNickname] = useState('')
 
@@ -48,8 +47,12 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
 
 
   return (
-    <SafeAreaView style={{ backgroundColor: 'white' }}>
-      <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
+    <Container>
+      <StatusBar style={'dark'} backgroundColor={'#ffffff'} />
+      <OverviewHeader
+        icon={"close"}
+        onPress={() => navigation.goBack()}
+        input={<StyledImage testID="logo-title" source={logoTitle} />} />
 
       <InfoContainer>
         <MainCard >
@@ -72,6 +75,8 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
         <ModalButton text={'Log out'} onPress={() => logOut()} />
       </ButtonContainer>
 
-    </SafeAreaView>
+    </Container>
+
   )
+
 }

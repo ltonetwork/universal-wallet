@@ -25,5 +25,3 @@ export default function OverviewHeader(props: {
 
   )
 }
-
-// posicion icono de qr

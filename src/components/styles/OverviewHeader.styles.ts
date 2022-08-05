@@ -4,10 +4,8 @@ import { Image } from 'react-native'
 export const HeaderContainer = styled.View`
     justify-content: space-between; 
     flex-direction: row; 
-    margin-top: 23px; 
     background-color: #ffffff; 
-    height: 60px; 
-    padding-top: 10px;
+    height: 50px; 
 `
 
 export const StyledImage = styled(Image)`

@@ -1,6 +1,11 @@
 import styled from "styled-components/native"
 import { Title } from "react-native-paper"
 import { Dimensions } from "react-native"
+import { Platform } from "react-native"
+
+export const Container = styled.SafeAreaView`
+    margin-top: 20px;
+`
 
 export const StyledView = styled.View`
     align-items: center;
@@ -18,8 +23,14 @@ export const StyledImage = styled.Image`
 
 export const StyledTitle = styled(Title)`
     color: #000000;
-    font-size: 17px;
+    font-size: ${Platform.OS === 'android' ? '17px' : '15px'}
     font-weight: bold;
+    margin-top: 5px;
+`
+
+export const StyledText = styled.Text`
+    color: #000000;
+    font-size: ${Platform.OS === 'android' ? '14px' : '13px'}
     margin-top: 5px;
 `
 
@@ -27,15 +38,15 @@ export const MainTitle = styled(Title)`
     color: #000000;
     font-size: 22px;
     font-weight: bold;
-    margin-top: 5px;
+    margin-top: 9px;
     margin-left: ${Dimensions.get("window").width * 0.12}px;
-    
 `
 
 export const StyledIcon = styled.Image`
     resize-mode: contain;
     width: 21px;    
     height: 21px;
+    margin-top: 12px;
 `
 
 export const IconContainer = styled.View`

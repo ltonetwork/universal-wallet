@@ -101,17 +101,7 @@ function RootNavigator(): any {
         <Stack.Group>
           <Stack.Screen name="Modal" component={ModalScreen}
             options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
-              headerBackVisible: false,
-              headerLeft: () => (<ModalImage testID="logo-title" source={logoTitle} />),
-              headerTitleStyle: { color: 'transparent' },
-              headerStyle: { backgroundColor: '#ffffff' },
-              headerRight: () => (
-                <IconButton
-                  icon='close'
-                  color={Colors[colorScheme].tint}
-                  size={25}
-                  onPress={() => navigation.navigate('Root')} />
-              )
+              headerShown: false,
             })} />
           <Stack.Screen name="Profile" component={ProfileScreen}
             options={{

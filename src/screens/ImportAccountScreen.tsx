@@ -141,7 +141,7 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                     <StyledView marginTop={70}>
                         <StyledButton
                             mode="contained"
-                            disabled={false} // {!checked && true} mark as disabled if checkbox is not checked
+                            disabled={!checked && true}
                             uppercase={false}
                             labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                             onPress={() => handleImportAccount()

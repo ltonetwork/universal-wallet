@@ -1,8 +1,9 @@
 import { Card } from 'react-native-paper'
 import styled from 'styled-components/native'
 
-export const OverviewContainer = styled.View`
+export const OverviewContainer = styled.SafeAreaView`
     align-content: center;
+    margin-top: 20px;
 `
 
 export const AmountContainer = styled.View`
@@ -12,7 +13,7 @@ export const AmountContainer = styled.View`
 
 export const TopCardsContainer = styled.View`
     display: flex;
-    margin-top: -7px;
+    margin-top: 0px;
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
