@@ -9,6 +9,7 @@ export default function CheckBox(props: {
     return (
         <View>
             <Checkbox.Item
+                style={{ backgroundColor: '#ffffff' }}
                 position='leading'
                 onPress={() => props.onPress()}
                 color={'#A017B7'}
