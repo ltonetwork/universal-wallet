@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
+import React, { useEffect, useState } from 'react'
 import { Card, Paragraph, Title } from 'react-native-paper'
 import { RootTabScreenProps } from '../../types'
 import OverviewHeader from '../components/OverviewHeader'
@@ -12,7 +12,6 @@ import CoinMarketCapService from '../services/CoinMarketCap.service'
 import LocalStorageService from '../services/LocalStorage.service'
 import { formatNumber } from '../utils/formatNumber'
 import { logoTitle } from "../utils/images"
-import { Platform } from 'react-native'
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 

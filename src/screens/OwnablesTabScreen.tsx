@@ -19,7 +19,7 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
         input={<MainTitle>Ownables</MainTitle>} />
       <StyledView>
         <StyledImage source={placeholderImage}></StyledImage>
-        <StyledTitle>This functionality will soon be available</StyledTitle>
+        <StyledTitle>This feature will soon be available</StyledTitle>
         <StyledText>Follow us on our social networks to stay up to date with the latest news about the application.</StyledText>
         <IconContainer>
           <SocialMediaIcon source={socialMediaIcons.twitter} onPress={() => navigateToTwitter()} />

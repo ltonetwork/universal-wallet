@@ -4,9 +4,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
 import { ColorSchemeName, Dimensions, Image, useWindowDimensions } from 'react-native'
-import { IconButton } from 'react-native-paper'
 import { RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from '../../types'
-import { ModalImage } from '../components/styles/OverviewHeader.styles'
+import SnackbarMessage from '../components/Snackbar'
 import TabBarIcon from '../components/TabBarIcon'
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
@@ -22,9 +21,8 @@ import ScanTransactionScreen from '../screens/ScanTransactionScreen'
 import SignInScreen from '../screens/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
-import { backgroundImage, logoTitle } from '../utils/images'
+import { backgroundImage } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
-import SnackbarMessage from '../components/Snackbar'
 
 const navTheme = {
   ...DefaultTheme,
@@ -93,11 +91,11 @@ function RootNavigator(): any {
           <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
         )}
         <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerTitle: 'Back to Sign In', headerTransparent: true }} />
-        <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: 'Back to Sign In' }} />
+        <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerBackTitle: 'Back to Sign In', headerTransparent: true, headerTitle: '' }} />
+        <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: '' }} />
         <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-        <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen} options={{ headerTitle: 'Go back', }} />
+        <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen} options={{ headerBackTitle: 'Go back', headerTransparent: true, headerTitle: '' }} />
         <Stack.Group>
           <Stack.Screen name="Modal" component={ModalScreen}
             options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
