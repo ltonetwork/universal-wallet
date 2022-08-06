@@ -31,7 +31,11 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
         if (userAlias?.nickname === undefined) {
             setMessageInfo("Please import your account first!")
             setShowMessage(true)
-        } else if (password === "") {
+        } else if (userAlias?.nickname === null) {
+            setMessageInfo("Please import your account first!")
+            setShowMessage(true)
+        }
+        else if (password === "") {
             setMessageInfo("Password is required!")
             setShowMessage(true)
         } else if (password !== userAlias?.password) {
@@ -49,14 +53,16 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
 
                 <StyledTitle>Sign in</StyledTitle>
                 <StyledText>Sign in with your account name and password</StyledText>
-                <StyledInput
-                    mode={'flat'}
-                    style={{ marginBottom: 5 }}
-                    disabled={true}
-                    label="Nickname"
-                    value={userAlias?.nickname}
-                >
-                </StyledInput>
+                {userAlias?.nickname !== undefined &&
+                    <StyledInput
+                        mode={'flat'}
+                        style={{ marginBottom: 5 }}
+                        disabled={true}
+                        label="Nickname"
+                        value={userAlias?.nickname}
+                    >
+                    </StyledInput>
+                }
                 <StyledInput
                     label="Wallet password"
                     value={password}

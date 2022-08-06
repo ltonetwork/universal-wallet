@@ -49,9 +49,15 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
         if (loginForm.nickname === '') {
             setShowMessage(true)
             setMessageInfo('Nickname is required!')
+        } else if (loginForm.nickname.includes(' ') && loginForm.nickname.length < 3) {
+            setShowMessage(true)
+            setMessageInfo('Nickname must be at least 3 characters long!')
         } else if (loginForm.password === '') {
             setShowMessage(true)
             setMessageInfo('Password is required!')
+        } else if (loginForm.password.includes(' ') && loginForm.password.length < 3) {
+            setShowMessage(true)
+            setMessageInfo('Password must be at least 3 characters long!')
         } else if (loginForm.password !== loginForm.passwordConfirmation) {
             setShowMessage(true)
             setMessageInfo('Passwords do not match!')
