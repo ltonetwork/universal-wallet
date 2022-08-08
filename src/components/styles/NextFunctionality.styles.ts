@@ -1,10 +1,9 @@
-import styled from "styled-components/native"
+import { Dimensions, Platform } from "react-native"
 import { Title } from "react-native-paper"
-import { Dimensions } from "react-native"
-import { Platform } from "react-native"
+import styled from "styled-components/native"
 
 export const Container = styled.SafeAreaView`
-    margin-top: 20px;
+    margin-top: 0px;
 `
 
 export const StyledView = styled.View`

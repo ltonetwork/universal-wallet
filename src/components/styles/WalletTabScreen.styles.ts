@@ -1,9 +1,10 @@
 import { Card, Paragraph, Title } from 'react-native-paper'
 import styled from 'styled-components/native'
+import { Platform } from 'react-native'
 
 export const OverviewContainer = styled.SafeAreaView`
     align-content: center;
-    margin-top: 20px;
+    margin-top: -1px;
 `
 
 export const AmountContainer = styled.View`
@@ -63,7 +64,8 @@ export const BlueText = styled(Paragraph)`
 export const RedText = styled(Paragraph)`
     color: #DD4794;
 `
+
 export const Amount = styled(Title)`
-    font-family: 'Overpass-Regular, sans-serif';
+    font-family: ${Platform.OS === 'android' ? 'Overpass-Regular' : 'Arial'};
     font-weight: 700;
 `

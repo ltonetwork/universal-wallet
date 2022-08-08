@@ -13,6 +13,7 @@ import LocalStorageService from '../services/LocalStorage.service'
 import { formatNumber } from '../utils/formatNumber'
 import { logoTitle } from "../utils/images"
 import { FieldName, BlueText, RedText, Amount } from '../components/styles/WalletTabScreen.styles'
+import StatusBarIOS from '../components/StatusBarIOS'
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 
@@ -77,8 +78,8 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                 <Spinner />
                 :
                 <>
+                    <StatusBarIOS backgroundColor={'#ffffff'} />
                     <OverviewContainer>
-                        <StatusBar style={'dark'} backgroundColor={'#ffffff'} />
                         <OverviewHeader
                             icon={"menu"}
                             onPress={() => navigation.navigate('Modal')}
