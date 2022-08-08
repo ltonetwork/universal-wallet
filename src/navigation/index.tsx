@@ -3,7 +3,7 @@ import { DarkTheme, DefaultTheme, NavigationContainer, useNavigation } from '@re
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { ColorSchemeName, Dimensions, Image, useWindowDimensions } from 'react-native'
+import { ColorSchemeName, Dimensions, Image, Platform, useWindowDimensions } from 'react-native'
 import { RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from '../../types'
 import SnackbarMessage from '../components/Snackbar'
 import TabBarIcon from '../components/TabBarIcon'
@@ -127,7 +127,7 @@ function BottomTabNavigator() {
       initialLayout={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
-        tabBarStyle: { height: 65 },
+        tabBarStyle: { height: 75 },
       }}
     >
       <Tab.Screen

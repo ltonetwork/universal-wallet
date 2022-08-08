@@ -1,4 +1,4 @@
-import { Card } from 'react-native-paper'
+import { Card, Paragraph, Title } from 'react-native-paper'
 import styled from 'styled-components/native'
 
 export const OverviewContainer = styled.SafeAreaView`
@@ -41,13 +41,29 @@ export const BottomCardsContainer = styled.View`
 `
 
 export const BottomCard = styled(Card)`
-    shadow-color: #A9F2F7;
+    shadow-color: #E1F9FC;
     shadow-offset: 5px 9px;
     shadow-opacity: 0.5;
-    box-shadow: 10px 5px 5px #A9F2F7;
+    box-shadow: 10px 5px 5px #E1F9FC;
     shadow-radius: 10px;
     border-radius: 20px;
     elevation: 5;
     width: 160px;
     height: auto;
+`
+
+export const FieldName = styled(Paragraph)`
+    opacity: 0.5;
+`
+
+export const BlueText = styled(Paragraph)`
+    color: #3BCDE3;
+`
+
+export const RedText = styled(Paragraph)`
+    color: #DD4794;
+`
+export const Amount = styled(Title)`
+    font-family: 'Overpass-Regular, sans-serif';
+    font-weight: 700;
 `

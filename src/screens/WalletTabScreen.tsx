@@ -12,6 +12,7 @@ import CoinMarketCapService from '../services/CoinMarketCap.service'
 import LocalStorageService from '../services/LocalStorage.service'
 import { formatNumber } from '../utils/formatNumber'
 import { logoTitle } from "../utils/images"
+import { FieldName, BlueText, RedText, Amount } from '../components/styles/WalletTabScreen.styles'
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 
@@ -87,19 +88,19 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
                             <TopCard>
                                 <Card.Content style={{ borderRadius: 80 }}>
-                                    <Paragraph>Regular account</Paragraph>
+                                    <FieldName>Regular account</FieldName>
                                     <AmountContainer>
-                                        <Title>{formatNumber(regular)}</Title><Paragraph>LTO</Paragraph>
+                                        <Amount>{formatNumber(regular)}</Amount><Paragraph>LTO</Paragraph>
                                     </AmountContainer>
-                                    <Paragraph>Equivalent to {formatNumber(change)}$</Paragraph>
+                                    <BlueText>Equivalent to {formatNumber(change)}$</BlueText>
                                 </Card.Content>
                             </TopCard>
 
                             <TopCard>
                                 <Card.Content>
-                                    <Paragraph>Prize</Paragraph>
-                                    <Title>{price?.toFixed(3)}</Title>
-                                    <Paragraph>{percent_change_24h?.toFixed(2)}%(last 24h)</Paragraph>
+                                    <FieldName>Prize</FieldName>
+                                    <Amount>{price?.toFixed(3)}$</Amount>
+                                    <RedText>{percent_change_24h?.toFixed(2)}%(last 24h)</RedText>
                                 </Card.Content>
                             </TopCard>
 
@@ -109,18 +110,18 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
                             <BottomCard>
                                 <Card.Content>
-                                    <Paragraph>Generating</Paragraph>
+                                    <FieldName>Generating</FieldName>
                                     <AmountContainer>
-                                        <Title>{formatNumber(generating)}</Title><Paragraph>LTO</Paragraph>
+                                        <Amount>{formatNumber(generating)}</Amount><Paragraph>LTO</Paragraph>
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
 
                             <BottomCard >
                                 <Card.Content>
-                                    <Paragraph>Available</Paragraph>
+                                    <FieldName>Available</FieldName>
                                     <AmountContainer>
-                                        <Title>{formatNumber(available)}</Title><Paragraph>LTO</Paragraph>
+                                        <Amount>{formatNumber(available)}</Amount><Paragraph>LTO</Paragraph>
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
@@ -131,25 +132,24 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
                             <BottomCard >
                                 <Card.Content>
-                                    <Paragraph>Effective</Paragraph>
+                                    <FieldName>Effective</FieldName>
                                     <AmountContainer>
-                                        <Title>{formatNumber(change)}</Title><Paragraph>$</Paragraph>
+                                        <Amount>{formatNumber(change)}</Amount><Paragraph>$</Paragraph>
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
 
                             <BottomCard >
                                 <Card.Content>
-                                    <Paragraph>Unbonding</Paragraph>
-                                    <Title>{formatNumber(unbonding)}</Title>
+                                    <FieldName>Unbonding</FieldName>
+                                    <Amount>{formatNumber(unbonding)}</Amount>
                                 </Card.Content>
                             </BottomCard>
 
                         </BottomCardsContainer>
 
-
+                        <QRButton onPress={() => navigation.navigate('ScanTransaction')} />
                     </OverviewContainer>
-                    <QRButton onPress={() => navigation.navigate('ScanTransaction')} />
                 </>
             }
         </>

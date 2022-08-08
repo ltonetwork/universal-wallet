@@ -22,8 +22,9 @@ export const ButtonContainer = styled.View`
     `
 
 export const MainCard = styled(Card)`
-    width: 360px;
+    width: 370px;
     height: auto;
+    margin-left: -12px;
     background-color: transparent;
     box-shadow: 0px 0px 0px #ffffff;
 `
