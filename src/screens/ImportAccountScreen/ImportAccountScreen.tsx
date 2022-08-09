@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { RootStackScreenProps } from '../../types'
-import CheckBox from '../components/CheckBox'
-import Spinner from '../components/Spinner'
-import { StyledTitle, StyledView } from '../components/styles/ImportAccountScreen.styles'
-import { StyledButton } from '../components/styles/StyledButton.styles'
-import { StyledInput } from '../components/styles/StyledInput.styles'
-import TermsModal from '../components/TermsModal'
-import { MessageContext } from '../context/UserMessage.context'
-import LocalStorageService from '../services/LocalStorage.service'
+import { RootStackScreenProps } from '../../../types'
+import CheckBox from '../../components/CheckBox'
+import Spinner from '../../components/Spinner'
+import { StyledTitle, StyledView } from './ImportAccountScreen.styles'
+import { StyledButton } from '../../components/styles/StyledButton.styles'
+import { StyledInput } from '../../components/styles/StyledInput.styles'
+import TermsModal from '../../components/TermsModal'
+import { MessageContext } from '../../context/UserMessage.context'
+import LocalStorageService from '../../services/LocalStorage.service'
 
 
 export default function ImportAccountScreen({ navigation }: RootStackScreenProps<'ImportAccount'>) {

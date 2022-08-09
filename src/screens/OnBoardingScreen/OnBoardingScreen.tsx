@@ -1,10 +1,10 @@
 import React, { useRef, useState } from 'react'
 import { FlatList, StatusBar, useWindowDimensions } from 'react-native'
-import Footer from '../components/Footer'
-import Header from '../components/Header'
-import Slide from '../components/Slide'
-import { StyledSafeAreaView } from '../components/styles/OnBoardingScreen.styles'
-import slides from '../utils/slideList'
+import Footer from '../../components/Footer'
+import Header from '../../components/Header'
+import Slide from '../../components/Slide'
+import { StyledSafeAreaView } from './OnBoardingScreen.styles'
+import slides from '../../utils/slideList'
 
 export default function OnboardingScreen() {
 

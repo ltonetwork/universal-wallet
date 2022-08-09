@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { View } from 'react-native'
-import { RootStackScreenProps } from '../../types'
-import { StyledText, StyledTitle, Container, ButtonContainer } from '../components/styles/SignInScreen.styles'
-import { StyledButton } from '../components/styles/StyledButton.styles'
-import { StyledInput } from '../components/styles/StyledInput.styles'
-import LocalStorageService from '../services/LocalStorage.service'
-import { MessageContext } from '../context/UserMessage.context'
+import { RootStackScreenProps } from '../../../types'
+import { StyledText, StyledTitle, Container, ButtonContainer } from './SignInScreen.styles'
+import { StyledButton } from '../../components/styles/StyledButton.styles'
+import { StyledInput } from '../../components/styles/StyledInput.styles'
+import LocalStorageService from '../../services/LocalStorage.service'
+import { MessageContext } from '../../context/UserMessage.context'
 
 
 export default function SignInScreen({ navigation }: RootStackScreenProps<'SignIn'>) {

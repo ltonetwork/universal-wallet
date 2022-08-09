@@ -2,10 +2,10 @@ import { txFromData } from '@ltonetwork/lto'
 import { BarCodeScanner } from 'expo-barcode-scanner'
 import React, { useContext, useEffect, useState } from 'react'
 import { Text } from 'react-native-paper'
-import { RootStackScreenProps } from '../../types'
-import { CenteredView, ScannerContainer, StyledScanner, StyledText } from '../components/styles/ScanScreen.styles'
-import { MessageContext } from '../context/UserMessage.context'
-import LocalStorageService from '../services/LocalStorage.service'
+import { RootStackScreenProps } from '../../../types'
+import { CenteredView, ScannerContainer, StyledScanner, StyledText } from '../ScanKeyScreen/ScanScreen.styles'
+import { MessageContext } from '../../context/UserMessage.context'
+import LocalStorageService from '../../services/LocalStorage.service'
 
 
 export default function ScanTransactionScreen({ navigation }: RootStackScreenProps<'ScanTransaction'>) {

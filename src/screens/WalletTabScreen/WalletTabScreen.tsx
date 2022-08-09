@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Paragraph } from 'react-native-paper'
-import { RootTabScreenProps } from '../../types'
-import OverviewHeader from '../components/OverviewHeader'
-import QRButton from '../components/QRButton'
-import Spinner from '../components/Spinner'
-import StatusBarIOS from '../components/StatusBarIOS'
-import { StyledImage } from '../components/styles/OverviewHeader.styles'
+import { RootTabScreenProps } from '../../../types'
+import OverviewHeader from '../../components/OverviewHeader'
+import QRButton from '../../components/QRButton'
+import Spinner from '../../components/Spinner'
+import StatusBarIOS from '../../components/StatusBarIOS'
+import { StyledImage } from '../../components/styles/OverviewHeader.styles'
 import {
     Amount,
     AmountContainer,
@@ -17,12 +17,12 @@ import {
     RedText,
     TopCard,
     TopCardsContainer
-} from '../components/styles/WalletTabScreen.styles'
-import ApiClientService from '../services/ApiClient.service'
-import CoinMarketCapService from '../services/CoinMarketCap.service'
-import LocalStorageService from '../services/LocalStorage.service'
-import { formatNumber } from '../utils/formatNumber'
-import { logoTitle } from "../utils/images"
+} from './WalletTabScreen.styles'
+import ApiClientService from '../../services/ApiClient.service'
+import CoinMarketCapService from '../../services/CoinMarketCap.service'
+import LocalStorageService from '../../services/LocalStorage.service'
+import { formatNumber } from '../../utils/formatNumber'
+import { logoTitle } from "../../utils/images"
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 

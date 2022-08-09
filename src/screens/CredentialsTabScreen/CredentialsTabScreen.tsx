@@ -1,24 +1,23 @@
 import React from 'react'
-import { RootTabScreenProps } from '../../types'
-import OverviewHeader from '../components/OverviewHeader'
-import QRButton from '../components/QRButton'
-import SocialMediaIcon from '../components/SocialMediaIcon'
-import StatusBarIOS from '../components/StatusBarIOS'
-import { Container, IconContainer, MainTitle, StyledImage, StyledText, StyledTitle, StyledView } from '../components/styles/NextFunctionality.styles'
-import { placeholderImage, socialMediaIcons } from '../utils/images'
-import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../utils/redirectSocialMedia'
+import { RootTabScreenProps } from '../../../types'
+import OverviewHeader from '../../components/OverviewHeader'
+import QRButton from '../../components/QRButton'
+import SocialMediaIcon from '../../components/SocialMediaIcon'
+import StatusBarIOS from '../../components/StatusBarIOS'
+import { Container, IconContainer, MainTitle, StyledImage, StyledText, StyledTitle, StyledView } from '../../components/styles/NextFunctionality.styles'
+import { placeholderImage, socialMediaIcons } from '../../utils/images'
+import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../../utils/redirectSocialMedia'
 
-export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ownables'>) {
+export default function CredentialsTabScreen({ navigation }: RootTabScreenProps<'Credentials'>) {
 
   return (
     <>
-
       <StatusBarIOS backgroundColor={'#ffffff'} />
       <Container>
         <OverviewHeader
           icon={"menu"}
           onPress={() => navigation.navigate('Modal')}
-          input={<MainTitle>Ownables</MainTitle>} />
+          input={<MainTitle>Credentials</MainTitle>} />
         <StyledView>
           <StyledImage source={placeholderImage}></StyledImage>
           <StyledTitle>This feature will soon be available</StyledTitle>
