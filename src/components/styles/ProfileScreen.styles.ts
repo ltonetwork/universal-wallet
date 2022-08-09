@@ -17,10 +17,10 @@ export const StyledTitle = styled(Title)`
 
 export const MainCard = styled(Card) <{ justifyContent?: string, alignItems?: string }>`
     margin-top: 10px;
-    shadow-color: #A9F2F7;
+    shadow-color: #E1F9FC;
     shadow-offset: 5px 9px;
     shadow-opacity: 0.5;
-    box-shadow: 10px 5px 5px #A9F2F7;
+    box-shadow: 10px 5px 5px #E1F9FC;
     shadow-radius: 10px;
     border-radius: 20px;
     elevation: 5;

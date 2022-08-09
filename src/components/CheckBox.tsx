@@ -9,10 +9,12 @@ export default function CheckBox(props: {
     return (
         <View>
             <Checkbox.Item
+                style={{ paddingRight: 30 }}
                 position='leading'
                 onPress={() => props.onPress()}
                 color={'#A017B7'}
                 label="Accept terms and conditions"
+                labelStyle={{ color: '#A017B7' }}
                 status={props.status} />
         </View>
     )

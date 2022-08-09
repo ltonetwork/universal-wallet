@@ -1,8 +1,10 @@
-import { Card } from 'react-native-paper'
+import { Card, Paragraph, Title } from 'react-native-paper'
 import styled from 'styled-components/native'
+import { Platform } from 'react-native'
 
-export const OverviewContainer = styled.View`
+export const OverviewContainer = styled.SafeAreaView`
     align-content: center;
+    margin-top: -1px;
 `
 
 export const AmountContainer = styled.View`
@@ -12,7 +14,7 @@ export const AmountContainer = styled.View`
 
 export const TopCardsContainer = styled.View`
     display: flex;
-    margin-top: -7px;
+    margin-top: 0px;
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
@@ -40,13 +42,30 @@ export const BottomCardsContainer = styled.View`
 `
 
 export const BottomCard = styled(Card)`
-    shadow-color: #A9F2F7;
+    shadow-color: #E1F9FC;
     shadow-offset: 5px 9px;
     shadow-opacity: 0.5;
-    box-shadow: 10px 5px 5px #A9F2F7;
+    box-shadow: 10px 5px 5px #E1F9FC;
     shadow-radius: 10px;
     border-radius: 20px;
     elevation: 5;
     width: 160px;
     height: auto;
+`
+
+export const FieldName = styled(Paragraph)`
+    opacity: 0.5;
+`
+
+export const BlueText = styled(Paragraph)`
+    color: #3BCDE3;
+`
+
+export const RedText = styled(Paragraph)`
+    color: #DD4794;
+`
+
+export const Amount = styled(Title)`
+    font-family: ${Platform.OS === 'android' ? 'Overpass-Regular' : 'Arial'};
+    font-weight: 700;
 `

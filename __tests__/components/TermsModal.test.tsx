@@ -12,7 +12,6 @@ const mockedState = {
 it('Should shows the children and a close button', () => {
     const { getByRole, getByText } = render(<TermsModal
         visible={true}
-        modalVisible={true}
         onClose={mockedState.setModalVisible(false)}
         onRequestClose={mockedState.setModalVisible(false)}
         setChecked={mockedState.setChecked}

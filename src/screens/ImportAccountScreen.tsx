@@ -20,6 +20,7 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
     })
 
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
+    const [repeatedPasswordVisible, setRepeatedPasswordVisible] = useState<boolean>(true)
     const [checked, setChecked] = useState<boolean>(false)
     const [modalVisible, setModalVisible] = useState<boolean>(false)
     const [accountAddress, setAccountAddress] = useState('')
@@ -46,20 +47,27 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
 
     const handleImportAccount = () => {
         if (loginForm.nickname === '') {
-            alert('Nickname is required')
+            setShowMessage(true)
+            setMessageInfo('Nickname is required!')
+        } else if (loginForm.nickname.includes(' ') && loginForm.nickname.length < 3) {
+            setShowMessage(true)
+            setMessageInfo('Nickname must be at least 3 characters long!')
         } else if (loginForm.password === '') {
-            alert('Password is required')
+            setShowMessage(true)
+            setMessageInfo('Password is required!')
+        } else if (loginForm.password.includes(' ') && loginForm.password.length < 3) {
+            setShowMessage(true)
+            setMessageInfo('Password must be at least 3 characters long!')
         } else if (loginForm.password !== loginForm.passwordConfirmation) {
-            alert('Passwords do not match')
+            setShowMessage(true)
+            setMessageInfo('Passwords do not match!')
         } else {
             LocalStorageService.storeData('@userAlias', loginForm)
                 .then(() => {
-                    setMessageInfo('Account imported successfully!')
-                    setTimeout(() => {
-                        setShowMessage(true)
-                        navigation.navigate('Root', { screen: 'Wallet' })
-                    }
-                        , 2000)
+                    setIsLoading(true)
+                    setShowMessage(true)
+                    setMessageInfo('Account imported succesfully!')
+                    navigation.navigate('Root', { screen: 'Wallet' })
                 })
                 .catch(err => console.log(err))
         }
@@ -108,11 +116,11 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                         label="Repeat password"
                         value={loginForm.passwordConfirmation}
                         onChangeText={(text) => handleInputChange('passwordConfirmation', text)}
-                        secureTextEntry={passwordVisible}
+                        secureTextEntry={repeatedPasswordVisible}
                         placeholder="Type your password again..."
                         right={<StyledInput.Icon
-                            name={passwordVisible ? "eye" : "eye-off"}
-                            onPress={() => setPasswordVisible(!passwordVisible)} />}>
+                            name={repeatedPasswordVisible ? "eye" : "eye-off"}
+                            onPress={() => setRepeatedPasswordVisible(!repeatedPasswordVisible)} />}>
                     </StyledInput>
 
                     <CheckBox

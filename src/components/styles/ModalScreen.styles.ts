@@ -3,6 +3,11 @@ import { Card, Paragraph } from "react-native-paper"
 import styled from "styled-components/native"
 
 
+export const Container = styled.SafeAreaView`
+    background-color: #ffffff;
+    padding-top: 20px;
+`
+
 export const InfoContainer = styled.View`
     flex-direction: column;
     align-self: center;;
@@ -17,8 +22,9 @@ export const ButtonContainer = styled.View`
     `
 
 export const MainCard = styled(Card)`
-    width: 360px;
+    width: 370px;
     height: auto;
+    margin-left: -12px;
     background-color: transparent;
     box-shadow: 0px 0px 0px #ffffff;
 `
