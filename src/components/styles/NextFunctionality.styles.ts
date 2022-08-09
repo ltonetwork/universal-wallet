@@ -34,7 +34,6 @@ export const StyledText = styled.Text`
 `
 
 export const MainTitle = styled(Title)`
-    color: #000000;
     font-size: 22px;
     font-weight: bold;
     margin-top: 9px;
