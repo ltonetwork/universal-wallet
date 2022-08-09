@@ -24,5 +24,5 @@ export const StyledText = styled(Text)`
     margin-bottom: 10px;
 `
 export const StyledTitle = styled(Title)`
-    color: #000000;
+    font-weight: 700;
 `

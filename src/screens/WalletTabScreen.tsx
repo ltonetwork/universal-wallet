@@ -1,19 +1,28 @@
-import { StatusBar } from 'expo-status-bar'
 import React, { useEffect, useState } from 'react'
-import { Card, Paragraph, Title } from 'react-native-paper'
+import { Card, Paragraph } from 'react-native-paper'
 import { RootTabScreenProps } from '../../types'
 import OverviewHeader from '../components/OverviewHeader'
 import QRButton from '../components/QRButton'
 import Spinner from '../components/Spinner'
+import StatusBarIOS from '../components/StatusBarIOS'
 import { StyledImage } from '../components/styles/OverviewHeader.styles'
-import { AmountContainer, BottomCard, BottomCardsContainer, OverviewContainer, TopCard, TopCardsContainer } from '../components/styles/WalletTabScreen.styles'
+import {
+    Amount,
+    AmountContainer,
+    BlueText,
+    BottomCard,
+    BottomCardsContainer,
+    FieldName,
+    OverviewContainer,
+    RedText,
+    TopCard,
+    TopCardsContainer
+} from '../components/styles/WalletTabScreen.styles'
 import ApiClientService from '../services/ApiClient.service'
 import CoinMarketCapService from '../services/CoinMarketCap.service'
 import LocalStorageService from '../services/LocalStorage.service'
 import { formatNumber } from '../utils/formatNumber'
 import { logoTitle } from "../utils/images"
-import { FieldName, BlueText, RedText, Amount } from '../components/styles/WalletTabScreen.styles'
-import StatusBarIOS from '../components/StatusBarIOS'
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 
