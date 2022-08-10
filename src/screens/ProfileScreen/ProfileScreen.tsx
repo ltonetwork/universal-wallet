@@ -2,10 +2,10 @@ import { useClipboard } from '@react-native-community/clipboard'
 import React, { useContext, useEffect, useState } from 'react'
 import { Pressable, StatusBar, TouchableOpacity } from 'react-native'
 import { Card, Title } from 'react-native-paper'
-import Spinner from '../components/Spinner'
-import { CardsContainer, Content, Field, HiddenTitle, MainCard, StyledTitle } from '../components/styles/ProfileScreen.styles'
-import { MessageContext } from '../context/UserMessage.context'
-import LocalStorageService from '../services/LocalStorage.service'
+import Spinner from '../../components/Spinner'
+import { CardsContainer, Content, Field, HiddenTitle, MainCard, StyledTitle } from './ProfileScreen.styles'
+import { MessageContext } from '../../context/UserMessage.context'
+import LocalStorageService from '../../services/LocalStorage.service'
 
 export default function ProfileScreen() {
 

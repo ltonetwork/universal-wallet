@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Paragraph } from 'react-native-paper'
-import { RootTabScreenProps } from '../../types'
-import OverviewHeader from '../components/OverviewHeader'
-import QRButton from '../components/QRButton'
-import Spinner from '../components/Spinner'
-import StatusBarIOS from '../components/StatusBarIOS'
-import { StyledImage } from '../components/styles/OverviewHeader.styles'
+import { RootTabScreenProps } from '../../../types'
+import OverviewHeader from '../../components/OverviewHeader'
+import QRButton from '../../components/QRButton'
+import Spinner from '../../components/Spinner'
+import StatusBarIOS from '../../components/StatusBarIOS'
+import { StyledImage } from '../../components/styles/OverviewHeader.styles'
 import {
     Amount,
     AmountContainer,
@@ -13,16 +13,17 @@ import {
     BottomCard,
     BottomCardsContainer,
     FieldName,
+    GreenText,
     OverviewContainer,
     RedText,
     TopCard,
     TopCardsContainer
-} from '../components/styles/WalletTabScreen.styles'
-import ApiClientService from '../services/ApiClient.service'
-import CoinMarketCapService from '../services/CoinMarketCap.service'
-import LocalStorageService from '../services/LocalStorage.service'
-import { formatNumber } from '../utils/formatNumber'
-import { logoTitle } from "../utils/images"
+} from './WalletTabScreen.styles'
+import ApiClientService from '../../services/ApiClient.service'
+import CoinMarketCapService from '../../services/CoinMarketCap.service'
+import LocalStorageService from '../../services/LocalStorage.service'
+import { formatNumber } from '../../utils/formatNumber'
+import { logoTitle } from "../../utils/images"
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 
@@ -79,6 +80,16 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
     const change = effectiveAmount()
 
+    const checkPositiveNegative = (value: number) => {
+        if (value > 0) {
+            return <GreenText>{value?.toFixed(2)}%(last 24h)</GreenText>
+        } else if (value < 0) {
+            return <RedText>{value?.toFixed(2)}%(last 24h)</RedText>
+        } else {
+            return <GreenText>{value?.toFixed(2)}%(last 24h)</GreenText>
+        }
+    }
+
 
     return (
         <>
@@ -110,7 +121,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                                 <Card.Content>
                                     <FieldName>Prize</FieldName>
                                     <Amount>{price?.toFixed(3)}$</Amount>
-                                    <RedText>{percent_change_24h?.toFixed(2)}%(last 24h)</RedText>
+                                    {checkPositiveNegative(percent_change_24h)}
                                 </Card.Content>
                             </TopCard>
 
