@@ -11,6 +11,7 @@ import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { logoTitle } from '../../utils/images'
 import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../../utils/redirectSocialMedia'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 
 export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'>) {
@@ -59,7 +60,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
           <Card.Content>
             <Field>Your wallet</Field>
             <View style={{ justifyContent: 'space-evenly' }}>
-              <StyledNickname>{accountNickname}</StyledNickname>
+              <StyledNickname><Icon name='account-circle-outline' size={20} color='#0092aa' />{accountNickname}</StyledNickname>
             </View>
             <Content>{accountAddress}</Content>
           </Card.Content>

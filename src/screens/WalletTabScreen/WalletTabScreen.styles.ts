@@ -65,7 +65,12 @@ export const RedText = styled(Paragraph)`
     color: #DD4794;
 `
 
+export const GreenText = styled(Paragraph)`
+    color: #009E73;
+`
+
 export const Amount = styled(Title)`
     font-family: ${Platform.OS === 'android' ? 'Overpass-Regular' : 'Arial'};
-    font-weight: 700;
+    font-size: 23px;
+    font-weight: 400;
 `

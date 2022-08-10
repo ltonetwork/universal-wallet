@@ -127,6 +127,7 @@ function BottomTabNavigator() {
       initialLayout={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
+        tabBarInactiveTintColor: Colors[colorScheme].tabIconDefault,
         tabBarStyle: { height: 75 },
       }}
     >
@@ -136,8 +137,8 @@ function BottomTabNavigator() {
         options={({ navigation }: RootTabScreenProps<'Wallet'>) => ({
           tabBarShowIcon: true,
           tabBarIcon: ({ color }) => <TabBarIcon icon="wallet-outline" color={color} />,
-          tabBarLabelStyle: { fontSize: 12 },
-          tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0 },
+          tabBarLabelStyle: { fontSize: 13, textTransform: 'capitalize' },
+          tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0, height: 3 },
         })}
       />
       <Tab.Screen
@@ -145,8 +146,8 @@ function BottomTabNavigator() {
         component={CredentialsTabScreen}
         options={({ navigation }: RootTabScreenProps<'Credentials'>) => ({
           tabBarIcon: ({ color }) => <TabBarIcon icon="account-box-multiple-outline" color={color} />,
-          tabBarLabelStyle: { fontSize: 12 },
-          tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0 },
+          tabBarLabelStyle: { fontSize: 13, textTransform: 'capitalize' },
+          tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0, height: 3 },
         })}
       />
       <Tab.Screen
@@ -158,8 +159,8 @@ function BottomTabNavigator() {
           headerTitleStyle: { fontWeight: '800', marginLeft: 20 },
           headerTitleAllowFontScaling: true,
           tabBarIcon: ({ color }) => <TabBarIcon icon="bookmark-box-multiple-outline" color={color} />,
-          tabBarLabelStyle: { fontSize: 12 },
-          tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0 },
+          tabBarLabelStyle: { fontSize: 13, textTransform: 'capitalize' },
+          tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0, height: 3 },
         })}
       />
     </Tab.Navigator>
