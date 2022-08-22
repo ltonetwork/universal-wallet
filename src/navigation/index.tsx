@@ -40,7 +40,6 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : navTheme}>
-      <Image source={backgroundImage} style={{ width, height, position: "absolute" }} />
       <SnackbarMessage />
       <RootNavigator />
     </NavigationContainer >
