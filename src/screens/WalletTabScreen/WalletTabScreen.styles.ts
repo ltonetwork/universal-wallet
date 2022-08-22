@@ -14,7 +14,7 @@ export const AmountContainer = styled.View`
 
 export const TopCardsContainer = styled.View`
     display: flex;
-    margin-top: 0px;
+    margin-top: 2px;
     flex-direction: row;
     justify-content: space-around;
     width: 100%;
@@ -49,8 +49,9 @@ export const BottomCard = styled(Card)`
     shadow-radius: 10px;
     border-radius: 20px;
     elevation: 5;
-    width: 160px;
+    width: 130px;
     height: auto;
+    background-color: transparent;
 `
 
 export const FieldName = styled(Paragraph)`

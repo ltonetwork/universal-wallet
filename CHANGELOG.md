@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- [Remove gradient in all views](https://wealize.atlassian.net/browse/LTO22004-53)
+- [Update background image in wallet view](https://wealize.atlassian.net/browse/LTO22004-49)
 - [As a LTO user, I want to have the app available in the App Store](https://wealize.atlassian.net/browse/LTO22004-14)
 - [Review and add user messages(notifications)](https://wealize.atlassian.net/browse/LTO22004-43)
 - [As a LTO user, I want to confirm sender matches from my mobile app](https://wealize.atlassian.net/browse/LTO22004-34)
