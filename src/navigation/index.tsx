@@ -24,6 +24,8 @@ import LocalStorageService from '../services/LocalStorage.service'
 import { backgroundImage } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
 
+import TabBarImage from '../components/TabBarImage'
+
 const navTheme = {
   ...DefaultTheme,
   colors: {
@@ -120,6 +122,8 @@ const Tab = createMaterialTopTabNavigator<RootTabParamList>()
 function BottomTabNavigator() {
   const colorScheme = useColorScheme()
 
+
+
   return (
     <Tab.Navigator
       initialRouteName="Wallet"
@@ -145,7 +149,7 @@ function BottomTabNavigator() {
         name="Credentials"
         component={CredentialsTabScreen}
         options={({ navigation }: RootTabScreenProps<'Credentials'>) => ({
-          tabBarIcon: ({ color }) => <TabBarIcon icon="account-box-multiple-outline" color={color} />,
+          tabBarIcon: ({ focused }) => <TabBarImage focused={focused} />,
           tabBarLabelStyle: { fontSize: 13, textTransform: 'capitalize' },
           tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0, height: 3 },
         })}
