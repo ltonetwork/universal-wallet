@@ -6,10 +6,10 @@
 yarn
 ```
 
-## Develop
+## Use node core modules in a RN project
 
 ```bash
-yarn start
+yarn postinstall
 ```
 
 ## To run on Android/IOS
@@ -19,13 +19,13 @@ yarn start
 Then...
 
 ```bash
-yarn run android
+yarn react-native run-android
 ```
 
 Or...
 
 ```bash
-yarn run ios
+yarn react-native run-ios
 ```
 
 ## Signing the Android app
@@ -48,5 +48,5 @@ After configuring it you just use:
 
 ```bash
 cd android
-./gradlew assembleRelease
+./gradlew assembleDebug
 ```
