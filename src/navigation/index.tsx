@@ -3,10 +3,10 @@ import { DarkTheme, DefaultTheme, NavigationContainer, useNavigation } from '@re
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { ColorSchemeName, Dimensions, Image, Platform, useWindowDimensions } from 'react-native'
+import { ColorSchemeName, Dimensions, Image, useWindowDimensions } from 'react-native'
 import { RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from '../../types'
 import SnackbarMessage from '../components/Snackbar'
-import TabBarIcon from '../components/TabBarIcon'
+import TabBarImage from '../components/TabBarImage'
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
 import CredentialsTabScreen from '../screens/CredentialsTabScreen/CredentialsTabScreen'
@@ -21,7 +21,7 @@ import ScanTransactionScreen from '../screens/ScanTransactionScreen/ScanTransact
 import SignInScreen from '../screens/SignInScreen/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
-import { backgroundImage } from '../utils/images'
+import { backgroundImage, imagesIcon } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
 
 const navTheme = {
@@ -115,10 +115,11 @@ function RootNavigator(): any {
 }
 
 
-
 const Tab = createMaterialTopTabNavigator<RootTabParamList>()
 function BottomTabNavigator() {
   const colorScheme = useColorScheme()
+
+
 
   return (
     <Tab.Navigator
@@ -136,7 +137,7 @@ function BottomTabNavigator() {
         component={WalletTabScreen}
         options={({ navigation }: RootTabScreenProps<'Wallet'>) => ({
           tabBarShowIcon: true,
-          tabBarIcon: ({ color }) => <TabBarIcon icon="wallet-outline" color={color} />,
+          tabBarIcon: ({ focused }) => focused ? <TabBarImage source={imagesIcon.wallet} /> : <TabBarImage source={imagesIcon.inactiveWallet} />,
           tabBarLabelStyle: { fontSize: 13, textTransform: 'capitalize' },
           tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0, height: 3 },
         })}
@@ -145,7 +146,7 @@ function BottomTabNavigator() {
         name="Credentials"
         component={CredentialsTabScreen}
         options={({ navigation }: RootTabScreenProps<'Credentials'>) => ({
-          tabBarIcon: ({ color }) => <TabBarIcon icon="account-box-multiple-outline" color={color} />,
+          tabBarIcon: ({ focused }) => focused ? <TabBarImage source={imagesIcon.credentials} /> : <TabBarImage source={imagesIcon.inactiveCredentials} />,
           tabBarLabelStyle: { fontSize: 13, textTransform: 'capitalize' },
           tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0, height: 3 },
         })}
@@ -158,7 +159,7 @@ function BottomTabNavigator() {
           headerStyle: { height: 100 },
           headerTitleStyle: { fontWeight: '800', marginLeft: 20 },
           headerTitleAllowFontScaling: true,
-          tabBarIcon: ({ color }) => <TabBarIcon icon="bookmark-box-multiple-outline" color={color} />,
+          tabBarIcon: ({ focused }) => focused ? <TabBarImage source={imagesIcon.ownables} /> : <TabBarImage source={imagesIcon.inactiveOwnables} />,
           tabBarLabelStyle: { fontSize: 13, textTransform: 'capitalize' },
           tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0, height: 3 },
         })}

@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- [Change icons in bottom menu](https://wealize.atlassian.net/browse/LTO22004-48)
 - [Update splash screen](https://wealize.atlassian.net/browse/LTO22004-47)
 - [As a LTO user, I want to have the app available in the App Store](https://wealize.atlassian.net/browse/LTO22004-14)
 - [Review and add user messages(notifications)](https://wealize.atlassian.net/browse/LTO22004-43)
