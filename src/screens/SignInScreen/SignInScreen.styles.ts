@@ -16,13 +16,15 @@ export const ButtonContainer = styled.View`
     margin-top: 70px;
     justify-content: flex-end;
     align-items: center; 
-   
 `
 
 export const StyledText = styled(Text)`
     margin-top: 40px;
     margin-bottom: 10px;
 `
+
 export const StyledTitle = styled(Title)`
-    font-weight: 700;
+    font-family: Overpass-Regular;
+    font-family: Arial;
+    text-transform: uppercase;
 `

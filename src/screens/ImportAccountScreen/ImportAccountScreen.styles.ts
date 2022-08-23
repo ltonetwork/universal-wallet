@@ -13,5 +13,7 @@ export const StyledText = styled(Text)`
     margin-top: 40px;
 `
 export const StyledTitle = styled(Title)`
-    color: #000000;
+    font-family: Overpass-Regular;
+    font-family: Arial;
+    text-transform: uppercase;
 `
