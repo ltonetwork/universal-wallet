@@ -1,4 +1,4 @@
-export const backgroundImage = require('../assets/images/background_degree.png')
+export const backgroundImage = require('../assets/images/background_image.png')
 
 export const placeholderImage = require('../assets/images/illustration_placeholder.png')
 

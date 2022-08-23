@@ -24,8 +24,13 @@ import CoinMarketCapService from '../../services/CoinMarketCap.service'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { formatNumber } from '../../utils/formatNumber'
 import { logoTitle } from "../../utils/images"
+import { ImageBackground, useWindowDimensions } from 'react-native'
+import { backgroundImage } from '../../utils/images'
+
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
+
+    const { width, height } = useWindowDimensions()
 
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [details, setDetails] = useState<TypedDetails>(new Object as TypedDetails)
@@ -99,7 +104,9 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                 :
                 <>
                     <StatusBarIOS backgroundColor={'#ffffff'} />
+                    <ImageBackground source={backgroundImage} style={{ width, height, position: "absolute" }} />
                     <OverviewContainer>
+
                         <OverviewHeader
                             icon={"menu"}
                             onPress={() => navigation.navigate('Modal')}
@@ -170,7 +177,9 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                         </BottomCardsContainer>
 
                         <QRButton onPress={() => navigation.navigate('ScanTransaction')} />
+
                     </OverviewContainer>
+
                 </>
             }
         </>
