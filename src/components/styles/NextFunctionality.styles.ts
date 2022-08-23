@@ -8,17 +8,10 @@ export const Container = styled.SafeAreaView`
 
 export const StyledView = styled.View`
     align-items: center;
-    margin-top: 0px;
+    margin-top: 80px;
     margin-left: ${Dimensions.get("window").width * 0.12}px;
     margin-right: ${Dimensions.get("window").width * 0.12}px;
  `
-
-export const StyledImage = styled.Image`
-    resize-mode: contain;
-    width: ${Dimensions.get("window").width * 0.8}px;
-    height: ${Dimensions.get("window").width * 0.8}px;
-    justify-content: flex-start;
-`
 
 export const StyledTitle = styled(Title)`
     color: #000000;
