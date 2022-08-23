@@ -11,3 +11,13 @@ export const socialMediaIcons = {
     linkedin: require('../assets/images/linkedin_logo.png'),
 }
 
+export const imagesIcon = {
+    wallet: require('../assets/images/wallet_icon.png'),
+    inactiveWallet: require('../assets/images/wallet_icon_inactive.png'),
+    credentials: require('../assets/images/credentials_icon.png'),
+    inactiveCredentials: require('../assets/images/credentials_icon_inactive.png'),
+    ownables: require('../assets/images/ownables_icon.png'),
+    inactiveOwnables: require('../assets/images/ownables_icon_inactive.png'),
+
+}
+
