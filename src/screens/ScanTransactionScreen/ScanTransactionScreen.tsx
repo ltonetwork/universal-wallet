@@ -3,10 +3,10 @@ import { BarCodeScanner } from 'expo-barcode-scanner'
 import React, { useContext, useEffect, useState } from 'react'
 import { Text } from 'react-native-paper'
 import { RootStackScreenProps } from '../../../types'
-import { CenteredView, ScannerContainer, StyledScanner, StyledText } from '../ScanKeyScreen/ScanScreen.styles'
+import { CenteredView, ScannerContainer, StyledScanner, StyledText, TextContainer } from '../ScanKeyScreen/ScanScreen.styles'
 import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
-
+import { View } from 'react-native'
 
 export default function ScanTransactionScreen({ navigation }: RootStackScreenProps<'ScanTransaction'>) {
     const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -85,9 +85,11 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
                             console.log(err)
                         }
                     }}>
-                    <StyledText>QR Scanner</StyledText>
-                    <StyledText >Scan the QR code from LTO's web application to confirm your transfer with your mobile phone</StyledText>
                 </StyledScanner>
+                <TextContainer>
+                    <StyledText title>QR Scanner</StyledText>
+                    <StyledText >Scan the QR code from LTO's web application to confirm your transfer with your mobile phone</StyledText>
+                </TextContainer>
             </ScannerContainer>
         )
     } else {

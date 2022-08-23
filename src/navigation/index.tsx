@@ -90,11 +90,20 @@ function RootNavigator(): any {
           <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
         )}
         <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="ScanKey" component={ScanKeyScreen} options={{ headerBackTitle: 'Back to Sign In', headerTransparent: true, headerTitle: '' }} />
+        <Stack.Screen name="ScanKey" component={ScanKeyScreen}
+          options={{
+            headerTransparent: true,
+            headerTitle: '',
+
+          }} />
         <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: '' }} />
         <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-        <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen} options={{ headerBackTitle: 'Go back', headerTransparent: true, headerTitle: '' }} />
+        <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen}
+          options={{
+            headerTransparent: true,
+            headerTitle: '',
+          }} />
         <Stack.Group>
           <Stack.Screen name="Modal" component={ModalScreen}
             options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
@@ -136,7 +145,9 @@ function BottomTabNavigator() {
         component={WalletTabScreen}
         options={({ navigation }: RootTabScreenProps<'Wallet'>) => ({
           tabBarShowIcon: true,
-          tabBarIcon: ({ focused }) => focused ? <TabBarImage source={imagesIcon.wallet} /> : <TabBarImage source={imagesIcon.inactiveWallet} />,
+          tabBarIcon: ({ focused }) => focused
+            ? <TabBarImage source={imagesIcon.wallet} />
+            : <TabBarImage source={imagesIcon.inactiveWallet} />,
           tabBarLabelStyle: { fontSize: 13, textTransform: 'capitalize' },
           tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0, height: 3 },
         })}
@@ -145,7 +156,9 @@ function BottomTabNavigator() {
         name="Credentials"
         component={CredentialsTabScreen}
         options={({ navigation }: RootTabScreenProps<'Credentials'>) => ({
-          tabBarIcon: ({ focused }) => focused ? <TabBarImage source={imagesIcon.credentials} /> : <TabBarImage source={imagesIcon.inactiveCredentials} />,
+          tabBarIcon: ({ focused }) => focused
+            ? <TabBarImage source={imagesIcon.credentials} />
+            : <TabBarImage source={imagesIcon.inactiveCredentials} />,
           tabBarLabelStyle: { fontSize: 13, textTransform: 'capitalize' },
           tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0, height: 3 },
         })}
@@ -158,7 +171,9 @@ function BottomTabNavigator() {
           headerStyle: { height: 100 },
           headerTitleStyle: { fontWeight: '800', marginLeft: 20 },
           headerTitleAllowFontScaling: true,
-          tabBarIcon: ({ focused }) => focused ? <TabBarImage source={imagesIcon.ownables} /> : <TabBarImage source={imagesIcon.inactiveOwnables} />,
+          tabBarIcon: ({ focused }) => focused
+            ? <TabBarImage source={imagesIcon.ownables} />
+            : <TabBarImage source={imagesIcon.inactiveOwnables} />,
           tabBarLabelStyle: { fontSize: 13, textTransform: 'capitalize' },
           tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0, height: 3 },
         })}
