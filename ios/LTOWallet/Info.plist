@@ -59,8 +59,7 @@
 	</array>
 	<key>UIRequiresFullScreen</key>
 	<false/>
-	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleDefault</string>
+
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -77,5 +76,8 @@
 	<string>Light</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+
+  <key>UIStatusBarHidden</key>
+  <true/>
 </dict>
 </plist>
