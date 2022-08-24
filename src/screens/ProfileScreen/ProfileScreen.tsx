@@ -64,7 +64,6 @@ export default function ProfileScreen() {
             {isLoading ? <Spinner /> :
 
                 <CardsContainer>
-                    <StatusBar backgroundColor={'#ffffff'} />
 
                     <MainCard >
 

@@ -31,7 +31,6 @@ export default function OnboardingScreen() {
 
     return (
         <StyledSafeAreaView >
-            <StatusBar backgroundColor='#F9E7FD' />
             <Header changeSlide={changeSlide} currentSlideIndex={currentSlideIndex} />
             <FlatList
                 ref={ref}
