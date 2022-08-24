@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- [Update images in slides](https://wealize.atlassian.net/browse/LTO22004-52)
 - [Update background image in credential and ownable view](https://wealize.atlassian.net/browse/LTO22004-51)
 - [Remove gradient in all views](https://wealize.atlassian.net/browse/LTO22004-53)
 - [Update background image in wallet view](https://wealize.atlassian.net/browse/LTO22004-49)
