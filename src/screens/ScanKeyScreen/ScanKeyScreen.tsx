@@ -5,6 +5,7 @@ import { RootStackScreenProps } from '../../../types'
 import { CenteredView, StyledScanner, StyledText, ScannerContainer, TextContainer } from './ScanScreen.styles'
 import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
+import Spinner from '../../components/Spinner'
 
 
 export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'ScanKey'>) {
@@ -37,30 +38,35 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
     const { setShowMessage, setMessageInfo } = useContext(MessageContext)
 
     const handleQRScan = (input: any) => {
-        const LTO = require("@ltonetwork/lto").LTO
-        const lto = new LTO('T')
-        const account = lto.account()
-        const auth = input
-        const signature = account.sign(`lto:sign:${auth.url}`).base58
-        const data = { address: account.address, privateKey: account.privateKey, publicKey: account.publicKey, signature, seed: account.seed }
-        if (data) {
-            LocalStorageService.storeData('@accountData', data)
-                .then(() => {
-                    navigation.navigate('ImportAccount')
-                })
-                .catch(err => {
-                    console.log(err)
-                })
+        if (input.includes('lto.network')) {
+            setIsLoading(true)
+            const LTO = require("@ltonetwork/lto").LTO
+            const lto = new LTO('T')
+            const account = lto.account()
+            const auth = input
+            const signature = account.sign(`lto:sign:${auth.url}`).base58
+            const data = { address: account.address, privateKey: account.privateKey, publicKey: account.publicKey, signature, seed: account.seed }
+            if (data) {
+                LocalStorageService.storeData('@accountData', data)
+                    .then(() => {
+                        setIsLoading(false)
+                        navigation.navigate('ImportAccount')
+                    })
+                    .catch(err => {
+                        console.log(err)
+                    })
+            }
         } else {
             setMessageInfo('Invalid QR code!')
             setShowMessage(true)
+            navigation.goBack()
         }
     }
 
     if (isLoading) {
         return (
             <CenteredView>
-                <Text>Requesting permission...</Text>
+                <Spinner />
             </CenteredView>
         )
     }
