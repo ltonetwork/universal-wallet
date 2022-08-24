@@ -18,6 +18,10 @@ export const ButtonContainer = styled.View`
     align-items: center; 
 `
 
+export const InputContainer = styled.View`
+    margin-top: 25px;
+`
+
 export const StyledText = styled(Text)`
     margin-top: 40px;
     margin-bottom: 10px;

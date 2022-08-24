@@ -3,7 +3,7 @@ import { DarkTheme, DefaultTheme, NavigationContainer, useNavigation } from '@re
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { ColorSchemeName, Dimensions, Image, useWindowDimensions } from 'react-native'
+import { ColorSchemeName, Dimensions, useWindowDimensions } from 'react-native'
 import { RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from '../../types'
 import SnackbarMessage from '../components/Snackbar'
 import TabBarImage from '../components/TabBarImage'
@@ -21,7 +21,7 @@ import ScanTransactionScreen from '../screens/ScanTransactionScreen/ScanTransact
 import SignInScreen from '../screens/SignInScreen/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
-import { backgroundImage, imagesIcon } from '../utils/images'
+import { imagesIcon } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
 
 const navTheme = {
@@ -111,9 +111,8 @@ function RootNavigator(): any {
             })} />
           <Stack.Screen name="Profile" component={ProfileScreen}
             options={{
-              headerTitle: '',
-              headerBackTitle: 'Profile',
-              headerStyle: { backgroundColor: '#ffffff' }
+              headerTitle: 'PROFILE',
+              headerTitleStyle: { fontSize: 20 }
             }} />
 
         </Stack.Group>

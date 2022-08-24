@@ -1,11 +1,10 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { View } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
 import { RootStackScreenProps } from '../../../types'
-import { StyledText, StyledTitle, Container, ButtonContainer } from './SignInScreen.styles'
 import { StyledButton } from '../../components/styles/StyledButton.styles'
 import { StyledInput } from '../../components/styles/StyledInput.styles'
-import LocalStorageService from '../../services/LocalStorage.service'
 import { MessageContext } from '../../context/UserMessage.context'
+import LocalStorageService from '../../services/LocalStorage.service'
+import { ButtonContainer, Container, InputContainer, StyledText, StyledTitle } from './SignInScreen.styles'
 
 
 export default function SignInScreen({ navigation }: RootStackScreenProps<'SignIn'>) {
@@ -49,8 +48,7 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
 
     return (
         <Container>
-            <View>
-
+            <InputContainer >
                 <StyledTitle>Sign in</StyledTitle>
                 <StyledText>Sign in with your account name and password</StyledText>
                 {userAlias?.nickname !== undefined &&
@@ -75,7 +73,7 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                 >
                 </StyledInput>
 
-            </View>
+            </InputContainer>
 
 
             <ButtonContainer>
@@ -99,4 +97,3 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
         </Container>
     )
 }
-
