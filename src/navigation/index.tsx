@@ -140,6 +140,7 @@ function BottomTabNavigator() {
         tabBarActiveTintColor: Colors[colorScheme].tint,
         tabBarInactiveTintColor: Colors[colorScheme].tabIconDefault,
         tabBarStyle: { height: 75 },
+        tabBarPressColor: '#A329B9'
       }}
     >
       <Tab.Screen
