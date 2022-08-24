@@ -17,8 +17,10 @@ export const StyledScanner = styled(BarCodeScanner)`
 `
 
 export const StyledText = styled(Text) <{ title?: any }>`
-    margin-top: 20px;
+    margin-top: 5px;
+    padding: 0px 15px 5px 15px;
     color: #ffffff;
+    font-weight: 400;
     ${props => props.title && `
         text-transform: uppercase; 
         font-size: 20px; 
@@ -33,5 +35,7 @@ export const CenteredView = styled.View`
 `
 
 export const TextContainer = styled.View`
-margin-top: 70px;
+    margin-top: 66px;
+    background:  rgba(25, 25, 25, .5);
+    width: 100%;
 `
