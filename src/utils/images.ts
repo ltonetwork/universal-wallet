@@ -1,7 +1,5 @@
 export const backgroundImage = require('../assets/images/background_image.png')
 
-export const placeholderImage = require('../assets/images/illustration_placeholder.png')
-
 export const logoTitle = require('../assets/images/brand_logo.png')
 
 export const socialMediaIcons = {
@@ -18,6 +16,5 @@ export const imagesIcon = {
     inactiveCredentials: require('../assets/images/credentials_icon_inactive.png'),
     ownables: require('../assets/images/ownables_icon.png'),
     inactiveOwnables: require('../assets/images/ownables_icon_inactive.png'),
-
 }
 
