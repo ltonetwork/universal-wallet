@@ -38,7 +38,7 @@ export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'Scan
     const { setShowMessage, setMessageInfo } = useContext(MessageContext)
 
     const handleQRScan = (input: any) => {
-        if (input.includes('lto.network')) {
+        if (input.includes('auth.lto.network')) {
             setIsLoading(true)
             const LTO = require("@ltonetwork/lto").LTO
             const lto = new LTO('T')
