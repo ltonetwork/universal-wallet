@@ -92,15 +92,17 @@ function RootNavigator(): any {
         <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
         <Stack.Screen name="ScanKey" component={ScanKeyScreen}
           options={{
+            headerBackTitleVisible: false,
             headerTransparent: true,
             headerTitle: '',
 
           }} />
-        <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: '' }} />
+        <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: '', headerBackTitleVisible: false, }} />
         <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
         <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen}
           options={{
+            headerBackTitleVisible: false,
             headerTransparent: true,
             headerTitle: '',
           }} />
@@ -111,8 +113,9 @@ function RootNavigator(): any {
             })} />
           <Stack.Screen name="Profile" component={ProfileScreen}
             options={{
+              headerBackTitleVisible: false,
               headerTitle: 'PROFILE',
-              headerTitleStyle: { fontSize: 20 }
+              headerTitleStyle: { fontSize: 20, color: '#000000' }
             }} />
 
         </Stack.Group>
@@ -137,6 +140,7 @@ function BottomTabNavigator() {
         tabBarActiveTintColor: Colors[colorScheme].tint,
         tabBarInactiveTintColor: Colors[colorScheme].tabIconDefault,
         tabBarStyle: { height: 75 },
+        tabBarPressColor: '#A329B9'
       }}
     >
       <Tab.Screen

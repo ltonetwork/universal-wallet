@@ -3,10 +3,10 @@ import { BarCodeScanner } from 'expo-barcode-scanner'
 import React, { useContext, useEffect, useState } from 'react'
 import { Text } from 'react-native-paper'
 import { RootStackScreenProps } from '../../../types'
-import { CenteredView, ScannerContainer, StyledScanner, StyledText, TextContainer } from '../ScanKeyScreen/ScanScreen.styles'
+import Spinner from '../../components/Spinner'
 import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
-import { View } from 'react-native'
+import { CenteredView, ScannerContainer, StyledScanner, StyledText, TextContainer } from '../ScanKeyScreen/ScanScreen.styles'
 
 export default function ScanTransactionScreen({ navigation }: RootStackScreenProps<'ScanTransaction'>) {
     const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -67,7 +67,7 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
     if (isLoading) {
         return (
             <CenteredView>
-                <Text>Requesting permission...</Text>
+                <Spinner />
             </CenteredView>
         )
     }
