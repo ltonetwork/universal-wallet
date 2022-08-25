@@ -73,9 +73,13 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
     }
 
     const getPrizeInfo = () => {
+        setIsLoading(true)
         CoinMarketCapService.getCoinInfo()
             .then(data => data.data[3714].quote.USD)
-            .then(price => setCoinData(price))
+            .then(price => {
+                setCoinData(price)
+                setIsLoading(false)
+            })
             .catch(err => console.log(err))
     }
 
