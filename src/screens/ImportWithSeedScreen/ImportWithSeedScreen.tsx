@@ -49,10 +49,10 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
                     style={{ marginBottom: 140 }}
                     editable={true}
                     multiline
-                    label='Add your backup phrase'
+                    label='Add your seed phrase'
                     onChangeText={(text) => setSeedPhrase(text)}
                     value={seedPhrase}
-                    placeholder='Type your backup words separated by a space'
+                    placeholder='Type your seed phrase separated by a space'
                 ></StyledInput>
             </InputContainer>
 
