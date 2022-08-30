@@ -2,13 +2,13 @@ import { BarCodeScanner } from 'expo-barcode-scanner'
 import React, { useContext, useEffect, useState } from 'react'
 import { Text } from 'react-native-paper'
 import { RootStackScreenProps } from '../../../types'
-import { CenteredView, StyledScanner, StyledText, ScannerContainer, TextContainer } from './ScanScreen.styles'
+import Spinner from '../../components/Spinner'
+import { CenteredView, ScannerContainer, StyledScanner, StyledText, TextContainer } from '../../components/styles/Scanner.styles'
 import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
-import Spinner from '../../components/Spinner'
 
 
-export default function ScanKeyScreen({ navigation }: RootStackScreenProps<'ScanKey'>) {
+export default function ImportWithQRScreen({ navigation }: RootStackScreenProps<'ImportQR'>) {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [permission, setPermission] = useState<boolean>(true)
 

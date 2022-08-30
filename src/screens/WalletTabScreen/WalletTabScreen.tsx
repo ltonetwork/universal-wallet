@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { ImageBackground, useWindowDimensions } from 'react-native'
 import { Card, Paragraph } from 'react-native-paper'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
@@ -6,6 +7,11 @@ import QRButton from '../../components/QRButton'
 import Spinner from '../../components/Spinner'
 import StatusBarIOS from '../../components/StatusBarIOS'
 import { StyledImage } from '../../components/styles/OverviewHeader.styles'
+import ApiClientService from '../../services/ApiClient.service'
+import CoinMarketCapService from '../../services/CoinMarketCap.service'
+import LocalStorageService from '../../services/LocalStorage.service'
+import { formatNumber } from '../../utils/formatNumber'
+import { backgroundImage, logoTitle } from "../../utils/images"
 import {
     Amount,
     AmountContainer,
@@ -19,13 +25,6 @@ import {
     TopCard,
     TopCardsContainer
 } from './WalletTabScreen.styles'
-import ApiClientService from '../../services/ApiClient.service'
-import CoinMarketCapService from '../../services/CoinMarketCap.service'
-import LocalStorageService from '../../services/LocalStorage.service'
-import { formatNumber } from '../../utils/formatNumber'
-import { logoTitle } from "../../utils/images"
-import { ImageBackground, useWindowDimensions } from 'react-native'
-import { backgroundImage } from '../../utils/images'
 
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {

@@ -16,13 +16,14 @@ import NotFoundScreen from '../screens/NotFoundScreen'
 import OnboardingScreen from '../screens/OnBoardingScreen/OnBoardingScreen'
 import OwnablesTabScreen from '../screens/OwnablesTabScreen/OwnablesTabScreen'
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen'
-import ScanKeyScreen from '../screens/ScanKeyScreen/ScanKeyScreen'
+import ImportWithQRScreen from '../screens/ImportWithQRScreen/ImportWithQRScreen'
 import ScanTransactionScreen from '../screens/ScanTransactionScreen/ScanTransactionScreen'
 import SignInScreen from '../screens/SignInScreen/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
 import { imagesIcon } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
+import ImportSeedScreen from '../screens/ImportWithSeedScreen/ImportWithSeedScreen'
 
 const navTheme = {
   ...DefaultTheme,
@@ -33,19 +34,15 @@ const navTheme = {
 }
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
-
   const { width, height } = useWindowDimensions()
 
   return (
-    <NavigationContainer
-      linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : navTheme}>
+    <NavigationContainer linking={LinkingConfiguration} theme={colorScheme === 'dark' ? DarkTheme : navTheme}>
       <SnackbarMessage />
       <RootNavigator />
-    </NavigationContainer >
+    </NavigationContainer>
   )
 }
-
 
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
@@ -65,7 +62,7 @@ function RootNavigator(): any {
 
   const skipOnboarding = (): void => {
     LocalStorageService.getData('@appFirstLaunch')
-      .then(data => {
+      .then((data) => {
         if (data === null) {
           setAppFirstLaunch(true)
           LocalStorageService.storeData('@appFirstLaunch', false)
@@ -73,9 +70,8 @@ function RootNavigator(): any {
           setAppFirstLaunch(false)
         }
       })
-      .catch(err => console.log(err))
+      .catch((err) => console.log(err))
   }
-
 
   return (
     appFirstLaunch !== null && (
@@ -84,99 +80,124 @@ function RootNavigator(): any {
           headerTitleStyle: { color: '#A017B7', fontWeight: '400', fontSize: 16 },
           headerTintColor: '#A017B7',
           headerShadowVisible: false,
-          headerStyle: { backgroundColor: 'transparent' }
-        }}>
+          headerStyle: { backgroundColor: 'transparent' },
+        }}
+      >
         {appFirstLaunch && (
-          <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
+          <Stack.Screen name='OnBoarding' component={OnboardingScreen} options={{ headerShown: false }} />
         )}
-        <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="ScanKey" component={ScanKeyScreen}
+        <Stack.Screen name='SignIn' component={SignInScreen} options={{ headerShown: false }} />
+        <Stack.Screen
+          name='ImportQR'
+          component={ImportWithQRScreen}
           options={{
             headerBackTitleVisible: false,
             headerTransparent: true,
             headerTitle: '',
-
-          }} />
-        <Stack.Screen name="ImportAccount" component={ImportAccountScreen} options={{ headerTitle: '', headerBackTitleVisible: false, }} />
-        <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
-        <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
-        <Stack.Screen name="ScanTransaction" component={ScanTransactionScreen}
+          }}
+        />
+        <Stack.Screen
+          name='ImportSeed'
+          component={ImportSeedScreen}
+          options={{ headerTitle: '', headerBackTitleVisible: false }} />
+        <Stack.Screen
+          name='ImportAccount'
+          component={ImportAccountScreen}
+          options={{ headerTitle: '', headerBackTitleVisible: false }}
+        />
+        <Stack.Screen name='Root' component={BottomTabNavigator} options={{ headerShown: false }} />
+        <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Oops!' }} />
+        <Stack.Screen
+          name='ScanTransaction'
+          component={ScanTransactionScreen}
           options={{
             headerBackTitleVisible: false,
             headerTransparent: true,
             headerTitle: '',
-          }} />
+          }}
+        />
         <Stack.Group>
-          <Stack.Screen name="Modal" component={ModalScreen}
+          <Stack.Screen
+            name='Modal'
+            component={ModalScreen}
             options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
               headerShown: false,
-            })} />
-          <Stack.Screen name="Profile" component={ProfileScreen}
+            })}
+          />
+          <Stack.Screen
+            name='Profile'
+            component={ProfileScreen}
             options={{
               headerBackTitleVisible: false,
               headerTitle: 'PROFILE',
-              headerTitleStyle: { fontSize: 20, color: '#000000' }
-            }} />
-
+              headerTitleStyle: { fontSize: 20, color: '#000000' },
+            }}
+          />
         </Stack.Group>
       </Stack.Navigator>
     )
   )
 }
 
-
 const Tab = createMaterialTopTabNavigator<RootTabParamList>()
 function BottomTabNavigator() {
   const colorScheme = useColorScheme()
 
-
-
   return (
     <Tab.Navigator
-      initialRouteName="Wallet"
+      initialRouteName='Wallet'
       tabBarPosition='bottom'
       initialLayout={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
         tabBarInactiveTintColor: Colors[colorScheme].tabIconDefault,
         tabBarStyle: { height: 75 },
-        tabBarPressColor: '#A329B9'
+        tabBarPressColor: '#A329B9',
       }}
     >
       <Tab.Screen
-        name="Wallet"
+        name='Wallet'
         component={WalletTabScreen}
         options={({ navigation }: RootTabScreenProps<'Wallet'>) => ({
           tabBarShowIcon: true,
-          tabBarIcon: ({ focused }) => focused
-            ? <TabBarImage source={imagesIcon.wallet} />
-            : <TabBarImage source={imagesIcon.inactiveWallet} />,
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <TabBarImage source={imagesIcon.wallet} />
+            ) : (
+              <TabBarImage source={imagesIcon.inactiveWallet} />
+            ),
           tabBarLabelStyle: { fontSize: 13, textTransform: 'capitalize' },
           tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0, height: 3 },
         })}
       />
       <Tab.Screen
-        name="Credentials"
+        name='Credentials'
         component={CredentialsTabScreen}
         options={({ navigation }: RootTabScreenProps<'Credentials'>) => ({
-          tabBarIcon: ({ focused }) => focused
-            ? <TabBarImage source={imagesIcon.credentials} />
-            : <TabBarImage source={imagesIcon.inactiveCredentials} />,
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <TabBarImage source={imagesIcon.credentials} />
+            ) : (
+              <TabBarImage source={imagesIcon.inactiveCredentials} />
+            ),
           tabBarLabelStyle: { fontSize: 13, textTransform: 'capitalize' },
           tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0, height: 3 },
         })}
       />
       <Tab.Screen
-        name="Ownables"
+        name='Ownables'
         component={OwnablesTabScreen}
         options={({ navigation }: RootTabScreenProps<'Ownables'>) => ({
           headerTitle: 'Ownables',
           headerStyle: { height: 100 },
           headerTitleStyle: { fontWeight: '800', marginLeft: 20 },
           headerTitleAllowFontScaling: true,
-          tabBarIcon: ({ focused }) => focused
-            ? <TabBarImage source={imagesIcon.ownables} />
-            : <TabBarImage source={imagesIcon.inactiveOwnables} />,
+          tabBarIcon: ({ focused }) =>
+            focused ? (
+              <TabBarImage source={imagesIcon.ownables} />
+            ) : (
+              <TabBarImage source={imagesIcon.inactiveOwnables} />
+            ),
           tabBarLabelStyle: { fontSize: 13, textTransform: 'capitalize' },
           tabBarIndicatorStyle: { backgroundColor: Colors[colorScheme].tint, top: 0, height: 3 },
         })}
