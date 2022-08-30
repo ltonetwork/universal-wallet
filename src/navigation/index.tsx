@@ -16,7 +16,7 @@ import NotFoundScreen from '../screens/NotFoundScreen'
 import OnboardingScreen from '../screens/OnBoardingScreen/OnBoardingScreen'
 import OwnablesTabScreen from '../screens/OwnablesTabScreen/OwnablesTabScreen'
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen'
-import ScanKeyScreen from '../screens/ScanKeyScreen/ScanKeyScreen'
+import ImportWithQRScreen from '../screens/ImportWithQRScreen/ImportWithQRScreen'
 import ScanTransactionScreen from '../screens/ScanTransactionScreen/ScanTransactionScreen'
 import SignInScreen from '../screens/SignInScreen/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen/WalletTabScreen'
@@ -90,7 +90,7 @@ function RootNavigator(): any {
           <Stack.Screen name="OnBoarding" component={OnboardingScreen} options={{ headerShown: false }} />
         )}
         <Stack.Screen name="SignIn" component={SignInScreen} options={{ headerShown: false }} />
-        <Stack.Screen name="ScanKey" component={ScanKeyScreen}
+        <Stack.Screen name="ImportQR" component={ImportWithQRScreen}
           options={{
             headerBackTitleVisible: false,
             headerTransparent: true,

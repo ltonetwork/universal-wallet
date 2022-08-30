@@ -6,7 +6,7 @@ import { RootStackScreenProps } from '../../../types'
 import Spinner from '../../components/Spinner'
 import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
-import { CenteredView, ScannerContainer, StyledScanner, StyledText, TextContainer } from '../ScanKeyScreen/ScanScreen.styles'
+import { CenteredView, ScannerContainer, StyledScanner, StyledText, TextContainer } from '../../components/styles/Scanner.styles'
 
 export default function ScanTransactionScreen({ navigation }: RootStackScreenProps<'ScanTransaction'>) {
     const [isLoading, setIsLoading] = useState<boolean>(true)
