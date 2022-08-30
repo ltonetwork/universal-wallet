@@ -6,10 +6,9 @@ import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { ButtonContainer, Container, InputContainer, StyledText, StyledTitle } from './SignInScreen.styles'
 
-
 export default function SignInScreen({ navigation }: RootStackScreenProps<'SignIn'>) {
     const [userAlias, setUserAlias] = useState<any>()
-    const [password, setPassword] = useState<string>("")
+    const [password, setPassword] = useState<string>('')
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
 
     useEffect(() => {
@@ -18,82 +17,89 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
 
     const getAlias = () => {
         LocalStorageService.getData('@userAlias')
-            .then(data => {
+            .then((data) => {
                 setUserAlias(data)
             })
-            .catch(err => console.log(err))
+            .catch((err) => console.log(err))
     }
 
     const { setShowMessage, setMessageInfo } = useContext(MessageContext)
 
     const handleSignIn = () => {
         if (userAlias?.nickname === undefined) {
-            setMessageInfo("Please import your account first!")
+            setMessageInfo('Please import your account first!')
             setShowMessage(true)
         } else if (userAlias?.nickname === null) {
-            setMessageInfo("Please import your account first!")
+            setMessageInfo('Please import your account first!')
             setShowMessage(true)
-        }
-        else if (password === "") {
-            setMessageInfo("Password is required!")
+        } else if (password === '') {
+            setMessageInfo('Password is required!')
             setShowMessage(true)
         } else if (password !== userAlias?.password) {
-            setMessageInfo("Wrong password!")
+            setMessageInfo('Wrong password!')
             setShowMessage(true)
         } else {
             navigation.navigate('Root')
-            setPassword("")
+            setPassword('')
         }
     }
 
     return (
         <Container>
-            <InputContainer >
+            <InputContainer>
                 <StyledTitle>Sign in</StyledTitle>
                 <StyledText>Sign in with your account name and password</StyledText>
-                {userAlias?.nickname !== undefined &&
+                {userAlias?.nickname !== undefined && (
                     <StyledInput
                         mode={'flat'}
                         style={{ marginBottom: 5 }}
                         disabled={true}
-                        label="Nickname"
+                        label='Nickname'
                         value={userAlias?.nickname}
-                    >
-                    </StyledInput>
-                }
+                    ></StyledInput>
+                )}
                 <StyledInput
-                    label="Wallet password"
+                    label='Wallet password'
                     value={password}
-                    onChangeText={password => setPassword(password)}
+                    onChangeText={(password) => setPassword(password)}
                     secureTextEntry={passwordVisible}
-                    placeholder="Type your password"
-                    right={<StyledInput.Icon
-                        name={passwordVisible ? "eye" : "eye-off"}
-                        onPress={() => setPasswordVisible(!passwordVisible)} />}
-                >
-                </StyledInput>
-
+                    placeholder='Type your password'
+                    right={
+                        <StyledInput.Icon
+                            name={passwordVisible ? 'eye' : 'eye-off'}
+                            onPress={() => setPasswordVisible(!passwordVisible)}
+                        />
+                    }
+                ></StyledInput>
             </InputContainer>
-
 
             <ButtonContainer>
                 <StyledButton
-                    mode="contained"
+                    mode='contained'
                     color='#A017B7'
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                    onPress={() => handleSignIn()}>
+                    onPress={() => handleSignIn()}
+                >
                     Sign in
                 </StyledButton>
                 <StyledButton
-                    mode="outlined"
+                    mode='outlined'
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '90%' }}
-                    onPress={() => navigation.navigate('ScanKey')}>
-                    Import your account
+                    onPress={() => navigation.navigate('ImportQR')}
+                >
+                    Import account with a QR
+                </StyledButton>
+                <StyledButton
+                    mode='outlined'
+                    uppercase={false}
+                    labelStyle={{ fontWeight: '400', fontSize: 16, width: '90%' }}
+                    onPress={() => navigation.navigate('ImportSeed')}
+                >
+                    Import account with your seeds
                 </StyledButton>
             </ButtonContainer>
-
         </Container>
     )
 }
