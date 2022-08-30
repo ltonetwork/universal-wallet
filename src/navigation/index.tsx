@@ -96,7 +96,10 @@ function RootNavigator(): any {
             headerTitle: '',
           }}
         />
-        <Stack.Screen name='ImportSeed' component={ImportSeedScreen} options={{ headerShown: false }} />
+        <Stack.Screen
+          name='ImportSeed'
+          component={ImportSeedScreen}
+          options={{ headerTitle: '', headerBackTitleVisible: false }} />
         <Stack.Screen
           name='ImportAccount'
           component={ImportAccountScreen}
