@@ -49,6 +49,8 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
                     style={{ marginBottom: 140 }}
                     editable={true}
                     multiline
+                    blurOnSubmit={true}
+                    returnKeyType='go'
                     label='Add your seed phrase'
                     onChangeText={(text) => setSeedPhrase(text)}
                     value={seedPhrase}

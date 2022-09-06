@@ -3,5 +3,5 @@ import styled from "styled-components/native"
 
 
 export const Container = styled(View)`
-    height: ${Platform.OS === 'ios' ? '54px' : StatusBar.currentHeight}px;
+    height: ${Platform.OS === 'ios' ? '54' : StatusBar.currentHeight}px;
 `
