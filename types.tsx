@@ -14,6 +14,7 @@ declare global {
 }
 
 export type RootStackParamList = {
+  CreateAccount: undefined
   SignIn: undefined
   ImportQR: undefined
   ImportSeed: undefined
