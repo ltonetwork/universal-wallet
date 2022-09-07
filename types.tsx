@@ -18,7 +18,7 @@ export type RootStackParamList = {
   SignIn: undefined
   ImportQR: undefined
   ImportSeed: undefined
-  ImportAccount: undefined
+  ImportAccount: { data: string }
   OnBoarding: undefined
   Root: NavigatorScreenParams<RootTabParamList> | undefined
   Modal: undefined

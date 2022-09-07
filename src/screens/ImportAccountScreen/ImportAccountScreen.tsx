@@ -10,7 +10,7 @@ import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 
 
-export default function ImportAccountScreen({ navigation }: RootStackScreenProps<'ImportAccount'>) {
+export default function ImportAccountScreen({ navigation, route }: RootStackScreenProps<'ImportAccount'>) {
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const [loginForm, setloginForm] = useState({
@@ -66,8 +66,13 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                 .then(() => {
                     setIsLoading(true)
                     setShowMessage(true)
-                    setMessageInfo('Account imported succesfully!')
-                    navigation.navigate('Root', { screen: 'Wallet' })
+                    if (route.params.data === 'created') {
+                        setMessageInfo('Account created succesfully!')
+                        navigation.navigate('Root', { screen: 'Wallet' })
+                    } else {
+                        setMessageInfo('Account imported succesfully!')
+                        navigation.navigate('Root', { screen: 'Wallet' })
+                    }
                 })
                 .catch(err => console.log(err))
         }
@@ -80,7 +85,11 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                 <Spinner />
                 :
                 <StyledView marginTop={10}>
-                    <StyledTitle>Import account</StyledTitle>
+                    {route.params.data === 'created'
+                        ?
+                        <StyledTitle>Create account</StyledTitle>
+                        :
+                        <StyledTitle>Import account</StyledTitle>}
                     <StyledInput
                         mode={'flat'}
                         style={{ marginBottom: 5 }}
@@ -96,7 +105,6 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                         placeholder='Enter your nickname...'
                         value={loginForm.nickname}
                         onChangeText={(text) => handleInputChange('nickname', text)}
-
                     >
                     </StyledInput>
 
