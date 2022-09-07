@@ -97,7 +97,7 @@ function RootNavigator(): any {
         {appFirstLaunch && (
           <Stack.Screen name='OnBoarding' component={OnboardingScreen} options={{ headerShown: false }} />
         )}
-        {userAlias === true && (
+        {userAlias && (
           <Stack.Screen name='CreateAccount' component={CreateAccountScreen} options={{ headerShown: false }} />
         )}
 
