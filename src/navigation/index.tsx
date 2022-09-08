@@ -3,7 +3,7 @@ import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { ColorSchemeName, Dimensions, useWindowDimensions } from 'react-native'
+import { ColorSchemeName, Dimensions } from 'react-native'
 import { RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from '../../types'
 import SnackbarMessage from '../components/Snackbar'
 import TabBarImage from '../components/TabBarImage'
@@ -44,10 +44,6 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
   )
 }
 
-/**
- * A root stack navigator is often used for displaying modals on top of all other content.
- * https://reactnavigation.org/docs/modal
- */
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function RootNavigator(): any {
@@ -56,7 +52,6 @@ function RootNavigator(): any {
 
   useEffect(() => {
     skipOnboarding()
-    console.log('app ran')
   }, [])
 
   const skipOnboarding = (): void => {
@@ -72,15 +67,8 @@ function RootNavigator(): any {
       .catch((err) => console.log(err))
   }
 
-
   LocalStorageService.getData('@userAlias')
-    .then((data) => {
-      if (data === null) {
-        setUserAlias(true)
-      } else {
-        setUserAlias(false)
-      }
-    })
+    .then((data) => setUserAlias(data === null))
     .catch((err) => console.log(err))
 
 
@@ -100,7 +88,6 @@ function RootNavigator(): any {
         {userAlias && (
           <Stack.Screen name='CreateAccount' component={CreateAccountScreen} options={{ headerShown: false }} />
         )}
-
         <Stack.Screen name='SignIn' component={SignInScreen} options={{ headerShown: false }} />
         <Stack.Screen
           name='ImportQR'
