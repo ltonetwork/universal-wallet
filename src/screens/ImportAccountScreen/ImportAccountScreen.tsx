@@ -153,15 +153,29 @@ export default function ImportAccountScreen({ navigation, route }: RootStackScre
                     />
 
                     <StyledView marginTop={70}>
-                        <StyledButton
-                            mode="contained"
-                            disabled={!checked && true}
-                            uppercase={false}
-                            labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                            onPress={() => handleImportAccount()
-                            }>
-                            Import your account
-                        </StyledButton>
+                        {route.params.data === 'created'
+                            ?
+                            <StyledButton
+                                mode="contained"
+                                disabled={!checked && true}
+                                uppercase={false}
+                                labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
+                                onPress={() => handleImportAccount()
+                                }>
+                                Create your account
+                            </StyledButton>
+                            :
+                            <StyledButton
+                                mode="contained"
+                                disabled={!checked && true}
+                                uppercase={false}
+                                labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
+                                onPress={() => handleImportAccount()
+                                }>
+                                Import your account
+                            </StyledButton>
+                        }
+
                     </StyledView>
                 </StyledView >
 

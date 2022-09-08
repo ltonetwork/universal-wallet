@@ -29,7 +29,7 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
             LocalStorageService.storeData('@accountData', data)
                 .then(() => {
                     setIsLoading(false)
-                    navigation.navigate('ImportAccount')
+                    navigation.navigate('ImportAccount', { data: 'seed' })
                 })
                 .catch((err) => {
                     console.log(err)
