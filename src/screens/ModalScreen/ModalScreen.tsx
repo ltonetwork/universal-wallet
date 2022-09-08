@@ -33,7 +33,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
 
   const getAccountAddress = () => {
     LocalStorageService.getData('@accountData')
-      .then(data => setAccountAddress(data.address))
+      .then(data => setAccountAddress(data[0].address))
       .catch(err => console.log(err))
   }
 

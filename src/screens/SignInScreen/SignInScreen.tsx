@@ -48,7 +48,7 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
         <Container>
             <InputContainer>
                 <StyledTitle>Sign in</StyledTitle>
-                <StyledText>Sign in with your account name and password or log into your web app</StyledText>
+                <StyledText>Sign in with your account name and password</StyledText>
                 {userAlias?.nickname !== undefined && (
                     <StyledInput
                         mode={'flat'}

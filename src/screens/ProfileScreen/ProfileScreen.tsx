@@ -39,7 +39,7 @@ export default function ProfileScreen() {
     const readStorage = () => {
         LocalStorageService.getData('@accountData')
             .then(accountData => {
-                setAccountInformation(accountData)
+                setAccountInformation(accountData[0])
                 setIsLoading(false)
             })
             .catch(err => console.log(err))

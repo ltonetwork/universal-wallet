@@ -34,7 +34,7 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
             .then(data => {
                 const account = data
                 setIsLoading(false)
-                setAccountAddress(account.address)
+                setAccountAddress(account[0].address)
             })
             .catch(err => console.log(err))
     }
