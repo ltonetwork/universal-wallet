@@ -48,7 +48,7 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
         <Container>
             <InputContainer>
                 <StyledTitle>Sign in</StyledTitle>
-                <StyledText>Sign in with your account name and password</StyledText>
+                <StyledText>Sign in with your account name and password or log into your web app</StyledText>
                 {userAlias?.nickname !== undefined && (
                     <StyledInput
                         mode={'flat'}
@@ -82,22 +82,6 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     onPress={() => handleSignIn()}
                 >
                     Sign in
-                </StyledButton>
-                <StyledButton
-                    mode='outlined'
-                    uppercase={false}
-                    labelStyle={{ fontWeight: '400', fontSize: 16, width: '90%' }}
-                    onPress={() => navigation.navigate('ImportQR')}
-                >
-                    Import account with a QR
-                </StyledButton>
-                <StyledButton
-                    mode='outlined'
-                    uppercase={false}
-                    labelStyle={{ fontWeight: '400', fontSize: 16, width: '90%' }}
-                    onPress={() => navigation.navigate('ImportSeed')}
-                >
-                    Import account with your seeds
                 </StyledButton>
             </ButtonContainer>
         </Container>
