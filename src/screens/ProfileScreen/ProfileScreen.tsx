@@ -1,11 +1,11 @@
 import { useClipboard } from '@react-native-community/clipboard'
 import React, { useContext, useEffect, useState } from 'react'
-import { Pressable, StatusBar, TouchableOpacity } from 'react-native'
+import { Pressable, TouchableOpacity } from 'react-native'
 import { Card, Title } from 'react-native-paper'
 import Spinner from '../../components/Spinner'
-import { CardsContainer, Content, Field, HiddenTitle, MainCard, StyledTitle } from './ProfileScreen.styles'
 import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
+import { CardsContainer, Content, Field, HiddenTitle, MainCard, StyledTitle } from './ProfileScreen.styles'
 
 export default function ProfileScreen() {
 
@@ -77,7 +77,6 @@ export default function ProfileScreen() {
                                 <Content>{accountNickname}</Content>
                             </Pressable>
 
-
                             <Field>Wallet</Field>
                             <Pressable
                                 style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
@@ -95,41 +94,45 @@ export default function ProfileScreen() {
 
                     </MainCard>
 
-                    <TouchableOpacity onPress={() => setIsKeyBlur(!isKeyBlur)}>
-                        {!isKeyBlur ?
+                    {!isKeyBlur ?
+                        <TouchableOpacity onPress={() => setIsKeyBlur(!isKeyBlur)}>
                             <MainCard justifyContent='center' alignItems='center'>
-
                                 <Card.Content>
                                     <HiddenTitle>Press and discover your private key</HiddenTitle>
                                 </Card.Content>
-
                             </MainCard>
-                            :
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity
+                            onPress={() => setIsKeyBlur(!isKeyBlur)}
+                            onLongPress={() => copyToClipboard(privateKey)}>
                             <MainCard justifyContent='center' alignItems='center'>
                                 <Card.Content>
                                     <Content>{privateKey}</Content>
                                 </Card.Content>
                             </MainCard>
-                        }
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                    }
 
-                    <TouchableOpacity onPress={() => setIsSeedBlur(!isSeedBlur)}>
-                        {!isSeedBlur ?
+                    {!isSeedBlur ?
+                        <TouchableOpacity onPress={() => setIsSeedBlur(!isSeedBlur)}>
                             <MainCard justifyContent='center' alignItems='center'>
-
                                 <Card.Content>
                                     <HiddenTitle>Press and discover your backup phrase</HiddenTitle>
                                 </Card.Content>
-
                             </MainCard>
-                            :
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity
+                            onPress={() => setIsSeedBlur(!isSeedBlur)}
+                            onLongPress={() => copyToClipboard(seed)}>
                             <MainCard justifyContent='center' alignItems='center'>
                                 <Card.Content>
                                     <Title >{seed}</Title>
                                 </Card.Content>
                             </MainCard>
-                        }
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                    }
                 </CardsContainer>
             }
         </>
