@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+-   [Copy private key and seed phrase to clipboard](https://wealize.atlassian.net/browse/LTO22004-60)
 -   [As a LTO user, I want to import account with my seed phrase](https://wealize.atlassian.net/browse/LTO22004-54)
 -   [Update images in slides](https://wealize.atlassian.net/browse/LTO22004-52)
 -   [Change style titles in all views](https://wealize.atlassian.net/browse/LTO22004-50)
