@@ -35,7 +35,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
     const [details, setDetails] = useState<TypedDetails>(new Object as TypedDetails)
     const [coinData, setCoinData] = useState<TypedCoinData>(new Object as TypedCoinData)
 
-    const { available, generating, regular, unbonding } = details
+    const { available, effective, leasing, regular, unbonding } = details
     const { price, percent_change_24h } = coinData
 
     interface TypedCoinData {
@@ -46,7 +46,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
     interface TypedDetails {
         available: number
         effective: number
-        generating: number
+        leasing: number
         regular: number
         unbonding: number
     }
@@ -141,9 +141,9 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
                             <BottomCard>
                                 <Card.Content>
-                                    <FieldName>Generating</FieldName>
+                                    <FieldName>Leasing</FieldName>
                                     <AmountContainer>
-                                        <Amount>{formatNumber(generating)}</Amount><Paragraph>LTO</Paragraph>
+                                        <Amount>{formatNumber(leasing)}</Amount><Paragraph>LTO</Paragraph>
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
@@ -165,7 +165,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                                 <Card.Content>
                                     <FieldName>Effective</FieldName>
                                     <AmountContainer>
-                                        <Amount>{formatNumber(change)}</Amount><Paragraph>$</Paragraph>
+                                        <Amount>{formatNumber(effective)}</Amount><Paragraph>LTO</Paragraph>
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
@@ -173,7 +173,9 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                             <BottomCard >
                                 <Card.Content>
                                     <FieldName>Unbonding</FieldName>
-                                    <Amount>{formatNumber(unbonding)}</Amount>
+                                    <AmountContainer>
+                                        <Amount>{formatNumber(unbonding)}</Amount><Paragraph>LTO</Paragraph>
+                                    </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
 
