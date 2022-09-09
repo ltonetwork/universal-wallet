@@ -47,7 +47,7 @@ export default function ImportWithQRScreen({ navigation }: RootStackScreenProps<
             const signature = account.sign(`lto:sign:${auth.url}`).base58
             const data = { address: account.address, privateKey: account.privateKey, publicKey: account.publicKey, signature, seed: account.seed }
             if (data) {
-                LocalStorageService.storeData('@accountData', data)
+                LocalStorageService.storeData('@accountData', [data])
                     .then(() => {
                         setIsLoading(false)
                         navigation.navigate('ImportAccount')

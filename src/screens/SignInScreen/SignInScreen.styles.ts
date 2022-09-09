@@ -13,7 +13,7 @@ export const Container = styled.View<{ flexEnd?: boolean, marginTop?: number }>`
 
 export const ButtonContainer = styled.View<{ marginBottom?: number }>`
     height: 250px;
-    margin-top: 70px;
+    margin-top: 60px;
     ${props => props.marginBottom && `margin-bottom: ${props.marginBottom}px;`}
     justify-content: flex-end;
     align-items: center; 
