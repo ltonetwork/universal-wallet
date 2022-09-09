@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 -   [Small changes in Dashboard screen (Overview)](https://wealize.atlassian.net/browse/LTO22004-58)
+-   [Create separate screens for the login and create/import](https://wealize.atlassian.net/browse/LTO22004-57)
+-   [Add Create Account feature](https://wealize.atlassian.net/browse/LTO22004-56)
 -   [As a LTO user, I want to import account with my seed phrase](https://wealize.atlassian.net/browse/LTO22004-54)
 -   [Update images in slides](https://wealize.atlassian.net/browse/LTO22004-52)
 -   [Change style titles in all views](https://wealize.atlassian.net/browse/LTO22004-50)

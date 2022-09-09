@@ -10,7 +10,7 @@ import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 
 
-export default function ImportAccountScreen({ navigation }: RootStackScreenProps<'ImportAccount'>) {
+export default function ImportAccountScreen({ navigation, route }: RootStackScreenProps<'ImportAccount'>) {
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const [loginForm, setloginForm] = useState({
@@ -24,6 +24,7 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
     const [checked, setChecked] = useState<boolean>(false)
     const [modalVisible, setModalVisible] = useState<boolean>(false)
     const [accountAddress, setAccountAddress] = useState('')
+    const { setShowMessage, setMessageInfo } = useContext(MessageContext)
 
     useEffect(() => {
         getAccountAddress()
@@ -32,9 +33,15 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
     const getAccountAddress = () => {
         LocalStorageService.getData('@accountData')
             .then(data => {
-                const account = data
-                setIsLoading(false)
-                setAccountAddress(account.address)
+                if (data === null) {
+                    setShowMessage(true)
+                    setMessageInfo('Error creating/importing your account!')
+                    navigation.goBack()
+                } else {
+                    const account = data
+                    setIsLoading(false)
+                    setAccountAddress(account[0]?.address)
+                }
             })
             .catch(err => console.log(err))
     }
@@ -42,8 +49,6 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
     const handleInputChange = (name: string, value: string) => {
         setloginForm({ ...loginForm, [name]: value })
     }
-
-    const { setShowMessage, setMessageInfo } = useContext(MessageContext)
 
     const handleImportAccount = () => {
         if (loginForm.nickname === '') {
@@ -66,8 +71,13 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                 .then(() => {
                     setIsLoading(true)
                     setShowMessage(true)
-                    setMessageInfo('Account imported succesfully!')
-                    navigation.navigate('Root', { screen: 'Wallet' })
+                    if (route.params.data === 'created') {
+                        setMessageInfo('Account created succesfully!')
+                        navigation.navigate('Root', { screen: 'Wallet' })
+                    } else {
+                        setMessageInfo('Account imported succesfully!')
+                        navigation.navigate('Root', { screen: 'Wallet' })
+                    }
                 })
                 .catch(err => console.log(err))
         }
@@ -80,7 +90,11 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                 <Spinner />
                 :
                 <StyledView marginTop={10}>
-                    <StyledTitle>Import account</StyledTitle>
+                    {route.params.data === 'created'
+                        ?
+                        <StyledTitle>Create account</StyledTitle>
+                        :
+                        <StyledTitle>Import account</StyledTitle>}
                     <StyledInput
                         mode={'flat'}
                         style={{ marginBottom: 5 }}
@@ -96,7 +110,6 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                         placeholder='Enter your nickname...'
                         value={loginForm.nickname}
                         onChangeText={(text) => handleInputChange('nickname', text)}
-
                     >
                     </StyledInput>
 
@@ -145,15 +158,29 @@ export default function ImportAccountScreen({ navigation }: RootStackScreenProps
                     />
 
                     <StyledView marginTop={70}>
-                        <StyledButton
-                            mode="contained"
-                            disabled={!checked && true}
-                            uppercase={false}
-                            labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                            onPress={() => handleImportAccount()
-                            }>
-                            Import your account
-                        </StyledButton>
+                        {route.params.data === 'created'
+                            ?
+                            <StyledButton
+                                mode="contained"
+                                disabled={!checked && true}
+                                uppercase={false}
+                                labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
+                                onPress={() => handleImportAccount()
+                                }>
+                                Create your account
+                            </StyledButton>
+                            :
+                            <StyledButton
+                                mode="contained"
+                                disabled={!checked && true}
+                                uppercase={false}
+                                labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
+                                onPress={() => handleImportAccount()
+                                }>
+                                Import your account
+                            </StyledButton>
+                        }
+
                     </StyledView>
                 </StyledView >
 

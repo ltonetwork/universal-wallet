@@ -62,7 +62,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
     const readStorage = () => {
         LocalStorageService.getData('@accountData')
             .then(account => {
-                return ApiClientService.getAccountDetails(account.address)
+                return ApiClientService.getAccountDetails(account[0].address)
             })
             .then(accountDetails => {
                 setDetails(accountDetails)

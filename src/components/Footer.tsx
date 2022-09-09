@@ -33,7 +33,7 @@ export default function Footer({ currentSlideIndex }: any) {
                         color="#A017B7"
                         uppercase={false}
                         labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                        onPress={() => navigation.navigate('SignIn')}>
+                        onPress={() => navigation.navigate('CreateAccount')}>
                         Start
                     </StyledButton>
                 )}
