@@ -26,7 +26,7 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
                 publicKey: account.publicKey,
                 seed: account.seed,
             }
-            LocalStorageService.storeData('@accountData', data)
+            LocalStorageService.storeData('@accountData', [data])
                 .then(() => {
                     setIsLoading(false)
                     navigation.navigate('ImportAccount', { data: 'seed' })

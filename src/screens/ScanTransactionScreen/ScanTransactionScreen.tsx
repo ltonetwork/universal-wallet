@@ -44,7 +44,7 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
             const myAccount = await LocalStorageService.getData('@accountData')
             const LTO = require("@ltonetwork/lto").LTO
             const lto = new LTO('T')
-            const account = lto.account({ seed: myAccount.seed })
+            const account = lto.account({ seed: myAccount[0].seed })
             const transfer = JSON.parse(input)
 
             if (transfer.sender !== account.address) {

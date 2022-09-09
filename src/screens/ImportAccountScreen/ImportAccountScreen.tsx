@@ -24,6 +24,7 @@ export default function ImportAccountScreen({ navigation, route }: RootStackScre
     const [checked, setChecked] = useState<boolean>(false)
     const [modalVisible, setModalVisible] = useState<boolean>(false)
     const [accountAddress, setAccountAddress] = useState('')
+    const { setShowMessage, setMessageInfo } = useContext(MessageContext)
 
     useEffect(() => {
         getAccountAddress()
@@ -32,9 +33,15 @@ export default function ImportAccountScreen({ navigation, route }: RootStackScre
     const getAccountAddress = () => {
         LocalStorageService.getData('@accountData')
             .then(data => {
-                const account = data
-                setIsLoading(false)
-                setAccountAddress(account.address)
+                if (data === null) {
+                    setShowMessage(true)
+                    setMessageInfo('Error creating/importing your account!')
+                    navigation.goBack()
+                } else {
+                    const account = data
+                    setIsLoading(false)
+                    setAccountAddress(account[0]?.address)
+                }
             })
             .catch(err => console.log(err))
     }
@@ -42,8 +49,6 @@ export default function ImportAccountScreen({ navigation, route }: RootStackScre
     const handleInputChange = (name: string, value: string) => {
         setloginForm({ ...loginForm, [name]: value })
     }
-
-    const { setShowMessage, setMessageInfo } = useContext(MessageContext)
 
     const handleImportAccount = () => {
         if (loginForm.nickname === '') {
