@@ -14,10 +14,11 @@ declare global {
 }
 
 export type RootStackParamList = {
+  CreateAccount: undefined
   SignIn: undefined
   ImportQR: undefined
   ImportSeed: undefined
-  ImportAccount: undefined
+  ImportAccount: { data: string }
   OnBoarding: undefined
   Root: NavigatorScreenParams<RootTabParamList> | undefined
   Modal: undefined

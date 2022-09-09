@@ -1,29 +1,30 @@
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
-import { DarkTheme, DefaultTheme, NavigationContainer, useNavigation } from '@react-navigation/native'
+import { DarkTheme, DefaultTheme, NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import * as React from 'react'
 import { useEffect, useState } from 'react'
-import { ColorSchemeName, Dimensions, useWindowDimensions } from 'react-native'
+import { ColorSchemeName, Dimensions } from 'react-native'
 import { RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from '../../types'
 import SnackbarMessage from '../components/Snackbar'
 import TabBarImage from '../components/TabBarImage'
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
+import CreateAccountScreen from '../screens/CreateAccountScreen/CreateAccountScreen'
 import CredentialsTabScreen from '../screens/CredentialsTabScreen/CredentialsTabScreen'
 import ImportAccountScreen from '../screens/ImportAccountScreen/ImportAccountScreen'
+import ImportWithQRScreen from '../screens/ImportWithQRScreen/ImportWithQRScreen'
+import ImportSeedScreen from '../screens/ImportWithSeedScreen/ImportWithSeedScreen'
 import ModalScreen from '../screens/ModalScreen/ModalScreen'
 import NotFoundScreen from '../screens/NotFoundScreen'
 import OnboardingScreen from '../screens/OnBoardingScreen/OnBoardingScreen'
 import OwnablesTabScreen from '../screens/OwnablesTabScreen/OwnablesTabScreen'
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen'
-import ImportWithQRScreen from '../screens/ImportWithQRScreen/ImportWithQRScreen'
 import ScanTransactionScreen from '../screens/ScanTransactionScreen/ScanTransactionScreen'
 import SignInScreen from '../screens/SignInScreen/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
 import { imagesIcon } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
-import ImportSeedScreen from '../screens/ImportWithSeedScreen/ImportWithSeedScreen'
 
 const navTheme = {
   ...DefaultTheme,
@@ -34,7 +35,6 @@ const navTheme = {
 }
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
-  const { width, height } = useWindowDimensions()
 
   return (
     <NavigationContainer linking={LinkingConfiguration} theme={colorScheme === 'dark' ? DarkTheme : navTheme}>
@@ -44,17 +44,11 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
   )
 }
 
-/**
- * A root stack navigator is often used for displaying modals on top of all other content.
- * https://reactnavigation.org/docs/modal
- */
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function RootNavigator(): any {
-  const colorScheme = useColorScheme()
-  const navigation = useNavigation()
-
   const [appFirstLaunch, setAppFirstLaunch] = useState<boolean | null>(null)
+  const [userAlias, setUserAlias] = useState<boolean | null>(null)
 
   useEffect(() => {
     skipOnboarding()
@@ -73,6 +67,11 @@ function RootNavigator(): any {
       .catch((err) => console.log(err))
   }
 
+  LocalStorageService.getData('@userAlias')
+    .then((data) => setUserAlias(data === null))
+    .catch((err) => console.log(err))
+
+
   return (
     appFirstLaunch !== null && (
       <Stack.Navigator
@@ -85,6 +84,9 @@ function RootNavigator(): any {
       >
         {appFirstLaunch && (
           <Stack.Screen name='OnBoarding' component={OnboardingScreen} options={{ headerShown: false }} />
+        )}
+        {userAlias && (
+          <Stack.Screen name='CreateAccount' component={CreateAccountScreen} options={{ headerShown: false }} />
         )}
         <Stack.Screen name='SignIn' component={SignInScreen} options={{ headerShown: false }} />
         <Stack.Screen
