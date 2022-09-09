@@ -11,6 +11,7 @@ import {
 } from '../SignInScreen/SignInScreen.styles'
 
 export default function CreateAccountScreen({ navigation }: RootStackScreenProps<'CreateAccount'>) {
+
     const handleCreateAccount = () => {
         const LTO = require('@ltonetwork/lto').LTO
         const lto = new LTO('T')
