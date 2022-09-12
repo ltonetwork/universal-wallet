@@ -12,7 +12,7 @@ export default class ApiClientService {
     }
 
     public static getAccountBalance = (account: string) => {
-        const lto = new LTO('T')
+        const lto = new LTO(process.env.LTO_NETWORK_ID || 'T')
         return lto.getBalance(account)
     }
 }

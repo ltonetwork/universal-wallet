@@ -18,7 +18,7 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
         const seed = seedPhrase.toLowerCase()
 
         if (seed.split(' ').length === 15) {
-            const lto = new LTO('T)')
+            const lto = new LTO(process.env.LTO_NETWORK_ID || 'T')
             const account = lto.account({ seed: seed })
             const data = {
                 address: account.address,

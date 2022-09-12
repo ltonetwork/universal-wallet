@@ -14,7 +14,7 @@ export default function CreateAccountScreen({ navigation }: RootStackScreenProps
 
     const handleCreateAccount = () => {
         const LTO = require('@ltonetwork/lto').LTO
-        const lto = new LTO('T')
+        const lto = new LTO(process.env.LTO_NETWORK_ID || 'T')
         const account = lto.account()
         const auth = {
             '@context': 'http://schema.lto.network/simple-auth-v1.json',
