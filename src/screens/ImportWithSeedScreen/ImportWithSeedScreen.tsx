@@ -1,6 +1,5 @@
 import { LTO } from '@ltonetwork/lto'
 import React, { useContext, useState } from 'react'
-import { View } from 'react-native'
 import { RootStackScreenProps } from '../../../types'
 import { StyledButton } from '../../components/styles/StyledButton.styles'
 import { StyledInput } from '../../components/styles/StyledInput.styles'
