@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+-   [As a LTO user, I want to sign in web wallet with my wallet mobile](https://wealize.atlassian.net/browse/LTO22004-37)
+-   [Add transaction confirmation dialog](https://wealize.atlassian.net/browse/LTO22004-59)
 -   [Copy private key and seed phrase to clipboard](https://wealize.atlassian.net/browse/LTO22004-60)
 -   [Small changes in Dashboard screen (Overview)](https://wealize.atlassian.net/browse/LTO22004-58)
 -   [Create separate screens for the login and create/import](https://wealize.atlassian.net/browse/LTO22004-57)
