@@ -42,7 +42,10 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
   const logOut = () => {
     setMessageInfo('Logout successful!')
     setShowMessage(true)
-    navigation.popToTop()
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'SignIn' }],
+    })
   }
 
 
