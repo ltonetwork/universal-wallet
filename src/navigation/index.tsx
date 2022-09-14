@@ -18,7 +18,7 @@ import NotFoundScreen from '../screens/NotFoundScreen'
 import OnboardingScreen from '../screens/OnBoardingScreen/OnBoardingScreen'
 import OwnablesTabScreen from '../screens/OwnablesTabScreen/OwnablesTabScreen'
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen'
-import ScanTransactionScreen from '../screens/ScanTransactionScreen/ScanTransactionScreen'
+import QrReaderScreen from '../screens/QrReaderScreen/QrReaderScreen'
 import SignInScreen from '../screens/SignInScreen/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
@@ -100,8 +100,8 @@ function RootNavigator(): any {
         <Stack.Screen name='Root' component={BottomTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Oops!' }} />
         <Stack.Screen
-          name='ScanTransaction'
-          component={ScanTransactionScreen}
+          name='QrReader'
+          component={QrReaderScreen}
           options={{
             headerBackTitleVisible: false,
             headerTransparent: true,

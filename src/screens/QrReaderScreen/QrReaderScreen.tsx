@@ -17,7 +17,7 @@ import LocalStorageService from '../../services/LocalStorage.service'
 import { confirmationMessage } from '../../utils/confirmationMessage'
 import { TypedTransaction } from '../../interfaces/TypedTransaction'
 
-export default function ScanTransactionScreen({ navigation }: RootStackScreenProps<'ScanTransaction'>) {
+export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'>) {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [permission, setPermission] = useState<boolean>(true)
     const { setShowMessage, setMessageInfo } = useContext(MessageContext)

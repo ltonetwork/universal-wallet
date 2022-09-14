@@ -20,7 +20,7 @@ export type RootStackParamList = {
   ImportSeed: undefined
   RegisterAccount: { data: string }
   Root: NavigatorScreenParams<RootTabParamList> | undefined
-  ScanTransaction: undefined
+  QrReader: undefined
   Modal: undefined
   Profile: undefined
   NotFound: undefined

@@ -18,7 +18,7 @@ it("Should renders correctly", () => {
     expect(QRButton).toBeTruthy()
 })
 
-it("Should navigate to ScanTransaction screen", () => {
+it("Should navigate to QrReader screen", () => {
     const { getByRole } = render(<QRButton {...mockedProps} />)
 
     const QRCircle = getByRole("button")

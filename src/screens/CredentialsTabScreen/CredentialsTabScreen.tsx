@@ -33,7 +33,7 @@ export default function CredentialsTabScreen({ navigation }: RootTabScreenProps<
             <SocialMediaIcon source={socialMediaIcons.telegram} onPress={() => navigateToTelegram()} />
           </IconContainer>
         </StyledView>
-        <QRButton onPress={() => navigation.navigate('ScanTransaction')} />
+        <QRButton onPress={() => navigation.navigate('QrReader')} />
       </Container>
     </>
   )
