@@ -144,6 +144,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
                     <ConfirmationDialog
                         visible={dialogVisible}
                         message={confirmationMessage(tx)}
+                        cancelPress={() => navigation.goBack()}
                         onPress={() => handleTx(tx)}
                     />
                 ) : null}
