@@ -25,7 +25,8 @@ import {
     TopCard,
     TopCardsContainer
 } from './WalletTabScreen.styles'
-
+import { TypedCoinData } from '../../interfaces/TypedCoinData'
+import { TypedDetails } from '../../interfaces/TypedDetails'
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 
@@ -37,19 +38,6 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
     const { available, effective, leasing, regular, unbonding } = details
     const { price, percent_change_24h } = coinData
-
-    interface TypedCoinData {
-        price: number
-        percent_change_24h: number
-    }
-
-    interface TypedDetails {
-        available: number
-        effective: number
-        leasing: number
-        regular: number
-        unbonding: number
-    }
 
     useEffect(() => {
         readStorage()
@@ -186,7 +174,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
                         </BottomCardsContainer>
 
-                        <QRButton onPress={() => navigation.navigate('ScanTransaction')} />
+                        <QRButton onPress={() => navigation.navigate('QrReader')} />
 
                     </OverviewContainer>
 
