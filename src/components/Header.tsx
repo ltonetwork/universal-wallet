@@ -5,7 +5,6 @@ import { HeaderBtn, HeaderView } from "./styles/Header.styles"
 
 
 export default function Header({ currentSlideIndex, changeSlide }: any) {
-
     const navigation = useNavigation()
 
     return (

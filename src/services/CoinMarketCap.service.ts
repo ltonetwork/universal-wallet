@@ -1,8 +1,10 @@
 export default class CoinMarketCapService {
-
     public static getCoinInfo = async (signal: AbortSignal) => {
         try {
-            const response = await fetch(`https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?CMC_PRO_API_KEY=${process.env.CMC_API_KEY}&id=3714`, { signal })
+            const response = await fetch(
+                `https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?CMC_PRO_API_KEY=${process.env.CMC_API_KEY}&id=3714`,
+                { signal }
+            )
             const coinInfo = response
             return coinInfo.json()
         } catch (error) {
@@ -10,5 +12,3 @@ export default class CoinMarketCapService {
         }
     }
 }
-
-

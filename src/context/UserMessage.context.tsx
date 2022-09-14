@@ -4,7 +4,6 @@ import { createContext, useState } from "react"
 const MessageContext = createContext({} as any)
 
 function MessageProviderWrapper(props: any) {
-
     const [showMessage, setShowMessage] = useState(false)
     const [messageInfo, setMessageInfo] = useState("")
 

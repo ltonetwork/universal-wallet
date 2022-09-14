@@ -2,10 +2,12 @@ import React from 'react'
 import { View } from 'react-native'
 import { Checkbox } from 'react-native-paper'
 
+
 export default function CheckBox(props: {
     onPress: () => void,
     status: 'checked' | 'unchecked' | 'indeterminate',
-}) {
+}): JSX.Element {
+
     return (
         <View>
             <Checkbox.Item

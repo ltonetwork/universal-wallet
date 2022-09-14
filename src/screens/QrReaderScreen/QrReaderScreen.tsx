@@ -43,19 +43,11 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
             })
     }
 
-    // useEffect(() => {
-    //     if (tx) {
-    //         confirmationMessage(tx)
-    //     }
-    // }, [])
-
     useEffect(() => {
         if (tx) {
             handleTx(tx)
         }
     }, [])
-
-
 
     const handleBarCodeScanned = ({ data }: any) => {
         setScanned(true)
