@@ -28,6 +28,7 @@ import {
 import { TypedCoinData } from '../../interfaces/TypedCoinData'
 import { TypedDetails } from '../../interfaces/TypedDetails'
 
+
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
 
     const { width, height } = useWindowDimensions()
@@ -41,7 +42,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
     useEffect(() => {
         readStorage()
-    }, [])
+    }, [details])
 
     const readStorage = () => {
         LocalStorageService.getData('@accountData')
