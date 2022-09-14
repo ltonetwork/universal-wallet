@@ -13,9 +13,9 @@ it('Should renders correctly', () => {
         throw new Error("Function not implemented.")
     }} />)
 
-    const SeedButtonText = getByRole('button')
+    const seedButtonText = getByRole('button')
 
-    expect(SeedButtonText).toBeTruthy()
+    expect(seedButtonText).toBeTruthy()
 })
 
 it('Should hide when pressed', () => {
@@ -23,8 +23,8 @@ it('Should hide when pressed', () => {
         mockedState.setShowButton(false)
     }} />)
 
-    const SeedButtonText = getByRole('button')
-    fireEvent.press(SeedButtonText)
+    const seedButtonText = getByRole('button')
+    fireEvent.press(seedButtonText)
 
     expect(mockedState.setShowButton).toHaveBeenCalledWith(false)
 })
