@@ -12,7 +12,6 @@ import useColorScheme from '../hooks/useColorScheme'
 import CreateAccountScreen from '../screens/CreateAccountScreen/CreateAccountScreen'
 import CredentialsTabScreen from '../screens/CredentialsTabScreen/CredentialsTabScreen'
 import ImportAccountScreen from '../screens/ImportAccountScreen/ImportAccountScreen'
-import ImportWithQRScreen from '../screens/ImportWithQRScreen/ImportWithQRScreen'
 import ImportSeedScreen from '../screens/ImportWithSeedScreen/ImportWithSeedScreen'
 import ModalScreen from '../screens/ModalScreen/ModalScreen'
 import NotFoundScreen from '../screens/NotFoundScreen'
@@ -89,15 +88,6 @@ function RootNavigator(): any {
           <Stack.Screen name='CreateAccount' component={CreateAccountScreen} options={{ headerShown: false }} />
         )}
         <Stack.Screen name='SignIn' component={SignInScreen} options={{ headerShown: false }} />
-        <Stack.Screen
-          name='ImportQR'
-          component={ImportWithQRScreen}
-          options={{
-            headerBackTitleVisible: false,
-            headerTransparent: true,
-            headerTitle: '',
-          }}
-        />
         <Stack.Screen
           name='ImportSeed'
           component={ImportSeedScreen}
