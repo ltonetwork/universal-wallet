@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { RootStackScreenProps } from '../../../types'
 import CheckBox from '../../components/CheckBox'
 import Spinner from '../../components/Spinner'
-import { StyledTitle, StyledView } from './ImportAccountScreen.styles'
+import { StyledTitle, StyledView } from './RegisterAccountScreen.styles'
 import { StyledButton } from '../../components/styles/StyledButton.styles'
 import { StyledInput } from '../../components/styles/StyledInput.styles'
 import TermsModal from '../../components/TermsModal'
@@ -10,7 +10,7 @@ import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 
 
-export default function ImportAccountScreen({ navigation, route }: RootStackScreenProps<'ImportAccount'>) {
+export default function RegisterAccountScreen({ navigation, route }: RootStackScreenProps<'RegisterAccount'>) {
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const [loginForm, setloginForm] = useState({
@@ -76,7 +76,7 @@ export default function ImportAccountScreen({ navigation, route }: RootStackScre
                         navigation.navigate('Root', { screen: 'Wallet' })
                     } else {
                         setMessageInfo('Account imported succesfully!')
-                        navigation.navigate('Root', { screen: 'Wallet' })
+                        navigation.replace('Root', { screen: 'Wallet' })
                     }
                 })
                 .catch(err => console.log(err))

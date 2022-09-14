@@ -31,7 +31,7 @@ export default function CreateAccountScreen({ navigation }: RootStackScreenProps
 
         if (data) {
             LocalStorageService.storeData('@accountData', [data])
-                .then(() => navigation.navigate('ImportAccount', { data: 'created' }))
+                .then(() => navigation.navigate('RegisterAccount', { data: 'created' }))
                 .catch((err) => {
                     console.log(err)
                 })

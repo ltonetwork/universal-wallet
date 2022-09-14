@@ -14,16 +14,16 @@ declare global {
 }
 
 export type RootStackParamList = {
+  OnBoarding: undefined
   CreateAccount: undefined
   SignIn: undefined
   ImportSeed: undefined
-  ImportAccount: { data: string }
-  OnBoarding: undefined
+  RegisterAccount: { data: string }
   Root: NavigatorScreenParams<RootTabParamList> | undefined
+  ScanTransaction: undefined
   Modal: undefined
   Profile: undefined
   NotFound: undefined
-  ScanTransaction: undefined
 }
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

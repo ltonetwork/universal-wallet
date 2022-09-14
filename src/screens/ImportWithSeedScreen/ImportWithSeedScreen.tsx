@@ -28,7 +28,7 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
             LocalStorageService.storeData('@accountData', [data])
                 .then(() => {
                     setIsLoading(false)
-                    navigation.navigate('ImportAccount', { data: 'seed' })
+                    navigation.navigate('RegisterAccount', { data: 'seed' })
                 })
                 .catch((err) => {
                     console.log(err)
@@ -61,12 +61,13 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
                 <StyledButton
                     mode='contained'
                     color='#A017B7'
-                    disabled={false}
+                    disabled={seedPhrase === '' ? true : false}
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                     onPress={() => {
                         setSeedPhrase('')
                         handleImportFromSeed()
+                        setIsLoading(true)
                     }}
                 >
                     Import your account
