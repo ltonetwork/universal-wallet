@@ -52,12 +52,8 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
     }
 
     useEffect(() => {
-        getPrizeInfo()
-    }, [])
-
-    useEffect(() => {
         readStorage()
-    }, [details])
+    }, [])
 
     const readStorage = () => {
         LocalStorageService.getData('@accountData')
@@ -71,16 +67,25 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
             .catch(err => console.log(err))
     }
 
-    const getPrizeInfo = () => {
-        setIsLoading(true)
-        CoinMarketCapService.getCoinInfo()
-            .then(data => data.data[3714].quote.USD)
-            .then(price => {
-                setCoinData(price)
-                setIsLoading(false)
-            })
-            .catch(err => console.log(err))
-    }
+    useEffect(() => {
+        const controller = new AbortController()
+        const signal = controller.signal
+        const getPrizeInfo = () => {
+            setIsLoading(true)
+            CoinMarketCapService.getCoinInfo(signal)
+                .then(data => data.data[3714].quote.USD)
+                .then(price => {
+                    setCoinData(price)
+                    setIsLoading(false)
+                })
+                .catch(err => console.log(err))
+        }
+        getPrizeInfo()
+
+        return () => {
+            controller.abort()
+        }
+    }, [])
 
     const effectiveAmount = () => {
         return regular * price

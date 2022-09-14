@@ -22,7 +22,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
   useEffect(() => {
     getAccountAddress()
     getNickname()
-  }, [])
+  }, [accountAddress, accountNickname])
 
   const getNickname = () => {
     LocalStorageService.getData('@userAlias')
@@ -42,7 +42,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
   const logOut = () => {
     setMessageInfo('Logout successful!')
     setShowMessage(true)
-    navigation.replace('SignIn')
+    navigation.popToTop()
   }
 
 

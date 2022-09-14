@@ -28,7 +28,7 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
 
     useEffect(() => {
         requestCameraPermission()
-    }, [])
+    }, [permission])
 
     const requestCameraPermission = () => {
         BarCodeScanner.requestPermissionsAsync()
@@ -43,11 +43,19 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
             })
     }
 
+    // useEffect(() => {
+    //     if (tx) {
+    //         confirmationMessage(tx)
+    //     }
+    // }, [])
+
     useEffect(() => {
         if (tx) {
-            confirmationMessage(tx)
+            handleTx(tx)
         }
     }, [])
+
+
 
     const handleBarCodeScanned = ({ data }: any) => {
         setScanned(true)
@@ -122,10 +130,8 @@ export default function ScanTransactionScreen({ navigation }: RootStackScreenPro
                 setShowMessage(true)
                 console.log(error)
             }
-            setIsLoading(false)
-            navigation.navigate('Root')
         }
-        setScanned(true)
+        navigation.goBack()
     }
 
     if (isLoading) {
