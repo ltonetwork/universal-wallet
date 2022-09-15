@@ -16,6 +16,30 @@ In order to use non-React-Native dependencies, like crypto module, you'll need t
 yarn postinstall
 ```
 
+## Environment Variables
+
+Create a .env file and add the following environmental variables:
+
+Enter LTO API endpoint to get a detailed balance of your account with the format: `.../addresses/balance/details/`:
+
+```bash
+LTO_API_URL=
+```
+
+App receives info of LTO Network price on real time from Coinmarketcap API so you'll need to enter your CMC API key:
+
+```bash
+CMC_API_KEY=
+```
+
+The network you are going to use 'M' for mainnet and 'T' for testnet:
+
+```bash
+LTO_NETWORK_ID=
+```
+
+You also can refer to the `.env.example` file within the repository.
+
 ## To run on Android/IOS
 
 To run the project first [configure SDK](https://reactnative.dev/docs/running-on-device) and [sign the Android app](https://reactnative.dev/docs/signed-apk-android) (explained below). Once configured and as this is an expo ejected project, you can initialize it by running:
@@ -36,7 +60,7 @@ On both cases, metro bundler will start and will load the app.
 
 ## Signing the Android app
 
-To configure the signing you need to have the keystore, @javaguirre will provide it.
+To configure the signing you need to have the keystore.
 
 Then you need to store the following envvars in your `$HOME/.gradle/gradle.properties`.
 
