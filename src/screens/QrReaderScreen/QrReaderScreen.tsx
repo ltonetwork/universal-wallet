@@ -137,7 +137,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
                 <TextContainer>
                     <StyledText title>QR Scanner</StyledText>
                     <StyledText>
-                        Scan the QR code from LTO's web application to confirm your transfer with your mobile phone
+                        Scan the QR code from LTO's web application to log in to your account or confirm your transactions
                     </StyledText>
                 </TextContainer>
                 {tx?.sender ? (
