@@ -63,12 +63,16 @@ function RootNavigator(): any {
           setAppFirstLaunch(false)
         }
       })
-      .catch((err) => console.log(err))
+      .catch((error) => {
+        throw new Error('Error retrieving data', error)
+      })
   }
 
   LocalStorageService.getData('@userAlias')
     .then((data) => setUserAlias(data === null))
-    .catch((err) => console.log(err))
+    .catch((error) => {
+      throw new Error('Error retrieving data', error)
+    })
 
 
   return (

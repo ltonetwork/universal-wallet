@@ -36,10 +36,9 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
                 status === 'granted' ? setPermission(true) : setPermission(false)
                 setIsLoading(false)
             })
-            .catch((err) => {
+            .catch(() => {
                 setPermission(false)
                 setIsLoading(false)
-                console.log(err)
             })
     }
 
@@ -89,8 +88,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
             setMessageInfo(`Successful log in!`)
             setShowMessage(true)
         } catch (error) {
-            console.log(error)
-            setMessageInfo(`There's been an error! Try again!`)
+            setMessageInfo('Login failed: scan QR again!')
             setShowMessage(true)
         }
         setIsLoading(false)
@@ -111,20 +109,22 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
                     setShowMessage(true)
                 } else {
                     if (tx != undefined) tx.sender = ''
-                    const transferObject = txFromData(tx)
-                    const signedTransfer = transferObject.signWith(account)
+
+                    const transferObject = tx && txFromData(tx)
+                    const signedTransfer = transferObject?.signWith(account)
                     await lto.node.broadcast(signedTransfer)
                     setMessageInfo('Transfer sent successfully!')
                     setShowMessage(true)
                 }
             } catch (error) {
-                setMessageInfo(`There's been an error! Try again!`)
+                setMessageInfo('Transaction failed: try again!')
                 setShowMessage(true)
-                console.log(error)
             }
         }
+        setIsLoading(false)
         navigation.goBack()
     }
+
 
     if (isLoading) {
         return <Spinner />

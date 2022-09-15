@@ -17,7 +17,7 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
         const seed = seedPhrase.toLowerCase()
 
         if (seed.split(' ').length === 15) {
-            const lto = new LTO(process.env.LTO_NETWORK_ID || 'T')
+            const lto = new LTO(process.env.LTO_NETWORK_ID)
             const account = lto.account({ seed: seed })
             const data = {
                 address: account.address,
@@ -30,8 +30,8 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
                     setIsLoading(false)
                     navigation.navigate('RegisterAccount', { data: 'seed' })
                 })
-                .catch((err) => {
-                    console.log(err)
+                .catch((error) => {
+                    throw new Error('Error storing data', error)
                 })
 
         } else {

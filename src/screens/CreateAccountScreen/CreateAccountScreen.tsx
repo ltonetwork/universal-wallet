@@ -14,7 +14,7 @@ export default function CreateAccountScreen({ navigation }: RootStackScreenProps
 
     const handleCreateAccount = () => {
         const LTO = require('@ltonetwork/lto').LTO
-        const lto = new LTO(process.env.LTO_NETWORK_ID || 'T')
+        const lto = new LTO(process.env.LTO_NETWORK_ID)
         const account = lto.account()
         const auth = {
             '@context': 'http://schema.lto.network/simple-auth-v1.json',
@@ -32,8 +32,8 @@ export default function CreateAccountScreen({ navigation }: RootStackScreenProps
         if (data) {
             LocalStorageService.storeData('@accountData', [data])
                 .then(() => navigation.navigate('RegisterAccount', { data: 'created' }))
-                .catch((err) => {
-                    console.log(err)
+                .catch((error) => {
+                    throw new Error('Error storing data', error)
                 })
         }
     }

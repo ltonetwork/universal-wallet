@@ -43,7 +43,9 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                     setAccountAddress(account[0]?.address)
                 }
             })
-            .catch(err => console.log(err))
+            .catch(error => {
+                throw new Error('Error retrieving data', error)
+            })
     }
 
     const handleInputChange = (name: string, value: string) => {
@@ -79,7 +81,9 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                         navigation.replace('Root', { screen: 'Wallet' })
                     }
                 })
-                .catch(err => console.log(err))
+                .catch(error => {
+                    throw new Error('Error storing account data', error)
+                })
         }
     }
 

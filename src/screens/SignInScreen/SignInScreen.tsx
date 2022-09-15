@@ -20,7 +20,9 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
             .then((data) => {
                 setUserAlias(data)
             })
-            .catch((err) => console.log(err))
+            .catch((error) => {
+                throw new Error('Error retrieving user data', error)
+            })
     }
 
     const { setShowMessage, setMessageInfo } = useContext(MessageContext)
