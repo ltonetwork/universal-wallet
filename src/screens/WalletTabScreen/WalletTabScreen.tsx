@@ -1,3 +1,4 @@
+import { useFocusEffect } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import { ImageBackground, useWindowDimensions } from 'react-native'
 import { Card, Paragraph } from 'react-native-paper'
@@ -7,6 +8,8 @@ import QRButton from '../../components/QRButton'
 import Spinner from '../../components/Spinner'
 import StatusBarIOS from '../../components/StatusBarIOS'
 import { StyledImage } from '../../components/styles/OverviewHeader.styles'
+import { TypedCoinData } from '../../interfaces/TypedCoinData'
+import { TypedDetails } from '../../interfaces/TypedDetails'
 import ApiClientService from '../../services/ApiClient.service'
 import CoinMarketCapService from '../../services/CoinMarketCap.service'
 import LocalStorageService from '../../services/LocalStorage.service'
@@ -25,8 +28,6 @@ import {
     TopCard,
     TopCardsContainer
 } from './WalletTabScreen.styles'
-import { TypedCoinData } from '../../interfaces/TypedCoinData'
-import { TypedDetails } from '../../interfaces/TypedDetails'
 
 
 export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
@@ -40,9 +41,9 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
     const { available, effective, leasing, regular, unbonding } = details
     const { price, percent_change_24h } = coinData
 
-    useEffect(() => {
+    useFocusEffect(() => {
         readStorage()
-    }, [details])
+    })
 
     const readStorage = () => {
         LocalStorageService.getData('@accountData')
@@ -53,7 +54,9 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                 setDetails(accountDetails)
                 setIsLoading(false)
             })
-            .catch(err => console.log(err))
+            .catch(error => {
+                throw new Error('Error retrieving account data', error)
+            })
     }
 
     useEffect(() => {
@@ -67,10 +70,11 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                     setCoinData(price)
                     setIsLoading(false)
                 })
-                .catch(err => console.log(err))
+                .catch(error => {
+                    throw new Error('Error retrieving coin data', error)
+                })
         }
         getPrizeInfo()
-
         return () => {
             controller.abort()
         }
@@ -103,14 +107,12 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                     <StatusBarIOS backgroundColor={'#ffffff'} />
                     <ImageBackground source={backgroundImage} style={{ width, height, position: "absolute" }} />
                     <OverviewContainer>
-
                         <OverviewHeader
                             icon={"menu"}
                             onPress={() => navigation.navigate('Modal')}
                             input={<StyledImage testID="logo-title" source={logoTitle} />} />
 
                         <TopCardsContainer>
-
                             <TopCard>
                                 <Card.Content style={{ borderRadius: 80 }}>
                                     <FieldName>Regular account</FieldName>
@@ -128,11 +130,9 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                                     {checkPositiveNegative(percent_change_24h)}
                                 </Card.Content>
                             </TopCard>
-
                         </TopCardsContainer>
 
                         <BottomCardsContainer >
-
                             <BottomCard>
                                 <Card.Content>
                                     <FieldName>Leasing</FieldName>
@@ -150,11 +150,9 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
-
                         </BottomCardsContainer>
 
                         <BottomCardsContainer>
-
                             <BottomCard >
                                 <Card.Content>
                                     <FieldName>Effective</FieldName>
@@ -172,13 +170,9 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
-
                         </BottomCardsContainer>
-
                         <QRButton onPress={() => navigation.navigate('QrReader')} />
-
                     </OverviewContainer>
-
                 </>
             }
         </>
