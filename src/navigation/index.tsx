@@ -11,15 +11,14 @@ import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
 import CreateAccountScreen from '../screens/CreateAccountScreen/CreateAccountScreen'
 import CredentialsTabScreen from '../screens/CredentialsTabScreen/CredentialsTabScreen'
-import ImportAccountScreen from '../screens/ImportAccountScreen/ImportAccountScreen'
-import ImportWithQRScreen from '../screens/ImportWithQRScreen/ImportWithQRScreen'
+import RegisterAccountScreen from '../screens/RegisterAccountScreen/RegisterAccountScreen'
 import ImportSeedScreen from '../screens/ImportWithSeedScreen/ImportWithSeedScreen'
 import ModalScreen from '../screens/ModalScreen/ModalScreen'
 import NotFoundScreen from '../screens/NotFoundScreen'
 import OnboardingScreen from '../screens/OnBoardingScreen/OnBoardingScreen'
 import OwnablesTabScreen from '../screens/OwnablesTabScreen/OwnablesTabScreen'
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen'
-import ScanTransactionScreen from '../screens/ScanTransactionScreen/ScanTransactionScreen'
+import QrReaderScreen from '../screens/QrReaderScreen/QrReaderScreen'
 import SignInScreen from '../screens/SignInScreen/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
@@ -64,12 +63,16 @@ function RootNavigator(): any {
           setAppFirstLaunch(false)
         }
       })
-      .catch((err) => console.log(err))
+      .catch((error) => {
+        throw new Error('Error retrieving data', error)
+      })
   }
 
   LocalStorageService.getData('@userAlias')
     .then((data) => setUserAlias(data === null))
-    .catch((err) => console.log(err))
+    .catch((error) => {
+      throw new Error('Error retrieving data', error)
+    })
 
 
   return (
@@ -90,28 +93,19 @@ function RootNavigator(): any {
         )}
         <Stack.Screen name='SignIn' component={SignInScreen} options={{ headerShown: false }} />
         <Stack.Screen
-          name='ImportQR'
-          component={ImportWithQRScreen}
-          options={{
-            headerBackTitleVisible: false,
-            headerTransparent: true,
-            headerTitle: '',
-          }}
-        />
-        <Stack.Screen
           name='ImportSeed'
           component={ImportSeedScreen}
           options={{ headerTitle: '', headerBackTitleVisible: false }} />
         <Stack.Screen
-          name='ImportAccount'
-          component={ImportAccountScreen}
+          name='RegisterAccount'
+          component={RegisterAccountScreen}
           options={{ headerTitle: '', headerBackTitleVisible: false }}
         />
         <Stack.Screen name='Root' component={BottomTabNavigator} options={{ headerShown: false }} />
         <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Oops!' }} />
         <Stack.Screen
-          name='ScanTransaction'
-          component={ScanTransactionScreen}
+          name='QrReader'
+          component={QrReaderScreen}
           options={{
             headerBackTitleVisible: false,
             headerTransparent: true,

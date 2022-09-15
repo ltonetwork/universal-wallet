@@ -1,8 +1,9 @@
+import React from 'react'
 import { QRIcon } from './styles/QRIcon.styles'
 
-import React from 'react'
 
-export default function QRButton(props: { onPress: () => void, }) {
+export default function QRButton(props: { onPress: () => void, }): JSX.Element {
+
     return (
         <QRIcon
             testID='qr-button'

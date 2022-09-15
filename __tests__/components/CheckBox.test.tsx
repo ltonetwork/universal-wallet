@@ -11,9 +11,9 @@ it("Should renders correctly", () => {
         throw new Error("Function not implemented.")
     }} status={"checked"} />)
 
-    const CheckBoxText = getByText('Accept terms and conditions')
+    const checkBoxText = getByText('Accept terms and conditions')
 
-    expect(CheckBoxText).toBeTruthy()
+    expect(checkBoxText).toBeTruthy()
 })
 
 it("Should open modal when checkbox label is clicked", () => {
@@ -21,8 +21,8 @@ it("Should open modal when checkbox label is clicked", () => {
         mockedOpenModal.openModal()
     }} status={"checked"} />)
 
-    const CheckBoxText = getByText('Accept terms and conditions')
-    fireEvent.press(CheckBoxText)
+    const checkBoxText = getByText('Accept terms and conditions')
+    fireEvent.press(checkBoxText)
 
     expect(mockedOpenModal.openModal).toHaveBeenCalled()
 })

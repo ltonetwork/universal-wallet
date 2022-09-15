@@ -13,17 +13,17 @@ const mockedProps = {
 it("Should renders correctly", () => {
     const { getByRole } = render(<QRButton {...mockedProps} />)
 
-    const QRCircle = getByRole("button")
+    const qRCircle = getByRole("button")
 
-    expect(QRButton).toBeTruthy()
+    expect(qRCircle).toBeTruthy()
 })
 
-it("Should navigate to ScanTransaction screen", () => {
+it("Should navigate to QrReader screen", () => {
     const { getByRole } = render(<QRButton {...mockedProps} />)
 
-    const QRCircle = getByRole("button")
+    const qRCircle = getByRole("button")
 
-    fireEvent.press(QRCircle)
+    fireEvent.press(qRCircle)
 
     expect(mockedProps.onPress).toHaveBeenCalled()
 })

@@ -1,8 +1,3 @@
-/**
- * Learn more about using TypeScript with React Navigation:
- * https://reactnavigation.org/docs/typescript/
- */
-
 import { MaterialTopTabScreenProps } from '@react-navigation/material-top-tabs'
 import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
@@ -14,17 +9,16 @@ declare global {
 }
 
 export type RootStackParamList = {
+  OnBoarding: undefined
   CreateAccount: undefined
   SignIn: undefined
-  ImportQR: undefined
   ImportSeed: undefined
-  ImportAccount: { data: string }
-  OnBoarding: undefined
+  RegisterAccount: { data: string }
   Root: NavigatorScreenParams<RootTabParamList> | undefined
+  QrReader: undefined
   Modal: undefined
   Profile: undefined
   NotFound: undefined
-  ScanTransaction: undefined
 }
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

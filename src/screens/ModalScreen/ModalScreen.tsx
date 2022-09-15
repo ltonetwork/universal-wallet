@@ -22,19 +22,23 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
   useEffect(() => {
     getAccountAddress()
     getNickname()
-  }, [])
+  }, [accountAddress, accountNickname])
 
   const getNickname = () => {
     LocalStorageService.getData('@userAlias')
       .then(data => setAccountNickname(data.nickname))
-      .catch(err => console.log(err))
+      .catch(error => {
+        throw new Error('Error retrieving data', error)
+      })
   }
 
 
   const getAccountAddress = () => {
     LocalStorageService.getData('@accountData')
       .then(data => setAccountAddress(data[0].address))
-      .catch(err => console.log(err))
+      .catch(error => {
+        throw new Error('Error retrieving data', error)
+      })
   }
 
   const { setShowMessage, setMessageInfo } = useContext(MessageContext)
@@ -42,7 +46,10 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
   const logOut = () => {
     setMessageInfo('Logout successful!')
     setShowMessage(true)
-    navigation.replace('SignIn')
+    navigation.reset({
+      index: 0,
+      routes: [{ name: 'SignIn' }],
+    })
   }
 
 

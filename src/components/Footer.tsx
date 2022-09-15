@@ -5,8 +5,7 @@ import { BtnContainer, Container, Indicator, IndicatorContainer } from "./styles
 import { StyledButton } from "./styles/StyledButton.styles"
 
 
-export default function Footer({ currentSlideIndex }: any) {
-
+export default function Footer({ currentSlideIndex }: any): JSX.Element {
     const navigation = useNavigation()
 
     return (

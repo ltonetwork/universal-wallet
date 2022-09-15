@@ -4,8 +4,8 @@ import { THREE_SECONDS_SNACK_DURATION } from '../constants/Quantities'
 import { MessageContext } from '../context/UserMessage.context'
 import { StyledSnackbar } from './styles/Snackbar.styles'
 
-export default function SnackbarMessage() {
 
+export default function SnackbarMessage(): JSX.Element {
     const { showMessage, setShowMessage, messageInfo } = useContext(MessageContext)
 
     return (

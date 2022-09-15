@@ -11,16 +11,16 @@ mockedDispatch(navigateToFacebook())
 it("Should renders correctly", () => {
     const { getByText } = render(<ModalButton text={'Facebook'} onPress={() => navigateToFacebook()} />)
 
-    const ModalButtonText = getByText('Facebook')
+    const modalButtonText = getByText('Facebook')
 
-    expect(ModalButtonText).toBeTruthy()
+    expect(modalButtonText).toBeTruthy()
 })
 
 it('Should open link to facebook when pressed', () => {
     const { getByText } = render(<ModalButton text={'Facebook'} onPress={() => navigateToFacebook()} />)
 
-    const ModalButtonText = getByText('Facebook')
-    fireEvent.press(ModalButtonText)
+    const modalButtonText = getByText('Facebook')
+    fireEvent.press(modalButtonText)
 
     expect(mockedDispatch).toHaveBeenCalled()
 })

@@ -1,7 +1,9 @@
 import React from 'react'
 import { Button } from 'react-native-paper'
 
-export default function ModalButton(props: { onPress: () => void, text: string }) {
+export default function ModalButton(props: { onPress: () => void, text: string }): JSX.Element {
+
+
     return (
         <Button
             mode={"text"}

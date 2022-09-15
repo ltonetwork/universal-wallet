@@ -1,0 +1,44 @@
+import { useNavigation } from '@react-navigation/native'
+import React, { useState } from 'react'
+import { Button, Dialog, Paragraph, Portal, Provider } from 'react-native-paper'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { ButtonContainer } from './styles/ConfirmationDialog.styles'
+
+
+export default function ConfirmationDialog(props: {
+    visible: boolean,
+    message: string,
+    cancelPress: () => void,
+    onPress: () => void
+}): JSX.Element {
+
+    const [visible, setVisible] = useState(true)
+    const hideDialog = () => setVisible(false)
+
+    return (
+        <Provider>
+            <SafeAreaView>
+                <Portal>
+                    <Dialog
+                        visible={visible}
+                        onDismiss={hideDialog}
+                    >
+                        <Dialog.Title testID='dialog'>Confirm transaction:</Dialog.Title>
+                        <Dialog.Content>
+                            <Paragraph>{props.message}</Paragraph>
+                        </Dialog.Content>
+                        <ButtonContainer>
+                            <Dialog.Actions>
+                                <Button testID='cancel' onPress={props.cancelPress}>Cancel</Button>
+                            </Dialog.Actions>
+                            <Dialog.Actions>
+                                <Button testID='continue' onPress={props.onPress}>Continue</Button>
+                            </Dialog.Actions>
+                        </ButtonContainer>
+
+                    </Dialog>
+                </Portal>
+            </SafeAreaView>
+        </Provider>
+    )
+}

@@ -1,6 +1,5 @@
 import { LTO } from '@ltonetwork/lto'
 import React, { useContext, useState } from 'react'
-import { View } from 'react-native'
 import { RootStackScreenProps } from '../../../types'
 import { StyledButton } from '../../components/styles/StyledButton.styles'
 import { StyledInput } from '../../components/styles/StyledInput.styles'
@@ -18,7 +17,7 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
         const seed = seedPhrase.toLowerCase()
 
         if (seed.split(' ').length === 15) {
-            const lto = new LTO('T)')
+            const lto = new LTO(process.env.LTO_NETWORK_ID)
             const account = lto.account({ seed: seed })
             const data = {
                 address: account.address,
@@ -29,10 +28,10 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
             LocalStorageService.storeData('@accountData', [data])
                 .then(() => {
                     setIsLoading(false)
-                    navigation.navigate('ImportAccount', { data: 'seed' })
+                    navigation.navigate('RegisterAccount', { data: 'seed' })
                 })
-                .catch((err) => {
-                    console.log(err)
+                .catch((error) => {
+                    throw new Error('Error storing data', error)
                 })
 
         } else {
@@ -62,12 +61,13 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
                 <StyledButton
                     mode='contained'
                     color='#A017B7'
-                    disabled={false}
+                    disabled={seedPhrase === '' ? true : false}
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                     onPress={() => {
                         setSeedPhrase('')
                         handleImportFromSeed()
+                        setIsLoading(true)
                     }}
                 >
                     Import your account

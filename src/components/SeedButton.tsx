@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 import { StyledSeedButton } from "./styles/StyledSeedButton.styles"
 
-export default function SeedButton(props: { text: string, onPress: () => void, }) {
 
+export default function SeedButton(props: { text: string, onPress: () => void, }): JSX.Element {
     const [showButton, setShowButton] = useState<boolean>(true)
 
     return (<StyledSeedButton

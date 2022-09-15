@@ -1,5 +1,5 @@
+import { render } from "@testing-library/react-native"
 import React from "react"
-import { fireEvent, render } from "@testing-library/react-native"
 import TermsModal from "../../src/components/TermsModal"
 
 const mockedState = {
@@ -17,11 +17,11 @@ it('Should shows the children and a close button', () => {
         setChecked={mockedState.setChecked}
     />)
 
-    const ModalText = getByText('TERMS AND CONDITIONS')
-    const CloseButton = getByRole('button')
+    const modalText = getByText('TERMS AND CONDITIONS')
+    const closeButton = getByRole('button')
 
-    expect(ModalText).toBeTruthy()
-    expect(CloseButton).toBeTruthy()
+    expect(modalText).toBeTruthy()
+    expect(closeButton).toBeTruthy()
 })
 
 
