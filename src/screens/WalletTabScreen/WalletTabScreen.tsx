@@ -135,7 +135,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
 
                             <TopCard>
                                 <Card.Content>
-                                    <FieldName>Prize</FieldName>
+                                    <FieldName>Price</FieldName>
                                     <Amount>{price?.toFixed(3)}$</Amount>
                                     {checkPositiveNegative(percent_change_24h)}
                                 </Card.Content>
