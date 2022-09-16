@@ -30,7 +30,7 @@ import {
 } from './WalletTabScreen.styles'
 
 
-export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
+export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wallet'>) {
 
     const { width, height } = useWindowDimensions()
 
@@ -95,7 +95,6 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
             return <GreenText>{value?.toFixed(2)}%(last 24h)</GreenText>
         }
     }
-
 
     return (
         <>

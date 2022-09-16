@@ -17,6 +17,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
 
   const [accountAddress, setAccountAddress] = useState('')
   const [accountNickname, setAccountNickname] = useState('')
+  const { setShowMessage, setMessageInfo } = useContext(MessageContext)
 
 
   useEffect(() => {
@@ -32,7 +33,6 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
       })
   }
 
-
   const getAccountAddress = () => {
     LocalStorageService.getData('@accountData')
       .then(data => setAccountAddress(data[0].address))
@@ -40,8 +40,6 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
         throw new Error('Error retrieving data', error)
       })
   }
-
-  const { setShowMessage, setMessageInfo } = useContext(MessageContext)
 
   const logOut = () => {
     setMessageInfo('Logout successful!')
@@ -82,7 +80,5 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
       </ButtonContainer>
 
     </Container>
-
   )
-
 }
