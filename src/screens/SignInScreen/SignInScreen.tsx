@@ -51,8 +51,6 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
 
     const handleSignOut = async () => {
         await LocalStorageService.clear()
-        setMessageInfo('Sign out successful!')
-        setShowMessage(true)
         navigation.replace('OnBoarding')
     }
 

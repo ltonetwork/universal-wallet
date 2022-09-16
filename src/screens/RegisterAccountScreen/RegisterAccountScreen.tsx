@@ -2,12 +2,13 @@ import React, { useContext, useEffect, useState } from 'react'
 import { RootStackScreenProps } from '../../../types'
 import CheckBox from '../../components/CheckBox'
 import Spinner from '../../components/Spinner'
-import { Container, StyledTitle } from './RegisterAccountScreen.styles'
+import { ButtonContainer, Container, InputContainer, StyledTitle } from './RegisterAccountScreen.styles'
 import { StyledButton } from '../../components/styles/StyledButton.styles'
 import { StyledInput } from '../../components/styles/StyledInput.styles'
 import TermsModal from '../../components/TermsModal'
 import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
+import { View } from 'react-native'
 
 
 export default function RegisterAccountScreen({ navigation, route }: RootStackScreenProps<'RegisterAccount'>) {
@@ -78,10 +79,19 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                     setShowMessage(true)
                     if (route.params.data === 'created') {
                         setMessageInfo('Account created succesfully!')
-                        navigation.navigate('Root', { screen: 'Wallet' })
+                        setShowMessage(true)
+                        setTimeout(() => {
+                            navigation.navigate('Root')
+                        }, 1000)
+
                     } else {
+
                         setMessageInfo('Account imported succesfully!')
-                        navigation.replace('Root', { screen: 'Wallet' })
+                        setShowMessage(true)
+                        setTimeout(() => {
+                            navigation.navigate('Root')
+                        }, 1000)
+
                     }
                 })
                 .catch(error => {
@@ -97,73 +107,79 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                 <Spinner />
                 :
                 <Container>
-                    {route.params.data === 'created'
-                        ?
-                        <StyledTitle>Create account</StyledTitle>
-                        :
-                        <StyledTitle>Import account</StyledTitle>}
-                    <StyledInput
-                        mode={'flat'}
-                        style={{ marginBottom: 5 }}
-                        disabled={true}
-                        label="Wallet address"
-                        value={accountAddress}
-                    >
-                    </StyledInput>
+                    <InputContainer>
+                        <View>
+                            {route.params.data === 'created'
+                                ?
+                                <StyledTitle>Create account</StyledTitle>
+                                :
 
-                    <StyledInput
-                        style={{ marginBottom: 5 }}
-                        label="Nickname"
-                        placeholder='Enter your nickname...'
-                        value={loginForm.nickname}
-                        onChangeText={(text) => handleInputChange('nickname', text)}
-                    >
-                    </StyledInput>
+                                <StyledTitle>Import account</StyledTitle>
+                            }
+                        </View>
+                        <StyledInput
+                            mode={'flat'}
+                            style={{ marginBottom: 5 }}
+                            disabled={true}
+                            label="Wallet address"
+                            value={accountAddress}
+                        >
+                        </StyledInput>
 
-                    <StyledInput
-                        style={{ marginBottom: 5 }}
-                        label="Wallet password"
-                        value={loginForm.password}
-                        onChangeText={(text) => handleInputChange('password', text)}
-                        secureTextEntry={passwordVisible}
-                        placeholder="Type your password..."
-                        right={<StyledInput.Icon
-                            name={passwordVisible ? "eye" : "eye-off"}
-                            onPress={() => setPasswordVisible(!passwordVisible)} />}>
-                    </StyledInput>
+                        <StyledInput
+                            style={{ marginBottom: 5 }}
+                            label="Nickname"
+                            placeholder='Enter your nickname...'
+                            value={loginForm.nickname}
+                            onChangeText={(text) => handleInputChange('nickname', text)}
+                        >
+                        </StyledInput>
 
-                    <StyledInput
-                        label="Repeat password"
-                        value={loginForm.passwordConfirmation}
-                        onChangeText={(text) => handleInputChange('passwordConfirmation', text)}
-                        secureTextEntry={repeatedPasswordVisible}
-                        placeholder="Type your password again..."
-                        right={<StyledInput.Icon
-                            name={repeatedPasswordVisible ? "eye" : "eye-off"}
-                            onPress={() => setRepeatedPasswordVisible(!repeatedPasswordVisible)} />}>
-                    </StyledInput>
+                        <StyledInput
+                            style={{ marginBottom: 5 }}
+                            label="Wallet password"
+                            value={loginForm.password}
+                            onChangeText={(text) => handleInputChange('password', text)}
+                            secureTextEntry={passwordVisible}
+                            placeholder="Type your password..."
+                            right={<StyledInput.Icon
+                                name={passwordVisible ? "eye" : "eye-off"}
+                                onPress={() => setPasswordVisible(!passwordVisible)} />}>
+                        </StyledInput>
 
-                    <CheckBox
-                        status={checked ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                            !checked && setModalVisible(true)
-                            setChecked(!checked)
-                        }}
-                    />
+                        <StyledInput
+                            label="Repeat password"
+                            value={loginForm.passwordConfirmation}
+                            onChangeText={(text) => handleInputChange('passwordConfirmation', text)}
+                            secureTextEntry={repeatedPasswordVisible}
+                            placeholder="Type your password again..."
+                            right={<StyledInput.Icon
+                                name={repeatedPasswordVisible ? "eye" : "eye-off"}
+                                onPress={() => setRepeatedPasswordVisible(!repeatedPasswordVisible)} />}>
+                        </StyledInput>
 
-                    <TermsModal
-                        visible={modalVisible}
-                        onRequestClose={() => {
-                            setModalVisible(!modalVisible)
-                            setChecked(false)
-                        }}
-                        onClose={() => {
-                            setModalVisible(!modalVisible)
-                            setChecked(true)
-                        }}
-                    />
+                        <CheckBox
+                            status={checked ? 'checked' : 'unchecked'}
+                            onPress={() => {
+                                !checked && setModalVisible(true)
+                                setChecked(!checked)
+                            }}
+                        />
 
-                    <Container marginTop={70}>
+                        <TermsModal
+                            visible={modalVisible}
+                            onRequestClose={() => {
+                                setModalVisible(!modalVisible)
+                                setChecked(false)
+                            }}
+                            onClose={() => {
+                                setModalVisible(!modalVisible)
+                                setChecked(true)
+                            }}
+                        />
+                    </InputContainer>
+
+                    <ButtonContainer marginBottom={50}>
                         {route.params.data === 'created'
                             ?
                             <StyledButton
@@ -187,7 +203,7 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                             </StyledButton>
                         }
 
-                    </Container>
+                    </ButtonContainer>
                 </Container >
 
             }
