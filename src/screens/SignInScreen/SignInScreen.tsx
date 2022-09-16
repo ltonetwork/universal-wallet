@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { RootStackScreenProps } from '../../../types'
+import ConfirmationDialog from '../../components/ConfirmationDialog'
 import { StyledButton } from '../../components/styles/StyledButton.styles'
 import { StyledInput } from '../../components/styles/StyledInput.styles'
 import { MessageContext } from '../../context/UserMessage.context'
@@ -10,6 +11,8 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
     const [userAlias, setUserAlias] = useState<any>()
     const [password, setPassword] = useState<string>('')
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
+    const { setShowMessage, setMessageInfo } = useContext(MessageContext)
+    const [dialogVisible, setDialogVisible] = useState<boolean>(false)
 
     useEffect(() => {
         getAlias()
@@ -25,7 +28,7 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
             })
     }
 
-    const { setShowMessage, setMessageInfo } = useContext(MessageContext)
+
 
     const handleSignIn = () => {
         if (userAlias?.nickname === undefined) {
@@ -44,6 +47,13 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
             navigation.navigate('Root')
             setPassword('')
         }
+    }
+
+    const handleSignOut = async () => {
+        await LocalStorageService.clear()
+        setMessageInfo('Sign out successful!')
+        setShowMessage(true)
+        navigation.replace('OnBoarding')
     }
 
     return (
@@ -85,7 +95,22 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                 >
                     Sign in
                 </StyledButton>
+                <StyledButton
+                    mode='outlined'
+                    color='#A017B7'
+                    uppercase={false}
+                    labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
+                    onPress={() => setDialogVisible(true)}
+                >
+                    Sign out
+                </StyledButton>
             </ButtonContainer>
+            {dialogVisible ? <ConfirmationDialog
+                visible={dialogVisible}
+                message={'Are you sure you want to sign out of your account?'}
+                cancelPress={() => setDialogVisible(false)}
+                onPress={() => handleSignOut()}
+            /> : null}
         </Container>
     )
 }
