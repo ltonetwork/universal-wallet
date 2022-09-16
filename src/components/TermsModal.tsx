@@ -1,7 +1,7 @@
 import React from "react"
 import { Modal, ScrollView } from "react-native"
 import { TERMS_AND_CONDITIONS_CONTENT } from "../constants/Text"
-import { CenteredView, ModalText, ModalView } from '././styles/TermsModal.styles'
+import { Container, ModalText, ModalView } from '././styles/TermsModal.styles'
 import { StyledButton } from "./styles/StyledButton.styles"
 
 
@@ -12,34 +12,34 @@ export default function TermsModal(props: {
 }): JSX.Element {
 
     return (
-        <CenteredView>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={props.visible}
-                onRequestClose={() => props.onRequestClose()}
-            >
-                <CenteredView>
-                    <ModalView>
-                        <ModalText>TERMS AND CONDITIONS</ModalText>
-                        <ScrollView>
-                            <ModalText>{TERMS_AND_CONDITIONS_CONTENT}</ModalText>
-                            <CenteredView>
-                                <StyledButton
-                                    mode='contained'
-                                    color="#A017B7"
-                                    uppercase={false}
-                                    labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                                    onPress={() => {
-                                        props.onClose()
-                                    }}>
-                                    I agree
-                                </StyledButton>
-                            </CenteredView>
-                        </ScrollView>
-                    </ModalView>
-                </CenteredView>
-            </Modal>
-        </CenteredView>
+
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={props.visible}
+            onRequestClose={() => props.onRequestClose()}
+        >
+            <Container>
+                <ModalView>
+                    <ModalText>TERMS AND CONDITIONS</ModalText>
+                    <ScrollView>
+                        <ModalText>{TERMS_AND_CONDITIONS_CONTENT}</ModalText>
+                        <Container>
+                            <StyledButton
+                                mode='contained'
+                                color="#A017B7"
+                                uppercase={false}
+                                labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
+                                onPress={() => {
+                                    props.onClose()
+                                }}>
+                                I agree
+                            </StyledButton>
+                        </Container>
+                    </ScrollView>
+                </ModalView>
+            </Container>
+        </Modal>
+
     )
 }

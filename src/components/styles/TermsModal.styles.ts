@@ -1,6 +1,6 @@
 import styled from "styled-components/native"
 
-export const CenteredView = styled.View`
+export const Container = styled.SafeAreaView`
     flex: 1;
     justify-content: center;
     align-items: center;
@@ -8,7 +8,7 @@ export const CenteredView = styled.View`
 `
 
 export const ModalView = styled.View`
-    margin: 20px;
+    margin: 12px;
     background-color: #FFFFFF;
     border-radius: 20px;
     padding: 35px;
