@@ -6,6 +6,7 @@ import QRButton from '../../components/QRButton'
 import SocialMediaIcon from '../../components/SocialMediaIcon'
 import StatusBarIOS from '../../components/StatusBarIOS'
 import { Container, IconContainer, MainTitle, StyledText, StyledTitle, StyledView } from '../../components/styles/NextFunctionality.styles'
+import { OWNABLES } from '../../constants/Text'
 import { backgroundImage, socialMediaIcons } from '../../utils/images'
 import { navigateToFacebook, navigateToLinkedin, navigateToTelegram, navigateToTwitter } from '../../utils/redirectSocialMedia'
 
@@ -22,10 +23,10 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
         <OverviewHeader
           icon={"menu"}
           onPress={() => navigation.navigate('Modal')}
-          input={<MainTitle>Ownables</MainTitle>} />
+          input={<MainTitle>{OWNABLES.MAINTITLE}</MainTitle>} />
         <StyledView>
-          <StyledTitle>This feature will soon be available</StyledTitle>
-          <StyledText>Follow us on our social networks to stay up to date with the latest news about the application.</StyledText>
+          <StyledTitle>{OWNABLES.TITLE}</StyledTitle>
+          <StyledText>{OWNABLES.SUBTITLE}</StyledText>
           <IconContainer>
             <SocialMediaIcon source={socialMediaIcons.twitter} onPress={() => navigateToTwitter()} />
             <SocialMediaIcon source={socialMediaIcons.facebook} onPress={() => navigateToFacebook()} />

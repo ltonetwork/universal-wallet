@@ -16,6 +16,7 @@ import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { confirmationMessage } from '../../utils/confirmationMessage'
 import { TypedTransaction } from '../../interfaces/TypedTransaction'
+import { QR_READER } from '../../constants/Text'
 
 export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'>) {
     const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -135,9 +136,9 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
             <ScannerContainer>
                 <StyledScanner onBarCodeScanned={scanned ? undefined : handleBarCodeScanned} />
                 <TextContainer>
-                    <StyledText title>QR Scanner</StyledText>
+                    <StyledText title>{QR_READER.TITLE}</StyledText>
                     <StyledText>
-                        Scan the QR code from LTO's web application to log in to your account or confirm your transactions
+                        {QR_READER.SUBTITLE}
                     </StyledText>
                 </TextContainer>
                 {tx?.sender ? (
@@ -153,7 +154,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
     } else {
         return (
             <CenteredView>
-                <Text>Permission denied!</Text>
+                <Text>{QR_READER.DENIED}</Text>
             </CenteredView>
         )
     }

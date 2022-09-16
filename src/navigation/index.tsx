@@ -9,7 +9,7 @@ import SnackbarMessage from '../components/Snackbar'
 import TabBarImage from '../components/TabBarImage'
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
-import CreateAccountScreen from '../screens/CreateAccountScreen/CreateAccountScreen'
+import SignUpScreen from '../screens/SignUpScreen/SignUpScreen'
 import CredentialsTabScreen from '../screens/CredentialsTabScreen/CredentialsTabScreen'
 import RegisterAccountScreen from '../screens/RegisterAccountScreen/RegisterAccountScreen'
 import ImportSeedScreen from '../screens/ImportWithSeedScreen/ImportWithSeedScreen'
@@ -82,7 +82,7 @@ function RootNavigator(): any {
   return (
     appFirstLaunch !== null && (
       <Stack.Navigator
-        initialRouteName={appFirstLaunch ? 'OnBoarding' : userAlias ? 'SignIn' : 'CreateAccount'}
+        initialRouteName={appFirstLaunch ? 'OnBoarding' : userAlias ? 'SignIn' : 'SignUp'}
         screenOptions={{
           headerTitleStyle: { color: '#A017B7', fontWeight: '400', fontSize: 16 },
           headerTintColor: '#A017B7',
@@ -90,9 +90,8 @@ function RootNavigator(): any {
           headerStyle: { backgroundColor: 'transparent' },
         }}
       >
-
         <Stack.Screen name='OnBoarding' component={OnboardingScreen} options={{ headerShown: false }} />
-        <Stack.Screen name='CreateAccount' component={CreateAccountScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='SignUp' component={SignUpScreen} options={{ headerShown: false }} />
         <Stack.Screen name='SignIn' component={SignInScreen} options={{ headerShown: false }} />
         <Stack.Screen
           name='ImportSeed'

@@ -9,6 +9,7 @@ import TermsModal from '../../components/TermsModal'
 import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { View } from 'react-native'
+import { REGISTER } from '../../constants/Text'
 
 
 export default function RegisterAccountScreen({ navigation, route }: RootStackScreenProps<'RegisterAccount'>) {
@@ -85,13 +86,11 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                         }, 1000)
 
                     } else {
-
                         setMessageInfo('Account imported succesfully!')
                         setShowMessage(true)
                         setTimeout(() => {
                             navigation.navigate('Root')
                         }, 1000)
-
                     }
                 })
                 .catch(error => {
@@ -111,25 +110,25 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                         <View>
                             {route.params.data === 'created'
                                 ?
-                                <StyledTitle>Create account</StyledTitle>
+                                <StyledTitle>{REGISTER.CREATE_TITLE}</StyledTitle>
                                 :
 
-                                <StyledTitle>Import account</StyledTitle>
+                                <StyledTitle>{REGISTER.IMPORT_TITLE}</StyledTitle>
                             }
                         </View>
                         <StyledInput
                             mode={'flat'}
                             style={{ marginBottom: 5 }}
                             disabled={true}
-                            label="Wallet address"
+                            label={REGISTER.INPUT_ADDRESS}
                             value={accountAddress}
                         >
                         </StyledInput>
 
                         <StyledInput
                             style={{ marginBottom: 5 }}
-                            label="Nickname"
-                            placeholder='Enter your nickname...'
+                            label={REGISTER.INPUT_NICKNAME.LABEL}
+                            placeholder={REGISTER.INPUT_NICKNAME.PLACEHOLDER}
                             value={loginForm.nickname}
                             onChangeText={(text) => handleInputChange('nickname', text)}
                         >
@@ -137,22 +136,22 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
 
                         <StyledInput
                             style={{ marginBottom: 5 }}
-                            label="Wallet password"
+                            label={REGISTER.INPUT_PASSWORD.LABEL}
                             value={loginForm.password}
                             onChangeText={(text) => handleInputChange('password', text)}
                             secureTextEntry={passwordVisible}
-                            placeholder="Type your password..."
+                            placeholder={REGISTER.INPUT_PASSWORD.PLACEHOLDER}
                             right={<StyledInput.Icon
                                 name={passwordVisible ? "eye" : "eye-off"}
                                 onPress={() => setPasswordVisible(!passwordVisible)} />}>
                         </StyledInput>
 
                         <StyledInput
-                            label="Repeat password"
+                            label={REGISTER.INPUT_PASSWORD_REPEAT.LABEL}
                             value={loginForm.passwordConfirmation}
                             onChangeText={(text) => handleInputChange('passwordConfirmation', text)}
                             secureTextEntry={repeatedPasswordVisible}
-                            placeholder="Type your password again..."
+                            placeholder={REGISTER.INPUT_PASSWORD_REPEAT.PLACEHOLDER}
                             right={<StyledInput.Icon
                                 name={repeatedPasswordVisible ? "eye" : "eye-off"}
                                 onPress={() => setRepeatedPasswordVisible(!repeatedPasswordVisible)} />}>
@@ -189,7 +188,7 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                                 labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                                 onPress={() => handleImportAccount()
                                 }>
-                                Create account
+                                {REGISTER.BUTTON_CREATE}
                             </StyledButton>
                             :
                             <StyledButton
@@ -199,10 +198,9 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                                 labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                                 onPress={() => handleImportAccount()
                                 }>
-                                Import your account
+                                {REGISTER.BUTTON_IMPORT}
                             </StyledButton>
                         }
-
                     </ButtonContainer>
                 </Container >
 
