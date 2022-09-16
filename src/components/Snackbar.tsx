@@ -6,15 +6,17 @@ import { StyledSnackbar } from './styles/Snackbar.styles'
 
 
 export default function SnackbarMessage(): JSX.Element {
-    const { showMessage, setShowMessage, messageInfo } = useContext(MessageContext)
+    const { showMessage, setShowMessage, setMessageInfo, messageInfo } = useContext(MessageContext)
 
     return (
-
         <StyledSnackbar
+            wrapperStyle={{ bottom: 150, zIndex: 10000 }}
             visible={showMessage}
-            style={showMessage === true && { zIndex: 1 }}
             duration={THREE_SECONDS_SNACK_DURATION}
-            onDismiss={() => setShowMessage(false)}>
+            onDismiss={() => {
+                setShowMessage(false)
+                setMessageInfo('')
+            }}>
             {messageInfo}
         </StyledSnackbar>
     )
