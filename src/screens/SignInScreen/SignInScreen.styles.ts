@@ -19,7 +19,7 @@ export const ButtonContainer = styled.View<{ marginBottom?: number }>`
 `
 
 export const InputContainer = styled.View`
-margin: 25px 40px 0px 40px;
+    margin: 25px 40px 0px 40px;
 `
 
 export const StyledText = styled(Text)`

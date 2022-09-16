@@ -9,7 +9,6 @@ export default function TermsModal(props: {
     visible: boolean,
     onClose: any
     onRequestClose: any
-    setChecked: any
 }): JSX.Element {
 
     return (

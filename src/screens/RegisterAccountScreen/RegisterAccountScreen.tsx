@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { RootStackScreenProps } from '../../../types'
 import CheckBox from '../../components/CheckBox'
 import Spinner from '../../components/Spinner'
-import { StyledTitle, StyledView } from './RegisterAccountScreen.styles'
+import { Container, StyledTitle } from './RegisterAccountScreen.styles'
 import { StyledButton } from '../../components/styles/StyledButton.styles'
 import { StyledInput } from '../../components/styles/StyledInput.styles'
 import TermsModal from '../../components/TermsModal'
@@ -11,7 +11,7 @@ import LocalStorageService from '../../services/LocalStorage.service'
 
 
 export default function RegisterAccountScreen({ navigation, route }: RootStackScreenProps<'RegisterAccount'>) {
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     const [loginForm, setloginForm] = useState({
         nickname: '',
@@ -68,6 +68,9 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
         } else if (loginForm.password !== loginForm.passwordConfirmation) {
             setShowMessage(true)
             setMessageInfo('Passwords do not match!')
+        } else if (!checked) {
+            setShowMessage(true)
+            setMessageInfo('To continue tap and accept terms and conditions!')
         } else {
             LocalStorageService.storeData('@userAlias', loginForm)
                 .then(() => {
@@ -93,7 +96,7 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                 ?
                 <Spinner />
                 :
-                <StyledView marginTop={10}>
+                <Container>
                     {route.params.data === 'created'
                         ?
                         <StyledTitle>Create account</StyledTitle>
@@ -150,7 +153,6 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
 
                     <TermsModal
                         visible={modalVisible}
-                        setChecked={setChecked}
                         onRequestClose={() => {
                             setModalVisible(!modalVisible)
                             setChecked(false)
@@ -161,22 +163,22 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                         }}
                     />
 
-                    <StyledView marginTop={70}>
+                    <Container marginTop={70}>
                         {route.params.data === 'created'
                             ?
                             <StyledButton
                                 mode="contained"
-                                disabled={!checked && true}
+                                disabled={false}
                                 uppercase={false}
                                 labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                                 onPress={() => handleImportAccount()
                                 }>
-                                Create your account
+                                Create account
                             </StyledButton>
                             :
                             <StyledButton
                                 mode="contained"
-                                disabled={!checked && true}
+                                disabled={false}
                                 uppercase={false}
                                 labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                                 onPress={() => handleImportAccount()
@@ -185,8 +187,8 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                             </StyledButton>
                         }
 
-                    </StyledView>
-                </StyledView >
+                    </Container>
+                </Container >
 
             }
         </>

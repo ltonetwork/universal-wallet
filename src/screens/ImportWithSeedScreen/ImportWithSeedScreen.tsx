@@ -7,10 +7,10 @@ import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { ButtonContainer, Container, InputContainer, StyledTitle } from '../SignInScreen/SignInScreen.styles'
 
-export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'ImportSeed'>) {
-    const [seedPhrase, setSeedPhrase] = useState<string>('')
-    const [isLoading, setIsLoading] = useState<boolean>(true)
 
+export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'ImportSeed'>) {
+
+    const [seedPhrase, setSeedPhrase] = useState<string>('')
     const { setShowMessage, setMessageInfo } = useContext(MessageContext)
 
     const handleImportFromSeed = () => {
@@ -27,7 +27,7 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
             }
             LocalStorageService.storeData('@accountData', [data])
                 .then(() => {
-                    setIsLoading(false)
+
                     navigation.navigate('RegisterAccount', { data: 'seed' })
                 })
                 .catch((error) => {
@@ -36,9 +36,10 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
 
         } else {
             setShowMessage(true)
-            setMessageInfo('Error: seed phrase must have 15 words separated by one space!')
+            setMessageInfo('Seed phrase must have 15 words separated by one space!')
         }
     }
+
 
     return (
         <Container >
@@ -61,13 +62,12 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
                 <StyledButton
                     mode='contained'
                     color='#A017B7'
-                    disabled={seedPhrase === '' ? true : false}
+                    disabled={false}
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                     onPress={() => {
                         setSeedPhrase('')
                         handleImportFromSeed()
-                        setIsLoading(true)
                     }}
                 >
                     Import your account
