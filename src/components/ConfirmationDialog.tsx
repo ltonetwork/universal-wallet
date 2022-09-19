@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { Button, Dialog, Paragraph, Portal, Provider } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -23,7 +22,7 @@ export default function ConfirmationDialog(props: {
                         visible={visible}
                         onDismiss={hideDialog}
                     >
-                        <Dialog.Title testID='dialog'>Confirm transaction:</Dialog.Title>
+                        <Dialog.Title testID='dialog'>Confirm:</Dialog.Title>
                         <Dialog.Content>
                             <Paragraph>{props.message}</Paragraph>
                         </Dialog.Content>

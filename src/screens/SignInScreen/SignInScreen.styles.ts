@@ -2,25 +2,24 @@ import styled from "styled-components/native"
 import { Text, Title } from "react-native-paper"
 
 
-export const Container = styled.View<{ flexEnd?: boolean, marginTop?: number }>`
+export const Container = styled.SafeAreaView<{ flexEnd?: boolean, marginTop?: number }>`
     flex: 1;
     height: 100%;
     justify-content: space-around;
-    margin: 0px 40px 0px 40px;
     ${props => props.flexEnd && `justify-content: flex-end;`}
     ${props => props.marginTop && `margin-top: ${props.marginTop}px;`}
 `
 
 export const ButtonContainer = styled.View<{ marginBottom?: number }>`
     height: 250px;
-    margin-top: 60px;
+    margin: 60px 40px 0px 40px;
     ${props => props.marginBottom && `margin-bottom: ${props.marginBottom}px;`}
     justify-content: flex-end;
     align-items: center; 
 `
 
 export const InputContainer = styled.View`
-    margin-top: 25px;
+    margin: 25px 40px 0px 40px;
 `
 
 export const StyledText = styled(Text)`

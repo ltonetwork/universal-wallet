@@ -3,10 +3,10 @@ import { Button } from "react-native-paper"
 
 export const StyledButton = styled(Button)`
     margin-top: 20px;
-    height: 45px;
+    height: 40px;
     width: 290px;
     border-radius: 20px;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     font-size: 16px;
     font-weight: 800;

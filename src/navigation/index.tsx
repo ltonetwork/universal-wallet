@@ -51,7 +51,7 @@ function RootNavigator(): any {
 
   useEffect(() => {
     skipOnboarding()
-  }, [])
+  }, [appFirstLaunch])
 
   const skipOnboarding = (): void => {
     LocalStorageService.getData('@appFirstLaunch')
@@ -69,7 +69,11 @@ function RootNavigator(): any {
   }
 
   LocalStorageService.getData('@userAlias')
-    .then((data) => setUserAlias(data === null))
+    .then((data) => {
+      if (data !== null) {
+        setUserAlias(true)
+      }
+    })
     .catch((error) => {
       throw new Error('Error retrieving data', error)
     })
@@ -78,6 +82,7 @@ function RootNavigator(): any {
   return (
     appFirstLaunch !== null && (
       <Stack.Navigator
+        initialRouteName={appFirstLaunch ? 'OnBoarding' : userAlias ? 'SignIn' : 'CreateAccount'}
         screenOptions={{
           headerTitleStyle: { color: '#A017B7', fontWeight: '400', fontSize: 16 },
           headerTintColor: '#A017B7',
@@ -85,12 +90,9 @@ function RootNavigator(): any {
           headerStyle: { backgroundColor: 'transparent' },
         }}
       >
-        {appFirstLaunch && (
-          <Stack.Screen name='OnBoarding' component={OnboardingScreen} options={{ headerShown: false }} />
-        )}
-        {userAlias && (
-          <Stack.Screen name='CreateAccount' component={CreateAccountScreen} options={{ headerShown: false }} />
-        )}
+
+        <Stack.Screen name='OnBoarding' component={OnboardingScreen} options={{ headerShown: false }} />
+        <Stack.Screen name='CreateAccount' component={CreateAccountScreen} options={{ headerShown: false }} />
         <Stack.Screen name='SignIn' component={SignInScreen} options={{ headerShown: false }} />
         <Stack.Screen
           name='ImportSeed'

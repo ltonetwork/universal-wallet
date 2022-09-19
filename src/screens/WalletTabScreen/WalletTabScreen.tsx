@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { ImageBackground, useWindowDimensions } from 'react-native'
+import { BackHandler, ImageBackground, useWindowDimensions } from 'react-native'
 import { Card, Paragraph } from 'react-native-paper'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
@@ -30,7 +30,7 @@ import {
 } from './WalletTabScreen.styles'
 
 
-export default function WalletTabScreen({ navigation, route }: RootTabScreenProps<'Wallet'>) {
+export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wallet'>) {
 
     const { width, height } = useWindowDimensions()
 
@@ -40,6 +40,17 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
     const { available, effective, leasing, regular, unbonding } = details
     const { price, percent_change_24h } = coinData
+
+    useFocusEffect(
+        React.useCallback(() => {
+            const onBackPress = () => {
+                return true
+            }
+            BackHandler.addEventListener('hardwareBackPress', onBackPress)
+            return () =>
+                BackHandler.removeEventListener('hardwareBackPress', onBackPress)
+        }, []),
+    )
 
     useFocusEffect(() => {
         readStorage()
@@ -96,7 +107,6 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
         }
     }
 
-
     return (
         <>
             {isLoading
@@ -125,7 +135,7 @@ export default function WalletTabScreen({ navigation, route }: RootTabScreenProp
 
                             <TopCard>
                                 <Card.Content>
-                                    <FieldName>Prize</FieldName>
+                                    <FieldName>Price</FieldName>
                                     <Amount>{price?.toFixed(3)}$</Amount>
                                     {checkPositiveNegative(percent_change_24h)}
                                 </Card.Content>
