@@ -1,6 +1,6 @@
 import React from "react"
 import { Modal, ScrollView } from "react-native"
-import { TERMS_AND_CONDITIONS_CONTENT } from "../constants/Text"
+import { REGISTER, TERMS_AND_CONDITIONS_CONTENT } from "../constants/Text"
 import { Container, ModalText, ModalView } from '././styles/TermsModal.styles'
 import { StyledButton } from "./styles/StyledButton.styles"
 
@@ -21,7 +21,7 @@ export default function TermsModal(props: {
         >
             <Container>
                 <ModalView>
-                    <ModalText>TERMS AND CONDITIONS</ModalText>
+                    <ModalText>{REGISTER.MODAL_TITLE}</ModalText>
                     <ScrollView>
                         <ModalText>{TERMS_AND_CONDITIONS_CONTENT}</ModalText>
                         <Container>
@@ -33,13 +33,12 @@ export default function TermsModal(props: {
                                 onPress={() => {
                                     props.onClose()
                                 }}>
-                                I agree
+                                {REGISTER.BUTTON_MODAL}
                             </StyledButton>
                         </Container>
                     </ScrollView>
                 </ModalView>
             </Container>
         </Modal>
-
     )
 }

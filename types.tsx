@@ -10,7 +10,7 @@ declare global {
 
 export type RootStackParamList = {
   OnBoarding: undefined
-  CreateAccount: undefined
+  SignUp: undefined
   SignIn: undefined
   ImportSeed: undefined
   RegisterAccount: { data: string }

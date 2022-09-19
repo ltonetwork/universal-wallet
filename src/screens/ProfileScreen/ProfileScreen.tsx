@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Pressable, TouchableOpacity } from 'react-native'
 import { Card, Title } from 'react-native-paper'
 import Spinner from '../../components/Spinner'
+import { PROFILE } from '../../constants/Text'
 import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { CardsContainer, Content, Field, HiddenTitle, MainCard, StyledTitle } from './ProfileScreen.styles'
@@ -72,23 +73,23 @@ export default function ProfileScreen() {
                     <MainCard >
 
                         <Card.Content>
-                            <StyledTitle>Public information</StyledTitle>
+                            <StyledTitle>{PROFILE.TITLE}</StyledTitle>
 
-                            <Field>Nickname</Field>
+                            <Field>{PROFILE.NICKNAME}</Field>
                             <Pressable
                                 style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
                                 onLongPress={() => copyToClipboard(accountNickname)}>
                                 <Content>{accountNickname}</Content>
                             </Pressable>
 
-                            <Field>Wallet</Field>
+                            <Field>{PROFILE.WALLET}</Field>
                             <Pressable
                                 style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
                                 onLongPress={() => copyToClipboard(address)}>
                                 <Content>{address}</Content>
                             </Pressable>
 
-                            <Field>Public Key</Field>
+                            <Field>{PROFILE.PUBLIC_KEY}</Field>
                             <Pressable
                                 style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
                                 onLongPress={() => copyToClipboard(publicKey)}>
@@ -102,7 +103,7 @@ export default function ProfileScreen() {
                         <TouchableOpacity onPress={() => setIsKeyBlur(!isKeyBlur)}>
                             <MainCard justifyContent='center' alignItems='center'>
                                 <Card.Content>
-                                    <HiddenTitle>Press and discover your private key</HiddenTitle>
+                                    <HiddenTitle>{PROFILE.DISCOVER_PRIVATEKEY}</HiddenTitle>
                                 </Card.Content>
                             </MainCard>
                         </TouchableOpacity>
@@ -122,7 +123,7 @@ export default function ProfileScreen() {
                         <TouchableOpacity onPress={() => setIsSeedBlur(!isSeedBlur)}>
                             <MainCard justifyContent='center' alignItems='center'>
                                 <Card.Content>
-                                    <HiddenTitle>Press and discover your backup phrase</HiddenTitle>
+                                    <HiddenTitle>{PROFILE.DISCOVER_PHRASE}</HiddenTitle>
                                 </Card.Content>
                             </MainCard>
                         </TouchableOpacity>

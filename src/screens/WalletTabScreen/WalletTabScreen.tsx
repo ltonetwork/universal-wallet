@@ -8,6 +8,7 @@ import QRButton from '../../components/QRButton'
 import Spinner from '../../components/Spinner'
 import StatusBarIOS from '../../components/StatusBarIOS'
 import { StyledImage } from '../../components/styles/OverviewHeader.styles'
+import { WALLET } from '../../constants/Text'
 import { TypedCoinData } from '../../interfaces/TypedCoinData'
 import { TypedDetails } from '../../interfaces/TypedDetails'
 import ApiClientService from '../../services/ApiClient.service'
@@ -125,18 +126,18 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                         <TopCardsContainer>
                             <TopCard>
                                 <Card.Content style={{ borderRadius: 80 }}>
-                                    <FieldName>Regular account</FieldName>
+                                    <FieldName>{WALLET.REGULAR}</FieldName>
                                     <AmountContainer>
                                         <Amount>{formatNumber(regular)}</Amount><Paragraph>LTO</Paragraph>
                                     </AmountContainer>
-                                    <BlueText>Equivalent to {formatNumber(change)}$</BlueText>
+                                    <BlueText>{WALLET.EQUIVALENT} {formatNumber(change)}{WALLET.DOLLAR_SYMBOL}</BlueText>
                                 </Card.Content>
                             </TopCard>
 
                             <TopCard>
                                 <Card.Content>
-                                    <FieldName>Price</FieldName>
-                                    <Amount>{price?.toFixed(3)}$</Amount>
+                                    <FieldName>{WALLET.PRICE}</FieldName>
+                                    <Amount>{price?.toFixed(3)}{WALLET.DOLLAR_SYMBOL}</Amount>
                                     {checkPositiveNegative(percent_change_24h)}
                                 </Card.Content>
                             </TopCard>
@@ -145,18 +146,18 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                         <BottomCardsContainer >
                             <BottomCard>
                                 <Card.Content>
-                                    <FieldName>Leasing</FieldName>
+                                    <FieldName>{WALLET.LEASING}</FieldName>
                                     <AmountContainer>
-                                        <Amount>{formatNumber(leasing)}</Amount><Paragraph>LTO</Paragraph>
+                                        <Amount>{formatNumber(leasing)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
 
                             <BottomCard >
                                 <Card.Content>
-                                    <FieldName>Available</FieldName>
+                                    <FieldName>{WALLET.AVAILABLE}</FieldName>
                                     <AmountContainer>
-                                        <Amount>{formatNumber(available)}</Amount><Paragraph>LTO</Paragraph>
+                                        <Amount>{formatNumber(available)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
@@ -165,18 +166,18 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                         <BottomCardsContainer>
                             <BottomCard >
                                 <Card.Content>
-                                    <FieldName>Effective</FieldName>
+                                    <FieldName>{WALLET.EFFECTIVE}</FieldName>
                                     <AmountContainer>
-                                        <Amount>{formatNumber(effective)}</Amount><Paragraph>LTO</Paragraph>
+                                        <Amount>{formatNumber(effective)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
 
                             <BottomCard >
                                 <Card.Content>
-                                    <FieldName>Unbonding</FieldName>
+                                    <FieldName>{WALLET.UNBONDING}</FieldName>
                                     <AmountContainer>
-                                        <Amount>{formatNumber(unbonding)}</Amount><Paragraph>LTO</Paragraph>
+                                        <Amount>{formatNumber(unbonding)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>

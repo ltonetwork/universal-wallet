@@ -3,7 +3,7 @@ import React from 'react'
 import slides from "../utils/slideList"
 import { BtnContainer, Container, Indicator, IndicatorContainer } from "./styles/Footer.styles"
 import { StyledButton } from "./styles/StyledButton.styles"
-
+import { ONBOARDING } from "../constants/Text"
 
 export default function Footer({ currentSlideIndex }: any): JSX.Element {
     const navigation = useNavigation()
@@ -32,8 +32,8 @@ export default function Footer({ currentSlideIndex }: any): JSX.Element {
                         color="#A017B7"
                         uppercase={false}
                         labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                        onPress={() => navigation.navigate('CreateAccount')}>
-                        Start
+                        onPress={() => navigation.navigate('SignUp')}>
+                        {ONBOARDING.BUTTON}
                     </StyledButton>
                 )}
             </BtnContainer>

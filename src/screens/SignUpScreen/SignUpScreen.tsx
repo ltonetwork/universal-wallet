@@ -1,6 +1,7 @@
 import React from 'react'
 import { RootStackScreenProps } from '../../../types'
 import { StyledButton } from '../../components/styles/StyledButton.styles'
+import { SIGNUP } from '../../constants/Text'
 import LocalStorageService from '../../services/LocalStorage.service'
 import {
     ButtonContainer,
@@ -10,7 +11,7 @@ import {
     StyledTitle
 } from '../SignInScreen/SignInScreen.styles'
 
-export default function CreateAccountScreen({ navigation }: RootStackScreenProps<'CreateAccount'>) {
+export default function SignUpScreen({ navigation }: RootStackScreenProps<'SignUp'>) {
 
     const handleCreateAccount = () => {
         const LTO = require('@ltonetwork/lto').LTO
@@ -41,8 +42,8 @@ export default function CreateAccountScreen({ navigation }: RootStackScreenProps
     return (
         <Container>
             <InputContainer>
-                <StyledTitle>Sign Up</StyledTitle>
-                <StyledText>Create and account or import one with your seed phrase</StyledText>
+                <StyledTitle>{SIGNUP.TITLE}</StyledTitle>
+                <StyledText>{SIGNUP.SUBTITLE}</StyledText>
             </InputContainer>
 
             <ButtonContainer>
@@ -53,7 +54,7 @@ export default function CreateAccountScreen({ navigation }: RootStackScreenProps
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                     onPress={() => handleCreateAccount()}
                 >
-                    Create new account
+                    {SIGNUP.BUTTON_CREATE}
                 </StyledButton>
                 <StyledButton
                     mode="outlined"
@@ -63,7 +64,7 @@ export default function CreateAccountScreen({ navigation }: RootStackScreenProps
                         navigation.navigate('ImportSeed')
                     }}
                 >
-                    Import account with your seeds
+                    {SIGNUP.BUTTON_IMPORT}
                 </StyledButton>
             </ButtonContainer>
         </Container>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Checkbox } from 'react-native-paper'
-
+import { REGISTER } from '../constants/Text'
 
 export default function CheckBox(props: {
     onPress: () => void,
@@ -15,7 +15,7 @@ export default function CheckBox(props: {
                 position='leading'
                 onPress={() => props.onPress()}
                 color={'#A017B7'}
-                label="Accept terms and conditions"
+                label={REGISTER.CHECKBOX}
                 labelStyle={{ color: '#A017B7' }}
                 status={props.status} />
         </View>

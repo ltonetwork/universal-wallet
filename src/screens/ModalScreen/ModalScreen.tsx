@@ -6,6 +6,7 @@ import ModalButton from '../../components/ModalButton'
 import OverviewHeader from '../../components/OverviewHeader'
 import { StyledImage } from '../../components/styles/OverviewHeader.styles'
 import { View } from '../../components/Themed'
+import { MODAL_SCREEN } from '../../constants/Text'
 import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { logoTitle } from '../../utils/images'
@@ -61,7 +62,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
       <InfoContainer>
         <MainCard >
           <Card.Content>
-            <Field>Your wallet</Field>
+            <Field>{MODAL_SCREEN.CARD_TITLE}</Field>
             <View style={{ justifyContent: 'space-evenly' }}>
               <StyledNickname><Icon name='account-circle-outline' size={20} color='#0092aa' />{accountNickname}</StyledNickname>
             </View>
