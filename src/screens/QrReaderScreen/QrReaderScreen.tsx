@@ -50,14 +50,20 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
     }, [])
 
     const handleBarCodeScanned = ({ data }: any) => {
-        setScanned(true)
-        if (data.includes('http://schema.lto.network/simple-auth-v1.json')) {
-            const auth = JSON.parse(data)
-            return handleLogin(auth)
-        } else {
-            const _data = JSON.parse(data)
-            setTx(_data)
-            setDialogVisible(true)
+        try {
+            setScanned(true)
+            if (data.includes('http://schema.lto.network/simple-auth-v1.json')) {
+                const auth = JSON.parse(data)
+                return handleLogin(auth)
+            } else {
+                const _data = JSON.parse(data)
+                setTx(_data)
+                setDialogVisible(true)
+            }
+        } catch (error) {
+            setMessageInfo('Invalid QR!')
+            setShowMessage(true)
+            navigation.goBack()
         }
     }
 
@@ -66,7 +72,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
         try {
             const accountData = await LocalStorageService.getData('@accountData')
             const LTO = require('@ltonetwork/lto').LTO
-            const lto = new LTO(process.env.LTO_NETWORK_ID || 'T')
+            const lto = new LTO(process.env.LTO_NETWORK_ID)
             const account = lto.account({ seed: accountData[0].seed })
             const signature = account.sign(`lto:sign:${auth.url}`).base58
             const data = {
@@ -102,7 +108,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
             try {
                 const myAccount = await LocalStorageService.getData('@accountData')
                 const LTO = require('@ltonetwork/lto').LTO
-                const lto = new LTO(process.env.LTO_NETWORK_ID || 'T')
+                const lto = new LTO(process.env.LTO_NETWORK_ID)
                 const account = lto.account({ seed: myAccount[0].seed })
 
                 if (tx?.sender !== account.address) {
@@ -110,7 +116,6 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
                     setShowMessage(true)
                 } else {
                     if (tx != undefined) tx.sender = ''
-
                     const transferObject = tx && txFromData(tx)
                     const signedTransfer = transferObject?.signWith(account)
                     await lto.node.broadcast(signedTransfer)
@@ -126,7 +131,6 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
         navigation.goBack()
     }
 
-
     if (isLoading) {
         return <Spinner />
     }
@@ -137,9 +141,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
                 <StyledScanner onBarCodeScanned={scanned ? undefined : handleBarCodeScanned} />
                 <TextContainer>
                     <StyledText title>{QR_READER.TITLE}</StyledText>
-                    <StyledText>
-                        {QR_READER.SUBTITLE}
-                    </StyledText>
+                    <StyledText>{QR_READER.SUBTITLE}</StyledText>
                 </TextContainer>
                 {tx?.sender ? (
                     <ConfirmationDialog
