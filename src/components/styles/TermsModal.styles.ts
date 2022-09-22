@@ -21,7 +21,9 @@ export const ModalView = styled.View`
 `
 
 export const ModalText = styled.Text`
-    margin-bottom: 15px;
-    text-align: justify;
-    align-items: center;
+    text-align: left;
+`
+
+export const TextContainer = styled.ScrollView`
+    margin: 20px -4px 0px -4px;
 `
