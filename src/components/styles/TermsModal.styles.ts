@@ -25,5 +25,5 @@ export const ModalText = styled.Text`
 `
 
 export const TextContainer = styled.ScrollView`
-    margin: 20px -4px 0px -4px;
+    width: 100%
 `

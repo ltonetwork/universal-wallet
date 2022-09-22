@@ -23,9 +23,9 @@ export const ButtonContainer = styled.View`
     `
 
 export const MainCard = styled(Card)`
-    width: 370px;
+    width: 100%;
     height: auto;
-    margin-left: -12px;
+    margin-left: 0px;
     background-color: transparent;
     box-shadow: 0px 0px 0px #ffffff;
 `
@@ -44,5 +44,6 @@ export const Content = styled(Paragraph)`
     font-size: 15px;
     font-weight: bold;
     color: #565656;
+    width: 95%;
 
     `
