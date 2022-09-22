@@ -29,7 +29,7 @@ const navTheme = {
   ...DefaultTheme,
   colors: {
     ...DefaultTheme.colors,
-    background: 'transparent',
+    background: '#ffffff',
   },
 }
 
@@ -87,7 +87,8 @@ function RootNavigator(): any {
           headerTitleStyle: { color: '#A017B7', fontWeight: '400', fontSize: 16 },
           headerTintColor: '#A017B7',
           headerShadowVisible: false,
-          headerStyle: { backgroundColor: 'transparent' },
+          headerStyle: { backgroundColor: '#ffffff' },
+          presentation: 'card'
         }}
       >
         <Stack.Screen name='OnBoarding' component={OnboardingScreen} options={{ headerShown: false }} />
@@ -111,6 +112,7 @@ function RootNavigator(): any {
             headerBackTitleVisible: false,
             headerTransparent: true,
             headerTitle: '',
+            headerStyle: { backgroundColor: 'transparent' }
           }}
         />
         <Stack.Group>
