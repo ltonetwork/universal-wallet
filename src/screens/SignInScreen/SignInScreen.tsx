@@ -97,7 +97,7 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     mode='outlined'
                     color='#A017B7'
                     uppercase={false}
-                    labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
+                    labelStyle={{ fontWeight: '400', fontSize: 16, width: '90%' }}
                     onPress={() => setDialogVisible(true)}
                 >
                     Sign out
