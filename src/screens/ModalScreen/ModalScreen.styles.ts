@@ -10,8 +10,9 @@ export const Container = styled.SafeAreaView`
 
 export const InfoContainer = styled.View`
     flex-direction: column;
-    align-self: center;;
-    width: ${Dimensions.get("window").width * 0.8}px;
+    align-self: center;
+    margin-left: 32px;
+    margin-right: 5px;
 `
 
 export const ButtonContainer = styled.View`
