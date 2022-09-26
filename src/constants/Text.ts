@@ -28,6 +28,15 @@ export const SIGNIN = {
     BUTTON_IMPORT: 'Import account with your seeds',
 }
 
+export const IMPORT_WITHSEEDS = {
+    IMPORT_TITLE: 'IMPORT ACCOUNT',
+    INPUT_SEEDPHRASE: {
+        LABEL: 'Add your seed phrase',
+        PLACEHOLDER: 'Type your seed phrase separated by a space',
+    },
+    BUTTON_IMPORT: 'Import account',
+}
+
 export const REGISTER = {
 
     CREATE_TITLE: 'CREATE ACCOUNT',
@@ -42,12 +51,13 @@ export const REGISTER = {
         PLACEHOLDER: 'Type your password'
     },
     INPUT_PASSWORD_REPEAT: {
-        LABEL: "Repeat password",
+        LABEL: 'Repeat password',
         PLACEHOLDER: "Type your password again..."
     },
+
     CHECKBOX: 'Accept terms and conditions',
     BUTTON_CREATE: 'Create new account',
-    BUTTON_IMPORT: 'Import account with your seeds',
+    BUTTON_IMPORT: 'Import account',
     MODAL_TITLE: 'TERMS AND CONDITIONS',
     BUTTON_MODAL: 'I agree'
 }

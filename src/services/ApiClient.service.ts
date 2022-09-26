@@ -1,6 +1,27 @@
 import { LTO } from "@ltonetwork/lto"
+export const lto = new LTO(process.env.LTO_NETWORK_ID)
 
 export default class ApiClientService {
+
+    public static newLTO = async () => {
+        return new LTO(process.env.LTO_NETWORK_ID)
+    }
+
+    public static createAccount = async () => {
+        try {
+            return lto.account()
+        } catch (error) {
+            throw new Error('Error creating account')
+        }
+    }
+
+    public static importAccount = async (seed: string) => {
+        try {
+            return lto.account({ seed: seed })
+        } catch (error) {
+            throw new Error('Error importing account from seeds')
+        }
+    }
 
     public static getAccountDetails = async (address: string) => {
         try {
@@ -12,7 +33,10 @@ export default class ApiClientService {
     }
 
     public static getAccountBalance = (account: string) => {
-        const lto = new LTO(process.env.LTO_NETWORK_ID)
-        return lto.getBalance(account)
+        try {
+            return lto.getBalance(account)
+        } catch (error) {
+            throw new Error('Error fetching account balance')
+        }
     }
 }
