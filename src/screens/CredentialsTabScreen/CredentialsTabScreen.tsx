@@ -21,6 +21,7 @@ export default function CredentialsTabScreen({ navigation }: RootTabScreenProps<
       <ImageBackground source={backgroundImage} style={{ width, height, position: "absolute" }} />
       <Container>
         <OverviewHeader
+          marginLeft={-10}
           icon={"menu"}
           onPress={() => navigation.navigate('Modal')}
           input={<MainTitle>{CREDENTIALS.MAINTITLE}</MainTitle>} />

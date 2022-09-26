@@ -1,11 +1,12 @@
 import styled from "styled-components/native"
 import { Image } from 'react-native'
 
-export const HeaderContainer = styled.View`
+export const HeaderContainer = styled.View<{ marginLeft?: number }>`
     justify-content: space-between; 
     flex-direction: row; 
     background-color: #ffffff; 
-    height: 50px; 
+    margin: 0 15px 0 30px;
+    ${props => props.marginLeft && `margin-left: ${props.marginLeft}px;`}
 `
 
 export const StyledImage = styled(Image)`
@@ -14,11 +15,4 @@ export const StyledImage = styled(Image)`
     margin-top: 10px;
     background-color: #ffffff;
     resize-mode: contain;
-`
-
-export const ModalImage = styled(Image)`
-    width: 190px;
-    height: 180px;
-    resize-mode: contain;
-    position: absolute;
 `

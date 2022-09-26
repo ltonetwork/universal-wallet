@@ -21,6 +21,7 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
       <ImageBackground source={backgroundImage} style={{ width, height, position: "absolute" }} />
       <Container>
         <OverviewHeader
+          marginLeft={-10}
           icon={"menu"}
           onPress={() => navigation.navigate('Modal')}
           input={<MainTitle>{OWNABLES.MAINTITLE}</MainTitle>} />

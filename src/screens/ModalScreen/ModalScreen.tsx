@@ -55,6 +55,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
   return (
     <Container>
       <OverviewHeader
+        marginLeft={undefined}
         icon={"close"}
         onPress={() => navigation.goBack()}
         input={<StyledImage testID="logo-title" source={logoTitle} />} />

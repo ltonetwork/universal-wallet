@@ -5,7 +5,7 @@ import styled from "styled-components/native"
 
 export const Container = styled.SafeAreaView`
     background-color: #ffffff;
-    padding-top: 20px;
+    margin-top: 30px;
 `
 
 export const InfoContainer = styled.View`

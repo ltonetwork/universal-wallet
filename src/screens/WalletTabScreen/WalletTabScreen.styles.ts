@@ -4,7 +4,7 @@ import { Platform } from 'react-native'
 
 export const OverviewContainer = styled.SafeAreaView`
     align-content: center;
-    margin-top: -1px;
+    margin-top: 1px;
 `
 
 export const AmountContainer = styled.View`

@@ -9,12 +9,13 @@ export default function OverviewHeader(props: {
   onPress?: () => void
   icon: React.ComponentProps<typeof IconButton>['icon']
   input: any
+  marginLeft: number | undefined
 }): JSX.Element {
 
   const colorScheme = useColorScheme()
 
   return (
-    <HeaderContainer>
+    <HeaderContainer {...props}>
       <>{props.input}</>
       <IconButton
         icon={props.icon}

@@ -119,6 +119,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                     <ImageBackground source={backgroundImage} style={{ width, height, position: "absolute" }} />
                     <OverviewContainer>
                         <OverviewHeader
+                            marginLeft={undefined}
                             icon={"menu"}
                             onPress={() => navigation.navigate('Modal')}
                             input={<StyledImage testID="logo-title" source={logoTitle} />} />
