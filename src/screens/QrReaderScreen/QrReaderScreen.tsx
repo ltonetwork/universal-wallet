@@ -13,6 +13,7 @@ import {
     TextContainer
 } from '../../components/styles/Scanner.styles'
 import { QR_READER } from '../../constants/Text'
+import { AUTH_SCHEMA } from '../../constants/Urls'
 import { MessageContext } from '../../context/UserMessage.context'
 import { TypedTransaction } from '../../interfaces/TypedTransaction'
 import ApiClientService from '../../services/ApiClient.service'
@@ -53,7 +54,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
     const handleBarCodeScanned = ({ data }: any) => {
         try {
             setScanned(true)
-            if (data.includes('http://schema.lto.network/simple-auth-v1.json')) {
+            if (data.includes(AUTH_SCHEMA)) {
                 const auth = JSON.parse(data)
                 return handleLogin(auth)
             } else {
