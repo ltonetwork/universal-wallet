@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react'
 import { RootStackScreenProps } from '../../../types'
 import { StyledButton } from '../../components/styles/StyledButton.styles'
 import { StyledInput } from '../../components/styles/StyledInput.styles'
+import { IMPORT_WITHSEEDS } from '../../constants/Text'
 import { MessageContext } from '../../context/UserMessage.context'
 import ApiClientService from '../../services/ApiClient.service'
 import LocalStorageService from '../../services/LocalStorage.service'
@@ -39,17 +40,17 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
     return (
         <Container>
             <InputContainer>
-                <StyledTitle>Import account</StyledTitle>
+                <StyledTitle>{IMPORT_WITHSEEDS.IMPORT_TITLE}</StyledTitle>
                 <StyledInput
                     style={{ marginBottom: 140 }}
                     editable={true}
                     multiline
                     blurOnSubmit={true}
                     returnKeyType="go"
-                    label="Add your seed phrase"
+                    label={IMPORT_WITHSEEDS.INPUT_SEEDPHRASE.LABEL}
                     onChangeText={(text) => setSeedPhrase(text)}
                     value={seedPhrase}
-                    placeholder="Type your seed phrase separated by a space"
+                    placeholder={IMPORT_WITHSEEDS.INPUT_SEEDPHRASE.PLACEHOLDER}
                 ></StyledInput>
             </InputContainer>
 
@@ -65,7 +66,7 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
                         handleImportFromSeed()
                     }}
                 >
-                    Import your account
+                    {IMPORT_WITHSEEDS.BUTTON_IMPORT}
                 </StyledButton>
             </ButtonContainer>
         </Container>
