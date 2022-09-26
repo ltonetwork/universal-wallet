@@ -72,7 +72,7 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
             setMessageInfo('Passwords do not match!')
         } else if (!checked) {
             setShowMessage(true)
-            setMessageInfo('To continue tap and accept terms and conditions!')
+            setMessageInfo('To continue accept terms and conditions!')
         } else {
             LocalStorageService.storeData('@userAlias', loginForm)
                 .then(() => {
@@ -159,11 +159,11 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
 
                         <CheckBox
                             status={checked ? 'checked' : 'unchecked'}
-                            onPress={() => {
+                            onCheck={() => {
                                 !checked && setModalVisible(true)
                                 setChecked(!checked)
                             }}
-                        />
+                            onPressText={() => setModalVisible(true)} />
 
                         <TermsModal
                             visible={modalVisible}
