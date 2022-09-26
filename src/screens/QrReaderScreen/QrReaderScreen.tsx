@@ -10,13 +10,14 @@ import {
     ScannerContainer,
     StyledScanner,
     StyledText,
-    TextContainer,
+    TextContainer
 } from '../../components/styles/Scanner.styles'
+import { QR_READER } from '../../constants/Text'
 import { MessageContext } from '../../context/UserMessage.context'
+import { TypedTransaction } from '../../interfaces/TypedTransaction'
+import ApiClientService from '../../services/ApiClient.service'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { confirmationMessage } from '../../utils/confirmationMessage'
-import { TypedTransaction } from '../../interfaces/TypedTransaction'
-import { QR_READER } from '../../constants/Text'
 
 export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'>) {
     const [isLoading, setIsLoading] = useState<boolean>(true)
@@ -70,10 +71,8 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
     const handleLogin = async (auth: TypedTransaction) => {
         setIsLoading(true)
         try {
-            const accountData = await LocalStorageService.getData('@accountData')
-            const LTO = require('@ltonetwork/lto').LTO
-            const lto = new LTO(process.env.LTO_NETWORK_ID)
-            const account = lto.account({ seed: accountData[0].seed })
+            const accountFromStorage = await LocalStorageService.getData('@accountData')
+            const account = await ApiClientService.importAccount(accountFromStorage[0].seed)
             const signature = account.sign(`lto:sign:${auth.url}`).base58
             const data = {
                 address: account.address,
@@ -106,11 +105,8 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
         setIsLoading(true)
         if (data?.type === 4) {
             try {
-                const myAccount = await LocalStorageService.getData('@accountData')
-                const LTO = require('@ltonetwork/lto').LTO
-                const lto = new LTO(process.env.LTO_NETWORK_ID)
-                const account = lto.account({ seed: myAccount[0].seed })
-
+                const accountFromStorage = await LocalStorageService.getData('@accountData')
+                const account = await ApiClientService.importAccount(accountFromStorage[0].seed)
                 if (tx?.sender !== account.address) {
                     setMessageInfo('Sender address is not valid!')
                     setShowMessage(true)
@@ -118,7 +114,8 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
                     if (tx != undefined) tx.sender = ''
                     const transferObject = tx && txFromData(tx)
                     const signedTransfer = transferObject?.signWith(account)
-                    await lto.node.broadcast(signedTransfer)
+                    const lto = await ApiClientService.newLTO()
+                    lto.node.broadcast(signedTransfer)
                     setMessageInfo('Transfer sent successfully!')
                     setShowMessage(true)
                 }
