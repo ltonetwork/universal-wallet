@@ -76,16 +76,31 @@ LTO_MAC_KEYSTORE_NAME=lto-android               # Your mac keychain store name (
 
 ## Prepare Android build
 
-To get a new and updated apk debug file use:
+To update `index.android.bundle` so project is prepared and updated use:
+
+```bash
+yarn build:android
+```
+
+To get a new apk debug file use:
 
 ```bash
 cd android
 ./gradlew assembleDebug
 ```
 
-This will [generate an apk](https://reactnative.dev/docs/signed-apk-android#generating-the-release-aab) for testing purposes
+This will generate APK Debug file so you can test your app on your device directly or mount it on emulator.
 
-## Prepare IOS build
+To get an Release version use:
+
+```bash
+cd android
+./gradlew bundleRelease
+```
+
+This will bundle and generate ABB file, ready to be uploaded to Google Play Console. Follow [these indications](https://reactnative.dev/docs/signed-apk-android#generating-the-release-aab)
+
+## Prepare iOS build
 
 To update `main.jsbundle` so project is prepared to be uploaded for testing purposes or to the appstore use:
 
