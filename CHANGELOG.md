@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2022-10-25]
+
+-   App bundle release version for Android
+
 -   [As a LTO user, I want to see an error message if wrong Qr is scanned](https://wealize.atlassian.net/browse/LTO22004-63)
 -   [As a LTO user, I want to sign in web wallet with my wallet mobile](https://wealize.atlassian.net/browse/LTO22004-37)
 -   [Add transaction confirmation dialog](https://wealize.atlassian.net/browse/LTO22004-59)
