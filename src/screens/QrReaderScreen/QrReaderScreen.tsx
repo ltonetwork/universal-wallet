@@ -13,7 +13,7 @@ import {
     TextContainer
 } from '../../components/styles/Scanner.styles'
 import { QR_READER } from '../../constants/Text'
-import { AUTH_SCHEMA } from '../../constants/Urls'
+import { AUTH_SCHEMA, TRANSACTION_SCHEMA } from '../../constants/Urls'
 import { MessageContext } from '../../context/UserMessage.context'
 import { TypedTransaction } from '../../interfaces/TypedTransaction'
 import ApiClientService from '../../services/ApiClient.service'
@@ -54,15 +54,23 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
     const handleBarCodeScanned = ({ data }: any) => {
         try {
             setScanned(true)
-            if (data.includes(AUTH_SCHEMA)) {
-                const auth = JSON.parse(data)
-                return handleLogin(auth)
-            } else {
-                const _data = JSON.parse(data)
+
+            const _data = JSON.parse(data)
+            const schema = _data['@schema'] || TRANSACTION_SCHEMA
+
+            if (schema === AUTH_SCHEMA) {
+                return handleLogin(_data)
+            }
+
+            if (schema === TRANSACTION_SCHEMA) {
                 setTx(_data)
                 setDialogVisible(true)
+                return
             }
+
+            throw Error(`Unknown schema ${schema}`)
         } catch (error) {
+            console.error(error)
             setMessageInfo('Invalid QR!')
             setShowMessage(true)
             navigation.goBack()
@@ -95,6 +103,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
             setMessageInfo(`Successful log in!`)
             setShowMessage(true)
         } catch (error) {
+            console.error(error)
             setMessageInfo('Login failed: scan QR again!')
             setShowMessage(true)
         }
