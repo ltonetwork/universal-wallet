@@ -124,8 +124,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
                     if (tx != undefined) tx.sender = ''
                     const transferObject = tx && txFromData(tx)
                     const signedTransfer = transferObject?.signWith(account)
-                    const lto = await ApiClientService.newLTO()
-                    lto.node.broadcast(signedTransfer)
+                    await ApiClientService.broadcast(signedTransfer)
                     setMessageInfo('Transfer sent successfully!')
                     setShowMessage(true)
                 }
