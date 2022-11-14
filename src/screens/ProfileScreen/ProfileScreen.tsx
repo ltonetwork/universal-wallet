@@ -1,12 +1,13 @@
 import { useClipboard } from '@react-native-community/clipboard'
 import React, { useContext, useEffect, useState } from 'react'
-import { Pressable, TouchableOpacity } from 'react-native'
-import { Card, Title } from 'react-native-paper'
+import { TouchableOpacity } from 'react-native'
+import { Card } from 'react-native-paper'
 import Spinner from '../../components/Spinner'
 import { PROFILE } from '../../constants/Text'
 import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { CardsContainer, Content, Field, HiddenTitle, MainCard, StyledTitle } from './ProfileScreen.styles'
+import PressToCopy from "../../components/PressToCopy";
 
 export default function ProfileScreen() {
 
@@ -15,7 +16,6 @@ export default function ProfileScreen() {
     const [isKeyBlur, setIsKeyBlur] = useState<boolean>(true)
     const [isSeedBlur, setIsSeedBlur] = useState<boolean>(true)
     const [accountNickname, setAccountNickname] = useState<string>("")
-    const [data, setString] = useClipboard()
 
     const { address, publicKey, privateKey, seed } = accountInformation
 
@@ -33,9 +33,19 @@ export default function ProfileScreen() {
         }
     }, [])
 
+    const [data, setString] = useClipboard()
+
     useEffect(() => {
         setString(data)
     }, [data])
+
+    const { setShowMessage, setMessageInfo } = useContext(MessageContext)
+
+    const copyToClipboard = (data: string) => {
+        setString(data)
+        setShowMessage(true)
+        setMessageInfo('Copied to clipboard!')
+    }
 
     const readStorage = () => {
         LocalStorageService.getData('@accountData')
@@ -56,45 +66,25 @@ export default function ProfileScreen() {
             })
     }
 
-    const { setShowMessage, setMessageInfo } = useContext(MessageContext)
-
-    const copyToClipboard = (data: string) => {
-        setString(data)
-        setShowMessage(true)
-        setMessageInfo('Copied to clipboard!')
-    }
-
     return (
         <>
             {isLoading ? <Spinner /> :
 
                 <CardsContainer>
-
                     <MainCard >
-
                         <Card.Content>
-                            <StyledTitle>{PROFILE.TITLE}</StyledTitle>
-
                             <Field>{PROFILE.NICKNAME}</Field>
-                            <Pressable
-                                style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
-                                onLongPress={() => copyToClipboard(accountNickname)}>
-                                <Content>{accountNickname}</Content>
-                            </Pressable>
+                            <Content>{accountNickname}</Content>
 
                             <Field>{PROFILE.WALLET}</Field>
-                            <Pressable
-                                style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
-                                onLongPress={() => copyToClipboard(address)}>
+                            <PressToCopy value={address}>
                                 <Content>{address}</Content>
-                            </Pressable>
+                            </PressToCopy>
 
                             <Field>{PROFILE.PUBLIC_KEY}</Field>
-                            <Pressable
-                                style={({ pressed }) => [{ opacity: pressed ? 0.5 : 1.0 }]}
-                                onLongPress={() => copyToClipboard(publicKey)}>
+                            <PressToCopy value={publicKey}>
                                 <Content>{publicKey}</Content>
-                            </Pressable>
+                            </PressToCopy>
                         </Card.Content>
 
                     </MainCard>
@@ -108,15 +98,14 @@ export default function ProfileScreen() {
                             </MainCard>
                         </TouchableOpacity>
                         :
-                        <TouchableOpacity
-                            onPress={() => setIsKeyBlur(!isKeyBlur)}
-                            onLongPress={() => copyToClipboard(privateKey)}>
-                            <MainCard justifyContent='center' alignItems='center'>
+                        <PressToCopy onPress={() => setIsKeyBlur(!isKeyBlur)} value={privateKey}>
+                            <MainCard>
                                 <Card.Content>
+                                    <Field>{PROFILE.PRIVATE_KEY}</Field>
                                     <Content>{privateKey}</Content>
                                 </Card.Content>
                             </MainCard>
-                        </TouchableOpacity>
+                        </PressToCopy>
                     }
 
                     {!isSeedBlur ?
@@ -128,15 +117,14 @@ export default function ProfileScreen() {
                             </MainCard>
                         </TouchableOpacity>
                         :
-                        <TouchableOpacity
-                            onPress={() => setIsSeedBlur(!isSeedBlur)}
-                            onLongPress={() => copyToClipboard(seed)}>
-                            <MainCard justifyContent='center' alignItems='center'>
+                        <PressToCopy onPress={() => setIsSeedBlur(!isSeedBlur)} value={seed}>
+                            <MainCard>
                                 <Card.Content>
-                                    <Title >{seed}</Title>
+                                    <Field>{PROFILE.PHRASE}</Field>
+                                    <Content>{seed}</Content>
                                 </Card.Content>
                             </MainCard>
-                        </TouchableOpacity>
+                        </PressToCopy>
                     }
                 </CardsContainer>
             }

@@ -5,6 +5,7 @@ import Header from '../../components/Header'
 import Slide from '../../components/Slide'
 import slides from '../../utils/slideList'
 import { StyledSafeAreaView } from './OnBoardingScreen.styles'
+import {navigateToWebsite} from "../../utils/redirectSocialMedia";
 
 export default function OnboardingScreen() {
 
@@ -31,7 +32,7 @@ export default function OnboardingScreen() {
 
     return (
         <StyledSafeAreaView >
-            <Header changeSlide={changeSlide} currentSlideIndex={currentSlideIndex} />
+            <Header moreInfo={navigateToWebsite} changeSlide={changeSlide} currentSlideIndex={currentSlideIndex} />
             <FlatList
                 ref={ref}
                 onMomentumScrollEnd={updateCurrentSlideIndex}

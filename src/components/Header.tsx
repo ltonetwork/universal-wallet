@@ -4,7 +4,7 @@ import slides from "../utils/slideList"
 import { HeaderBtn, HeaderView } from "./styles/Header.styles"
 import { ONBOARDING } from "../constants/Text"
 
-export default function Header({ currentSlideIndex, changeSlide }: any) {
+export default function Header({ currentSlideIndex, moreInfo, changeSlide }: any) {
     const navigation = useNavigation()
 
     return (
@@ -13,7 +13,7 @@ export default function Header({ currentSlideIndex, changeSlide }: any) {
                 icon="information-outline"
                 mode="text"
                 uppercase={false}
-                onPress={changeSlide}>
+                onPress={moreInfo}>
                 {ONBOARDING.HEADER_LEFT}
             </HeaderBtn>
             {currentSlideIndex !== slides.length - 1 &&
