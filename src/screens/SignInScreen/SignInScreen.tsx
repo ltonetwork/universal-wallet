@@ -22,7 +22,7 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                 setUserAlias(data)
             })
             .catch((error) => {
-                throw new Error('Error retrieving user data', error)
+                throw new Error(`Error retrieving user data. ${error}`)
             })
     }
 

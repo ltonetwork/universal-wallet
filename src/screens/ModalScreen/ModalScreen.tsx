@@ -30,7 +30,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
     LocalStorageService.getData('@userAlias')
       .then(data => setAccountNickname(data.nickname))
       .catch(error => {
-        throw new Error('Error retrieving data', error)
+        throw new Error(`Error retrieving data. ${error}`)
       })
   }
 
@@ -38,7 +38,7 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
     LocalStorageService.getData('@accountData')
       .then(data => setAccountAddress(data[0].address))
       .catch(error => {
-        throw new Error('Error retrieving data', error)
+        throw new Error(`Error retrieving data. ${error}`)
       })
   }
 

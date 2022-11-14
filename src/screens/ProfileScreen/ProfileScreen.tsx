@@ -44,7 +44,7 @@ export default function ProfileScreen() {
                 setIsLoading(false)
             })
             .catch(error => {
-                throw new Error('Error retrieving data', error)
+                throw new Error(`Error retrieving data. ${error}`)
             })
     }
 
@@ -52,7 +52,7 @@ export default function ProfileScreen() {
         LocalStorageService.getData('@userAlias')
             .then(data => setAccountNickname(data.nickname))
             .catch(error => {
-                throw new Error('Error retrieving data', error)
+                throw new Error(`Error retrieving data. ${error}`)
             })
     }
 

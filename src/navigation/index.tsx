@@ -64,7 +64,7 @@ function RootNavigator(): any {
         }
       })
       .catch((error) => {
-        throw new Error('Error retrieving data', error)
+        throw new Error(`Error retrieving data. ${error}`)
       })
   }
 
@@ -75,7 +75,7 @@ function RootNavigator(): any {
       }
     })
     .catch((error) => {
-      throw new Error('Error retrieving data', error)
+      throw new Error(`Error retrieving data. ${error}`)
     })
 
 

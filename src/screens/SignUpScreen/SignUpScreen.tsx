@@ -16,18 +16,15 @@ export default function SignUpScreen({ navigation }: RootStackScreenProps<'SignU
 
     const handleCreateAccount = async () => {
         ApiClientService.createAccount()
-            .then(account => {
-                const data = {
-                    address: account.address,
-                    privateKey: account.privateKey,
-                    publicKey: account.publicKey,
-                    seed: account.seed,
-                }
-                return data
-            }).then(data => LocalStorageService.storeData('@accountData', [data]))
+            .then(account => ({
+                address: account.address,
+                privateKey: account.privateKey,
+                publicKey: account.publicKey,
+                seed: account.seed,
+            })).then(data => LocalStorageService.storeData('@accountData', [data]))
             .then(() => navigation.navigate('RegisterAccount', { data: 'created' }))
             .catch((error) => {
-                throw new Error('Error storing data', error)
+                throw new Error(`Error storing data. ${error}`)
             })
     }
 

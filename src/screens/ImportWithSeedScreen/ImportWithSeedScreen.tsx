@@ -17,19 +17,16 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
         if (seed.split(' ').length === 15) {
             ApiClientService.importAccount(seed)
                 .then(response => response)
-                .then((account) => {
-                    const data = {
-                        address: account.address,
-                        privateKey: account.privateKey,
-                        publicKey: account.publicKey,
-                        seed: account.seed,
-                    }
-                    return data
-                })
+                .then((account) => ({
+                    address: account.address,
+                    privateKey: account.privateKey,
+                    publicKey: account.publicKey,
+                    seed: account.seed,
+                }))
                 .then(data => LocalStorageService.storeData('@accountData', [data]))
                 .then(() => navigation.navigate('RegisterAccount', { data: 'seed' }))
                 .catch((error) => {
-                    throw new Error('Error storing data', error)
+                    throw new Error(`Error storing data. ${error}`)
                 })
         } else {
             setShowMessage(true)

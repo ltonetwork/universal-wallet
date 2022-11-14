@@ -46,7 +46,7 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                 }
             })
             .catch(error => {
-                throw new Error('Error retrieving data', error)
+                throw new Error(`Error retrieving data. ${error}`)
             })
     }
 
@@ -94,7 +94,7 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                     }
                 })
                 .catch(error => {
-                    throw new Error('Error storing account data', error)
+                    throw new Error(`Error storing account data. ${error}`)
                 })
         }
     }
