@@ -92,18 +92,13 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
             const axios = require('axios').default
             await axios.post(
                 `${auth.url}`,
-                {
-                    address: data.address,
-                    keyType: data.keyType,
-                    publicKey: data.publicKey,
-                    signature: signature,
-                },
+                data,
                 { timeout: 5000 }
             )
             setMessageInfo(`Successful log in!`)
             setShowMessage(true)
         } catch (error) {
-            console.error(error)
+            console.error(error + (error.response? `. ${error.response.data}` : ''))
             setMessageInfo('Login failed: scan QR again!')
             setShowMessage(true)
         }
