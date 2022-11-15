@@ -64,7 +64,7 @@ function RootNavigator(): any {
         }
       })
       .catch((error) => {
-        throw new Error('Error retrieving data', error)
+        throw new Error(`Error retrieving data. ${error}`)
       })
   }
 
@@ -75,7 +75,7 @@ function RootNavigator(): any {
       }
     })
     .catch((error) => {
-      throw new Error('Error retrieving data', error)
+      throw new Error(`Error retrieving data. ${error}`)
     })
 
 
@@ -128,7 +128,7 @@ function RootNavigator(): any {
             component={ProfileScreen}
             options={{
               headerBackTitleVisible: false,
-              headerTitle: 'PROFILE',
+              headerTitle: 'MY ACCOUNT',
               headerTitleStyle: { fontSize: 20, color: '#000000' },
             }}
           />

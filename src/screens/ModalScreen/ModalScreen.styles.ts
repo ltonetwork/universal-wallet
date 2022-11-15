@@ -10,16 +10,16 @@ export const Container = styled.SafeAreaView`
 
 export const InfoContainer = styled.View`
     flex-direction: column;
-    align-self: center;
-    margin-left: 32px;
+    margin-left: 16px;
     margin-right: 5px;
+    margin-bottom: 25px;
 `
 
 export const ButtonContainer = styled.View`
-    margin-top: 10px;
     align-items: center;
     width: ${Dimensions.get("window").width * 1}px;
-    height: ${Dimensions.get("window").height * 0.75}px;
+    height: auto;
+    margin-bottom: 25px;
     `
 
 export const MainCard = styled(Card)`
@@ -37,13 +37,12 @@ export const Field = styled(Paragraph)`
 export const StyledNickname = styled(Paragraph)`
     font-size: 15px;
     font-weight: bold;
+    margin-top: 5px;
     color: #0092aa;
     `
 
 export const Content = styled(Paragraph)`
     font-size: 15px;
-    font-weight: bold;
     color: #565656;
-    width: 95%;
-
+    width: 100%;
     `

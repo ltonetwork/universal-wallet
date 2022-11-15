@@ -36,8 +36,8 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
     const { width, height } = useWindowDimensions()
 
     const [isLoading, setIsLoading] = useState<boolean>(true)
-    const [details, setDetails] = useState<TypedDetails>(new Object as TypedDetails)
-    const [coinData, setCoinData] = useState<TypedCoinData>(new Object as TypedCoinData)
+    const [details, setDetails] = useState<TypedDetails>({} as TypedDetails)
+    const [coinData, setCoinData] = useState<TypedCoinData>({} as TypedCoinData)
 
     const { available, effective, leasing, regular, unbonding } = details
     const { price, percent_change_24h } = coinData
@@ -67,7 +67,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                 setIsLoading(false)
             })
             .catch(error => {
-                throw new Error('Error retrieving account data', error)
+                throw new Error(`Error retrieving account data. ${error}`)
             })
     }
 
@@ -83,7 +83,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                     setIsLoading(false)
                 })
                 .catch(error => {
-                    throw new Error('Error retrieving coin data', error)
+                    throw new Error(`Error retrieving coin data. ${error}`)
                 })
         }
         getPrizeInfo()

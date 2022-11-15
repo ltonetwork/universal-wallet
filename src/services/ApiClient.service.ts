@@ -1,11 +1,8 @@
-import { LTO } from "@ltonetwork/lto"
+import {LTO, Transaction} from "@ltonetwork/lto"
 export const lto = new LTO(process.env.LTO_NETWORK_ID)
+if (process.env.LTO_API_URL) lto.nodeAddress = process.env.LTO_API_URL;
 
 export default class ApiClientService {
-
-    public static newLTO = async () => {
-        return new LTO(process.env.LTO_NETWORK_ID)
-    }
 
     public static createAccount = async () => {
         try {
@@ -25,18 +22,15 @@ export default class ApiClientService {
 
     public static getAccountDetails = async (address: string) => {
         try {
-            const response = await fetch(process.env.LTO_API_URL + address)
+            const url = lto.nodeAddress.replace(/\/$/g, '') + '/addresses/balance/details/' + address
+            const response = await fetch(url)
             return response.json()
         } catch (error) {
             throw new Error('Error fetching account details')
         }
     }
 
-    public static getAccountBalance = (account: string) => {
-        try {
-            return lto.getBalance(account)
-        } catch (error) {
-            throw new Error('Error fetching account balance')
-        }
+    public static broadcast = async (transaction: Transaction) => {
+        return lto.node.broadcast(transaction);
     }
 }

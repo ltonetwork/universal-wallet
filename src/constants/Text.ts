@@ -1,6 +1,6 @@
 export const ONBOARDING = {
     HEADER_LEFT: 'More info',
-    HEADER_RIGHT: 'Skip',
+    HEADER_RIGHT: 'Next',
     FIRST_SCREEN: {
         TITLE: 'First screen title',
         SUBTITLE:
@@ -119,11 +119,13 @@ export const MODAL_SCREEN = {
 
 export const PROFILE = {
     TITLE: 'Public information',
-    NICKNAME: 'Nickname',
-    WALLET: 'Wallet',
+    NICKNAME: 'Account Name',
+    WALLET: 'Wallet Address',
     PUBLIC_KEY: 'Public Key',
-    DISCOVER_PRIVATEKEY: 'Press and discover your private key',
-    DISCOVER_PHRASE: 'Press and discover your backup phrase',
+    PRIVATE_KEY: 'Private Key',
+    PHRASE: 'Backup Phrase (Seed)',
+    DISCOVER_PRIVATEKEY: 'Show private key',
+    DISCOVER_PHRASE: 'Show backup phrase',
 }
 
 

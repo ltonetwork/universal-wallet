@@ -16,7 +16,6 @@ export const StyledTitle = styled(Title)`
 `
 
 export const MainCard = styled(Card) <{ justifyContent?: string, alignItems?: string }>`
-    margin-top: 10px;
     shadow-color: #E1F9FC;
     shadow-offset: 5px 9px;
     shadow-opacity: 0.5;
@@ -36,7 +35,7 @@ export const Field = styled(Paragraph)`
 
 export const Content = styled(Paragraph)`
     font-size: 15px;
-    font-weight: bold;
+    margin-bottom: 15px;
 `
 export const HiddenTitle = styled(Title)`
     color: #9e1eb6;

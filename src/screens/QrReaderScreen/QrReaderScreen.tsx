@@ -13,7 +13,7 @@ import {
     TextContainer
 } from '../../components/styles/Scanner.styles'
 import { QR_READER } from '../../constants/Text'
-import { AUTH_SCHEMA } from '../../constants/Urls'
+import { AUTH_SCHEMA, TRANSACTION_SCHEMA } from '../../constants/Urls'
 import { MessageContext } from '../../context/UserMessage.context'
 import { TypedTransaction } from '../../interfaces/TypedTransaction'
 import ApiClientService from '../../services/ApiClient.service'
@@ -54,15 +54,23 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
     const handleBarCodeScanned = ({ data }: any) => {
         try {
             setScanned(true)
-            if (data.includes(AUTH_SCHEMA)) {
-                const auth = JSON.parse(data)
-                return handleLogin(auth)
-            } else {
-                const _data = JSON.parse(data)
+
+            const _data = JSON.parse(data)
+            const schema = _data['@schema'] || TRANSACTION_SCHEMA
+
+            if (schema === AUTH_SCHEMA) {
+                return handleLogin(_data)
+            }
+
+            if (schema === TRANSACTION_SCHEMA) {
                 setTx(_data)
                 setDialogVisible(true)
+                return
             }
+
+            throw Error(`Unknown schema ${schema}`)
         } catch (error) {
+            console.error(error)
             setMessageInfo('Invalid QR!')
             setShowMessage(true)
             navigation.goBack()
@@ -84,17 +92,13 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
             const axios = require('axios').default
             await axios.post(
                 `${auth.url}`,
-                {
-                    address: data.address,
-                    keyType: data.keyType,
-                    publicKey: data.publicKey,
-                    signature: signature,
-                },
+                data,
                 { timeout: 5000 }
             )
             setMessageInfo(`Successful log in!`)
             setShowMessage(true)
         } catch (error) {
+            console.error(error + (error.response? `. ${error.response.data}` : ''))
             setMessageInfo('Login failed: scan QR again!')
             setShowMessage(true)
         }
@@ -115,8 +119,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
                     if (tx != undefined) tx.sender = ''
                     const transferObject = tx && txFromData(tx)
                     const signedTransfer = transferObject?.signWith(account)
-                    const lto = await ApiClientService.newLTO()
-                    lto.node.broadcast(signedTransfer)
+                    await ApiClientService.broadcast(signedTransfer)
                     setMessageInfo('Transfer sent successfully!')
                     setShowMessage(true)
                 }
