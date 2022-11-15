@@ -16,10 +16,11 @@ import {
   navigateToTelegram,
   navigateToTwitter, navigateToWebsite, navigateToWebWallet
 } from '../../utils/redirectSocialMedia'
-import { ButtonContainer, Container, Content, Field, InfoContainer, MainCard, StyledNickname } from './ModalScreen.styles'
+import { ButtonContainer, Container, Content, InfoContainer, MainCard, StyledNickname } from './ModalScreen.styles'
 import {IconContainer} from "../../components/styles/NextFunctionality.styles";
 import SocialMediaIcon from "../../components/SocialMediaIcon";
 import PressToCopy from "../../components/PressToCopy";
+import LTOService from "../../services/LTO.service";
 
 
 export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'>) {
@@ -43,16 +44,19 @@ export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'
   }
 
   const getAccountAddress = () => {
-    LocalStorageService.getData('@accountData')
-      .then(data => setAccountAddress(data[0].address))
+    LTOService.getAccount()
+      .then(account => setAccountAddress(account.address))
       .catch(error => {
         throw new Error(`Error retrieving data. ${error}`)
       })
   }
 
   const logOut = () => {
+    LTOService.lock()
+
     setMessageInfo('Logout successful!')
     setShowMessage(true)
+
     navigation.reset({
       index: 0,
       routes: [{ name: 'SignIn' }],

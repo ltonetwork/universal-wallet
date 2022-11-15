@@ -16,8 +16,7 @@ import { QR_READER } from '../../constants/Text'
 import { AUTH_SCHEMA, TRANSACTION_SCHEMA } from '../../constants/Urls'
 import { MessageContext } from '../../context/UserMessage.context'
 import { TypedTransaction } from '../../interfaces/TypedTransaction'
-import ApiClientService from '../../services/ApiClient.service'
-import LocalStorageService from '../../services/LocalStorage.service'
+import LTOService from '../../services/LTO.service'
 import { confirmationMessage } from '../../utils/confirmationMessage'
 
 export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'>) {
@@ -80,8 +79,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
     const handleLogin = async (auth: TypedTransaction) => {
         setIsLoading(true)
         try {
-            const accountFromStorage = await LocalStorageService.getData('@accountData')
-            const account = await ApiClientService.importAccount(accountFromStorage[0].seed)
+            const account = await LTOService.getAccount()
             const signature = account.sign(`lto:sign:${auth.url}`).base58
             const data = {
                 address: account.address,
@@ -106,28 +104,28 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
         navigation.goBack()
     }
 
-    const handleTx = async (data: TypedTransaction) => {
+    const handleTx = async (tx: TypedTransaction) => {
         setIsLoading(true)
-        if (data?.type === 4) {
-            try {
-                const accountFromStorage = await LocalStorageService.getData('@accountData')
-                const account = await ApiClientService.importAccount(accountFromStorage[0].seed)
-                if (tx?.sender !== account.address) {
-                    setMessageInfo('Sender address is not valid!')
-                    setShowMessage(true)
-                } else {
-                    if (tx != undefined) tx.sender = ''
-                    const transferObject = tx && txFromData(tx)
-                    const signedTransfer = transferObject?.signWith(account)
-                    await ApiClientService.broadcast(signedTransfer)
-                    setMessageInfo('Transfer sent successfully!')
-                    setShowMessage(true)
-                }
-            } catch (error) {
-                setMessageInfo('Transaction failed: try again!')
-                setShowMessage(true)
-            }
+
+        const account = await LTOService.getAccount()
+        if (tx?.sender !== account.address) {
+            setMessageInfo('Sender address is not valid!')
+            setShowMessage(true)
+            return
         }
+
+        try {
+            const transaction = txFromData({...tx, sender: null}).signWith(account)
+            await LTOService.broadcast(transaction)
+
+            setMessageInfo('Transfer sent successfully!')
+            setShowMessage(true)
+        } catch (error) {
+            console.error(`Transaction failed. ${error}`)
+            setMessageInfo('Transaction failed: try again!')
+            setShowMessage(true)
+        }
+
         setIsLoading(false)
         navigation.goBack()
     }

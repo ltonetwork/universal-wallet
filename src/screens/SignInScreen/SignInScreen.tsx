@@ -5,6 +5,7 @@ import { StyledInput } from '../../components/styles/StyledInput.styles'
 import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { ButtonContainer, Container, InputContainer, StyledText, StyledTitle } from './SignInScreen.styles'
+import LTOService from "../../services/LTO.service";
 
 export default function SignInScreen({ navigation }: RootStackScreenProps<'SignIn'>) {
     const [userAlias, setUserAlias] = useState<any>()
@@ -26,25 +27,35 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
             })
     }
 
+    const validateForm = (): { err?: string } => {
+        if (!userAlias?.nickname) {
+            return { err: 'Please import your account first!' }
+        }
+        if (password === '') {
+            return { err: 'Password is required!' }
+        }
 
+        return {}
+    }
 
     const handleSignIn = () => {
-        if (userAlias?.nickname === undefined) {
-            setMessageInfo('Please import your account first!')
+        const { err } = validateForm()
+
+        if (err) {
+            setMessageInfo(err)
             setShowMessage(true)
-        } else if (userAlias?.nickname === null) {
-            setMessageInfo('Please import your account first!')
-            setShowMessage(true)
-        } else if (password === '') {
-            setMessageInfo('Password is required!')
-            setShowMessage(true)
-        } else if (password !== userAlias?.password) {
-            setMessageInfo('Wrong password!')
-            setShowMessage(true)
-        } else {
-            navigation.navigate('Root')
-            setPassword('')
+            return
         }
+
+        LTOService.unlock(password)
+            .then(() => {
+                navigation.navigate('Root')
+                setPassword('')
+            })
+            .catch(() => {
+                setMessageInfo('Wrong password!')
+                setShowMessage(true)
+            })
     }
 
     return (

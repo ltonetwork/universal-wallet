@@ -11,9 +11,8 @@ import { StyledImage } from '../../components/styles/OverviewHeader.styles'
 import { WALLET } from '../../constants/Text'
 import { TypedCoinData } from '../../interfaces/TypedCoinData'
 import { TypedDetails } from '../../interfaces/TypedDetails'
-import ApiClientService from '../../services/ApiClient.service'
+import LTOService from '../../services/LTO.service'
 import CoinMarketCapService from '../../services/CoinMarketCap.service'
-import LocalStorageService from '../../services/LocalStorage.service'
 import { formatNumber } from '../../utils/formatNumber'
 import { backgroundImage, logoTitle } from "../../utils/images"
 import {
@@ -58,9 +57,9 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
     })
 
     const readStorage = () => {
-        LocalStorageService.getData('@accountData')
+        LTOService.getAccount()
             .then(account => {
-                return ApiClientService.getAccountDetails(account[0].address)
+                return LTOService.getAccountDetails(account.address)
             })
             .then(accountDetails => {
                 setDetails(accountDetails)
