@@ -4,8 +4,7 @@ import { StyledButton } from '../../components/styles/StyledButton.styles'
 import { StyledInput } from '../../components/styles/StyledInput.styles'
 import { IMPORT_WITHSEEDS } from '../../constants/Text'
 import { MessageContext } from '../../context/UserMessage.context'
-import ApiClientService from '../../services/ApiClient.service'
-import LocalStorageService from '../../services/LocalStorage.service'
+import LTOService from '../../services/LTO.service'
 import { ButtonContainer, Container, InputContainer, StyledTitle } from '../SignInScreen/SignInScreen.styles'
 
 export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'ImportSeed'>) {
@@ -15,15 +14,7 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
     const handleImportFromSeed = async () => {
         const seed = seedPhrase.toLowerCase()
         if (seed.split(' ').length === 15) {
-            ApiClientService.importAccount(seed)
-                .then(response => response)
-                .then((account) => ({
-                    address: account.address,
-                    privateKey: account.privateKey,
-                    publicKey: account.publicKey,
-                    seed: account.seed,
-                }))
-                .then(data => LocalStorageService.storeData('@accountData', [data]))
+            LTOService.importAccount(seed)
                 .then(() => navigation.navigate('RegisterAccount', { data: 'seed' }))
                 .catch((error) => {
                     throw new Error(`Error storing data. ${error}`)

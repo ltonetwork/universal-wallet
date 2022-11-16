@@ -1,13 +1,12 @@
-import { useClipboard } from '@react-native-community/clipboard'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { TouchableOpacity } from 'react-native'
 import { Card } from 'react-native-paper'
 import Spinner from '../../components/Spinner'
 import { PROFILE } from '../../constants/Text'
-import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
-import { CardsContainer, Content, Field, HiddenTitle, MainCard, StyledTitle } from './ProfileScreen.styles'
+import { CardsContainer, Content, Field, HiddenTitle, MainCard } from './ProfileScreen.styles'
 import PressToCopy from "../../components/PressToCopy";
+import LTOService from "../../services/LTO.service";
 
 export default function ProfileScreen() {
 
@@ -33,24 +32,10 @@ export default function ProfileScreen() {
         }
     }, [])
 
-    const [data, setString] = useClipboard()
-
-    useEffect(() => {
-        setString(data)
-    }, [data])
-
-    const { setShowMessage, setMessageInfo } = useContext(MessageContext)
-
-    const copyToClipboard = (data: string) => {
-        setString(data)
-        setShowMessage(true)
-        setMessageInfo('Copied to clipboard!')
-    }
-
     const readStorage = () => {
-        LocalStorageService.getData('@accountData')
-            .then(accountData => {
-                setAccountInformation(accountData[0])
+        LTOService.getAccount()
+            .then(account => {
+                setAccountInformation(account)
                 setIsLoading(false)
             })
             .catch(error => {

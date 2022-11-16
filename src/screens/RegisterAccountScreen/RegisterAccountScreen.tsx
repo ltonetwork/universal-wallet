@@ -10,6 +10,7 @@ import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { View } from 'react-native'
 import { REGISTER } from '../../constants/Text'
+import LTOService from "../../services/LTO.service";
 
 
 export default function RegisterAccountScreen({ navigation, route }: RootStackScreenProps<'RegisterAccount'>) {
@@ -33,20 +34,15 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
     }, [accountAddress])
 
     const getAccountAddress = () => {
-        LocalStorageService.getData('@accountData')
-            .then(data => {
-                if (data === null) {
-                    setShowMessage(true)
-                    setMessageInfo('Error creating/importing your account!')
-                    navigation.goBack()
-                } else {
-                    const account = data
-                    setIsLoading(false)
-                    setAccountAddress(account[0]?.address)
-                }
+        LTOService.getAccount()
+            .then(account => {
+                setIsLoading(false)
+                setAccountAddress(account.address)
             })
-            .catch(error => {
-                throw new Error(`Error retrieving data. ${error}`)
+            .catch(() => {
+                setShowMessage(true)
+                setMessageInfo('Error creating/importing your account!')
+                navigation.goBack()
             })
     }
 
@@ -54,48 +50,65 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
         setloginForm({ ...loginForm, [name]: value })
     }
 
-    const handleImportAccount = () => {
+    const validateForm = (): { err?: string } => {
         if (loginForm.nickname === '') {
-            setShowMessage(true)
-            setMessageInfo('Nickname is required!')
-        } else if (loginForm.nickname.includes(' ') && loginForm.nickname.length < 3) {
-            setShowMessage(true)
-            setMessageInfo('Nickname must be at least 3 characters long!')
-        } else if (loginForm.password === '') {
-            setShowMessage(true)
-            setMessageInfo('Password is required!')
-        } else if (loginForm.password.includes(' ') && loginForm.password.length < 3) {
-            setShowMessage(true)
-            setMessageInfo('Password must be at least 3 characters long!')
-        } else if (loginForm.password !== loginForm.passwordConfirmation) {
-            setShowMessage(true)
-            setMessageInfo('Passwords do not match!')
-        } else if (!checked) {
-            setShowMessage(true)
-            setMessageInfo('To continue accept terms and conditions!')
-        } else {
-            LocalStorageService.storeData('@userAlias', loginForm)
-                .then(() => {
-                    setIsLoading(true)
-                    setShowMessage(true)
-                    if (route.params.data === 'created') {
-                        setMessageInfo('Account created succesfully!')
-                        setShowMessage(true)
-                        setTimeout(() => {
-                            navigation.navigate('Root')
-                        }, 1000)
+            return { err: 'Nickname is required!' }
+        }
 
-                    } else {
-                        setMessageInfo('Account imported succesfully!')
-                        setShowMessage(true)
-                        setTimeout(() => {
-                            navigation.navigate('Root')
-                        }, 1000)
-                    }
-                })
-                .catch(error => {
-                    throw new Error(`Error storing account data. ${error}`)
-                })
+        if (loginForm.nickname.length < 3) {
+            return { err: 'Nickname must be at least 3 characters long!' }
+        }
+
+        if (loginForm.password === '') {
+            return { err: 'Password is required!' }
+        }
+
+        if (loginForm.password.length < 3) {
+            return { err: 'Password must be at least 3 characters long!' }
+        }
+
+        if (loginForm.password !== loginForm.passwordConfirmation) {
+            return { err: 'Passwords do not match!' }
+        }
+
+        if (!checked) {
+            return { err: 'To continue accept terms and conditions!' }
+        }
+
+        return {}
+    }
+
+    const handleImportAccount = async () => {
+        const { err } = validateForm()
+
+        if (err) {
+            setMessageInfo(err)
+            setShowMessage(true)
+            return
+        }
+
+        try {
+            setIsLoading(true)
+
+            await LocalStorageService.storeData('@userAlias', {nickname: loginForm.nickname})
+            await LTOService.storeAccount(loginForm.nickname, loginForm.password)
+
+            if (route.params.data === 'created') {
+                setMessageInfo('Account created successfully!')
+                setShowMessage(true)
+                setTimeout(() => {
+                    navigation.navigate('Root')
+                }, 1000)
+
+            } else {
+                setMessageInfo('Account imported successfully!')
+                setShowMessage(true)
+                setTimeout(() => {
+                    navigation.navigate('Root')
+                }, 1000)
+            }
+        } catch (error) {
+            throw new Error(`Error storing account data. ${error}`)
         }
     }
 

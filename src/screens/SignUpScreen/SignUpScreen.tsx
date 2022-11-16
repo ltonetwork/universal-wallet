@@ -2,8 +2,7 @@ import React from 'react'
 import { RootStackScreenProps } from '../../../types'
 import { StyledButton } from '../../components/styles/StyledButton.styles'
 import { SIGNUP } from '../../constants/Text'
-import ApiClientService from '../../services/ApiClient.service'
-import LocalStorageService from '../../services/LocalStorage.service'
+import LTOService from '../../services/LTO.service'
 import {
     ButtonContainer,
     Container,
@@ -15,13 +14,7 @@ import {
 export default function SignUpScreen({ navigation }: RootStackScreenProps<'SignUp'>) {
 
     const handleCreateAccount = async () => {
-        ApiClientService.createAccount()
-            .then(account => ({
-                address: account.address,
-                privateKey: account.privateKey,
-                publicKey: account.publicKey,
-                seed: account.seed,
-            })).then(data => LocalStorageService.storeData('@accountData', [data]))
+        LTOService.createAccount()
             .then(() => navigation.navigate('RegisterAccount', { data: 'created' }))
             .catch((error) => {
                 throw new Error(`Error storing data. ${error}`)
