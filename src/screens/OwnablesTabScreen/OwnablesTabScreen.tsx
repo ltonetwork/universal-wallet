@@ -1,5 +1,5 @@
-import React from 'react'
-import { ImageBackground, useWindowDimensions, Button } from 'react-native'
+import React, { useState, useCallback} from 'react'
+import { ImageBackground, useWindowDimensions, Button, Text, FlatList, StyleSheet, View, SafeAreaView } from 'react-native'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
 import SocialMediaIcon from '../../components/SocialMediaIcon'
@@ -15,11 +15,14 @@ import DocumentPicker, {
   types,
 } from 'react-native-document-picker'
 import PackageService from '../../services/Package.service'
+import LocalStorageService from '../../services/LocalStorage.service'
 
 export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ownables'>) {
 
   const { width, height } = useWindowDimensions()
-  const [result, setResult] = React.useState<DirectoryPickerResponse | undefined | null>()
+  const [result, setResult] = useState<DirectoryPickerResponse | undefined | null>()
+  const [ownableOptions, setOwnableOptions] = useState<string[]>([])
+
 
   const handleError = (err: unknown) => {
     if (DocumentPicker.isCancel(err)) {
@@ -32,9 +35,30 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
     }
   }
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      paddingTop: 22
+    },
+    item: {
+      padding: 10,
+      fontSize: 18,
+      height: 44,
+    },
+  });
+
+  const Item = ({ name }) => (
+    <View style={styles.item}>
+      <Text style={styles.title}>{name}</Text>
+    </View>
+  );
+
+  const renderItem = ({ item }) => (
+    <Item title={item.title} key={item.id}/>
+  );
+
   return (
     <>
-
       <StatusBarIOS backgroundColor={'#ffffff'} />
       <ImageBackground source={backgroundImage} style={{ width, height, position: "absolute" }} />
       <Container>
@@ -44,6 +68,13 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
           onPress={() => navigation.navigate('Menu')}
           onQrPress={() => navigation.navigate('QrReader')}
           input={<MainTitle>{OWNABLES.MAINTITLE}</MainTitle>} />
+        <SafeAreaView style={styles.container}>
+          <FlatList
+            data={ownableOptions}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+          />
+        </SafeAreaView>
         <Button
           title="open picker for single file selection"
           onPress={async () => {
@@ -55,7 +86,9 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
                 copyTo: 'cachesDirectory'
               })
               setResult([pickerResult]);
-              PackageService.unzipOwnable(result[0]);
+              await PackageService.unzipOwnable(result[0]);
+              setOwnableOptions(await LocalStorageService.getData('ownable-options'));
+              console.log("\n\n ownable options:", ownableOptions);
             } catch (e) {
               handleError(e)
             }
