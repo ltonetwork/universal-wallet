@@ -1,5 +1,5 @@
 import React, { useState, useCallback} from 'react'
-import { ImageBackground, useWindowDimensions, Button, Text, FlatList, StyleSheet, View, SafeAreaView } from 'react-native'
+import { ImageBackground, useWindowDimensions, Button, Text, FlatList, StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
 import SocialMediaIcon from '../../components/SocialMediaIcon'
@@ -23,7 +23,6 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
   const [result, setResult] = useState<DirectoryPickerResponse | undefined | null>()
   const [ownableOptions, setOwnableOptions] = useState<string[]>([])
 
-
   const handleError = (err: unknown) => {
     if (DocumentPicker.isCancel(err)) {
       console.warn('cancelled')
@@ -38,24 +37,45 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      paddingTop: 22
+      marginTop: StatusBar.currentHeight || 0,
+      height: 100,
+      backgroundColor: 'black',
     },
     item: {
       padding: 10,
-      fontSize: 18,
-      height: 44,
+      marginVertical: 8,
+      marginHorizontal: 16,
+    },
+    title: {
+      fontSize: 14,
     },
   });
 
-  const Item = ({ name }) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{name}</Text>
-    </View>
-  );
 
-  const renderItem = ({ item }) => (
-    <Item title={item.title} key={item.id}/>
-  );
+  const Item = ({ item, onPress, backgroundColor, textColor }) => {
+    return (
+       <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
+         <Text style={[styles.title, textColor]}>{item.name}</Text>
+       </TouchableOpacity>
+    );
+  }
+
+  const renderItem = ({ item }) => {
+    const backgroundColor = "#6e3b6e";
+    const color = 'black';
+    return (
+      <Item
+        item={item}
+        onPress={() => {
+          console.log('clicked button', item);
+        }}
+        backgroundColor={{ backgroundColor }}
+        textColor={{ color }}
+      />
+    );
+  };
+
+
 
   return (
     <>
@@ -68,13 +88,12 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
           onPress={() => navigation.navigate('Menu')}
           onQrPress={() => navigation.navigate('QrReader')}
           input={<MainTitle>{OWNABLES.MAINTITLE}</MainTitle>} />
-        <SafeAreaView style={styles.container}>
-          <FlatList
-            data={ownableOptions}
-            renderItem={renderItem}
-            keyExtractor={item => item.id}
-          />
-        </SafeAreaView>
+        <Text>Ownable options:</Text>
+        <FlatList
+          data={ownableOptions}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
         <Button
           title="open picker for single file selection"
           onPress={async () => {
@@ -87,13 +106,15 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
               })
               setResult([pickerResult]);
               await PackageService.unzipOwnable(result[0]);
-              setOwnableOptions(await LocalStorageService.getData('ownable-options'));
+              const parsedOwnableFiles = await LocalStorageService.getData('ownable-options');
+              setOwnableOptions(parsedOwnableFiles);
               console.log("\n\n ownable options:", ownableOptions);
             } catch (e) {
               handleError(e)
             }
           }}
         />
+
       </Container>
     </>
   )
