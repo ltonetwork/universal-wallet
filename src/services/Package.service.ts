@@ -17,7 +17,6 @@ export default class PackageService {
           const directoryFiles = await RNFS.readDir(ownableTargetUri);
           for (let i = 0; i < directoryFiles.length; i++) {
             const file = directoryFiles[i];
-            console.log("\n Storing file in local storage: ", file);
             await LocalStorageService.storeData(file.name, file);
           }
         })
@@ -33,13 +32,18 @@ export default class PackageService {
 
     public static addOwnableOption = async (ownableName: string) => {
       var ownableOptions = await LocalStorageService.getData('ownable-options');
+      console.log("existing ownable options: ", ownableOptions);
       if (!ownableOptions) {
         ownableOptions = [];
       }
 
       if (!ownableOptions.find(option => option.name === ownableName)) {
-        ownableOptions.push({ 'name': ownableName, 'id': ownableOptions.size });
+        const ownableOption = { 'name': ownableName, 'id': ownableOptions.length };
+        console.log("ownable option: ", ownableOption);
+        ownableOptions.push(ownableOption);
         await LocalStorageService.storeData('ownable-options', ownableOptions);
+      } else {
+        console.log("Ownable option already exists");
       }
     }
 }
