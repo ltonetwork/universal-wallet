@@ -28,6 +28,7 @@ import {
     TopCard,
     TopCardsContainer
 } from './WalletTabScreen.styles'
+import {useInterval} from "../../utils/useInterval";
 
 
 export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wallet'>) {
@@ -52,9 +53,15 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
         }, []),
     )
 
-    useFocusEffect(() => {
+    useFocusEffect(
+        React.useCallback(() => {
+            readStorage()
+        },[])
+    )
+
+    useInterval(() => {
         readStorage()
-    })
+    }, 5 * 1000)
 
     const readStorage = () => {
         LTOService.getAccount()
