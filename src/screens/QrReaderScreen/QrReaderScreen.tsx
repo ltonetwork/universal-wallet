@@ -76,7 +76,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
         }
     }
 
-    const handleLogin = async (auth: TypedTransaction) => {
+    const handleLogin = async (auth: {url: string}) => {
         setIsLoading(true)
         try {
             const account = await LTOService.getAccount()

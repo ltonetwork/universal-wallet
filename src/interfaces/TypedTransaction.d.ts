@@ -1,15 +1,14 @@
 export interface TypedTransaction {
-    transfers: any
-    anchors: any
-    associationType: number
-    accounts: any
+    id?: number
     type: number
     version: string
     fee: number
-    timestamp: number
-    amount: number
+    timestamp?: number
     sender: string
-    recipient: string
-    url: string
-    schema: string
+    transfers?: any
+    anchors?: any
+    associationType?: number
+    accounts?: any
+    amount?: number
+    recipient?: string
 }

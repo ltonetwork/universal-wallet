@@ -55,9 +55,13 @@ export default class LTOService {
         }
     }
 
+    private static apiUrl = (path: string): string => {
+        return lto.nodeAddress.replace(/\/$/g, '') + path
+    }
+
     public static getAccountDetails = async (address: string) => {
         try {
-            const url = lto.nodeAddress.replace(/\/$/g, '') + '/addresses/balance/details/' + address
+            const url = LTOService.apiUrl(`/addresses/balance/details/${address}`)
             const response = await fetch(url)
             return response.json()
         } catch (error) {
@@ -65,8 +69,18 @@ export default class LTOService {
         }
     }
 
+    public static getTransactions = async (address: string, limit = 10, page = 1) => {
+        const offset = (page - 1) * limit;
+        const url = LTOService.apiUrl(`/transactions/address/${address}?limit=${limit}&offset=${offset}`)
+
+        const response = await fetch(url)
+        const [txs] = await response.json()
+
+        return txs
+    }
+
     public static broadcast = async (transaction: Transaction) => {
-        await fetch(lto.nodeAddress.replace(/\/$/g, '') + '/broadcast', {
+        await fetch(LTOService.apiUrl('/broadcast'), {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

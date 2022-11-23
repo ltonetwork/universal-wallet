@@ -1,16 +1,19 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import { BackHandler, ImageBackground, useWindowDimensions } from 'react-native'
-import { Card, Paragraph } from 'react-native-paper'
+import {BackHandler, ImageBackground, SectionList, Text, useWindowDimensions} from 'react-native'
+import {Card, List, Paragraph} from 'react-native-paper'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
 import QRButton from '../../components/QRButton'
 import Spinner from '../../components/Spinner'
 import StatusBarIOS from '../../components/StatusBarIOS'
 import { StyledImage } from '../../components/styles/OverviewHeader.styles'
+import { LATEST_TRANSACTIONS } from '../../constants/Quantities'
 import { WALLET } from '../../constants/Text'
+import txTypes from '../../constants/TransactionTypes'
 import { TypedCoinData } from '../../interfaces/TypedCoinData'
 import { TypedDetails } from '../../interfaces/TypedDetails'
+import { TypedTransaction } from "../../interfaces/TypedTransaction";
 import LTOService from '../../services/LTO.service'
 import CoinMarketCapService from '../../services/CoinMarketCap.service'
 import { formatNumber } from '../../utils/formatNumber'
@@ -30,12 +33,13 @@ import {
 } from './WalletTabScreen.styles'
 import {useInterval} from "../../utils/useInterval";
 
-
 export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wallet'>) {
 
     const { width, height } = useWindowDimensions()
 
+    const [accountAddress, setAccountAddress] = useState('')
     const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [transactions, setTransactions] = useState<{title: string, data: TypedTransaction[]}[]>([])
     const [details, setDetails] = useState<TypedDetails>({} as TypedDetails)
     const [coinData, setCoinData] = useState<TypedCoinData>({} as TypedCoinData)
 
@@ -55,26 +59,58 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
 
     useFocusEffect(
         React.useCallback(() => {
-            readStorage()
+            loadAccount()
         },[])
     )
 
+    useFocusEffect(
+        React.useCallback(() => {
+            Promise.all([
+                loadAccountDetails(),
+                loadTransactions(),
+            ]).then(() => setIsLoading(false))
+        },[accountAddress])
+    )
+
     useInterval(() => {
-        readStorage()
+        loadAccountDetails()
+        loadTransactions()
     }, 5 * 1000)
 
-    const readStorage = () => {
-        LTOService.getAccount()
-            .then(account => {
-                return LTOService.getAccountDetails(account.address)
-            })
-            .then(accountDetails => {
-                setDetails(accountDetails)
-                setIsLoading(false)
-            })
-            .catch(error => {
-                throw new Error(`Error retrieving account data. ${error}`)
-            })
+    const loadAccount = () => {
+        return LTOService.getAccount()
+            .then(account => setAccountAddress(account.address))
+    }
+
+    const loadAccountDetails = async () => {
+        if (accountAddress === '') {
+            setDetails({} as TypedDetails);
+            return
+        }
+
+        return LTOService.getAccountDetails(accountAddress)
+            .then(accountDetails => setDetails(accountDetails))
+            .catch(error => { throw new Error(`Error retrieving account data. ${error}`) })
+    }
+
+    const loadTransactions = async () => {
+        if (accountAddress === '') {
+            setTransactions([])
+            return
+        }
+
+        try {
+            const txs: TypedTransaction[] = await LTOService.getTransactions(accountAddress, LATEST_TRANSACTIONS)
+            const txsByDate = new Map()
+
+            for (const tx of txs.sort((a, b) => a.timestamp! - b.timestamp!)) {
+                const date = new Date(tx.timestamp!).toLocaleDateString()
+                txsByDate.set(date, [...txsByDate.get(date) || [], tx])
+            }
+            setTransactions(Array.from(txsByDate.entries()).map(([date, txs]) => ({title: date, data: txs})))
+        } catch (error) {
+            throw new Error(`Error retrieving latest transactions. ${error}`)
+        }
     }
 
     useEffect(() => {
@@ -112,6 +148,27 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
         } else {
             return <GreenText>{value?.toFixed(2)}%(last 24h)</GreenText>
         }
+    }
+
+    const renderTransaction = (tx: TypedTransaction) => {
+        const direction = tx.sender === accountAddress ? 'out' : 'in'
+        let description = ''
+
+        if (direction === 'out') {
+            if (tx.type === 11) {
+                description = `To: ${tx.transfers.length} recipients`
+            } else if (tx.recipient) {
+                description = `To: ${tx.recipient}`
+            }
+        } else {
+            description = `From: ${tx.sender}`
+        }
+
+        return <List.Item
+            title={txTypes[tx.type].description}
+            description={description}
+            left={props => <List.Icon {...props} icon={txTypes[tx.type].icon[direction]!}/>}
+        />
     }
 
     return (
@@ -190,6 +247,15 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                             </BottomCard>
                         </BottomCardsContainer>
                         <QRButton onPress={() => navigation.navigate('QrReader')} />
+
+                        <SectionList
+                            sections={transactions}
+                            renderSectionHeader={({ section: { title } }) => (
+                                <Text>{title}</Text>
+                            )}
+                            renderItem={({ item }) => renderTransaction(item)}
+                            keyExtractor={item => item.id!.toString()}
+                        />
                     </OverviewContainer>
                 </>
             }
