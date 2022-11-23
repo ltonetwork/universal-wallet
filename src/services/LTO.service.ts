@@ -66,6 +66,12 @@ export default class LTOService {
     }
 
     public static broadcast = async (transaction: Transaction) => {
-        return lto.node.broadcast(transaction)
+        await fetch(lto.nodeAddress.replace(/\/$/g, '') + '/broadcast', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(transaction)
+        })
     }
 }
