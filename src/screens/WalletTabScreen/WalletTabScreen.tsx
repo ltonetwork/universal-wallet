@@ -29,9 +29,12 @@ import {
     OverviewContainer,
     RedText,
     TopCard,
-    TopCardsContainer
+    TopCardsContainer, TransactionsCard
 } from './WalletTabScreen.styles'
 import {useInterval} from "../../utils/useInterval";
+import {localeDate} from "../../utils/localeDate";
+import Header from "../../components/Header";
+import {shortAddress} from "../../utils/shortAddress";
 
 export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wallet'>) {
 
@@ -103,8 +106,8 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
             const txs: TypedTransaction[] = await LTOService.getTransactions(accountAddress, LATEST_TRANSACTIONS)
             const txsByDate = new Map()
 
-            for (const tx of txs.sort((a, b) => a.timestamp! - b.timestamp!)) {
-                const date = new Date(tx.timestamp!).toLocaleDateString()
+            for (const tx of txs.sort((a, b) => b.timestamp! - a.timestamp!)) {
+                const date = localeDate(tx.timestamp!)
                 txsByDate.set(date, [...txsByDate.get(date) || [], tx])
             }
             setTransactions(Array.from(txsByDate.entries()).map(([date, txs]) => ({title: date, data: txs})))
@@ -152,22 +155,26 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
 
     const renderTransaction = (tx: TypedTransaction) => {
         const direction = tx.sender === accountAddress ? 'out' : 'in'
-        let description = ''
 
+        let description = ''
         if (direction === 'out') {
             if (tx.type === 11) {
                 description = `To: ${tx.transfers.length} recipients`
             } else if (tx.recipient) {
-                description = `To: ${tx.recipient}`
+                description = 'To: ' + shortAddress(tx.recipient)
             }
         } else {
-            description = `From: ${tx.sender}`
+            description = 'From: ' + shortAddress(tx.sender)
         }
 
         return <List.Item
+            style={{ padding: 0}}
             title={txTypes[tx.type].description}
+            titleStyle={{ fontSize: 14 }}
             description={description}
-            left={props => <List.Icon {...props} icon={txTypes[tx.type].icon[direction]!}/>}
+            descriptionStyle={{ fontSize: 12, marginBottom: 0 }}
+            left={({color, style}) => <List.Icon color={color} style={style} icon={txTypes[tx.type].icon[direction]!}/>}
+            right={({style}) => <Text style={{...style, alignSelf: 'center'}}>{tx.amount ? formatNumber(tx.amount) + ' LTO' : ''}</Text>}
         />
     }
 
@@ -246,17 +253,22 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                                 </Card.Content>
                             </BottomCard>
                         </BottomCardsContainer>
-                        <QRButton onPress={() => navigation.navigate('QrReader')} />
 
-                        <SectionList
-                            sections={transactions}
-                            renderSectionHeader={({ section: { title } }) => (
-                                <Text>{title}</Text>
-                            )}
-                            renderItem={({ item }) => renderTransaction(item)}
-                            keyExtractor={item => item.id!.toString()}
-                        />
+                        <TransactionsCard>
+                            <Card.Title title="Recent Activity" />
+                            <Card.Content>
+                                <SectionList
+                                    sections={transactions}
+                                    renderSectionHeader={({ section: { title } }) => (
+                                        <Text>{title}</Text>
+                                    )}
+                                    renderItem={({ item }) => renderTransaction(item)}
+                                    keyExtractor={item => item.id!.toString()}
+                                />
+                            </Card.Content>
+                        </TransactionsCard>
                     </OverviewContainer>
+                    <QRButton onPress={() => navigation.navigate('QrReader')} />
                 </>
             }
         </>

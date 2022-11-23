@@ -54,6 +54,10 @@ export const BottomCard = styled(Card)`
     background-color: transparent;
 `
 
+export const TransactionsCard = styled(Card)`
+    margin: 20px;
+`
+
 export const FieldName = styled(Paragraph)`
     opacity: 0.5;
 `
