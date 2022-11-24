@@ -2,7 +2,6 @@ import React from 'react'
 import { ImageBackground, useWindowDimensions } from 'react-native'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
-import QRButton from '../../components/QRButton'
 import SocialMediaIcon from '../../components/SocialMediaIcon'
 import StatusBarIOS from '../../components/StatusBarIOS'
 import { Container, IconContainer, MainTitle, StyledText, StyledTitle, StyledView } from '../../components/styles/NextFunctionality.styles'
@@ -24,6 +23,7 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
           marginLeft={-10}
           icon={"menu"}
           onPress={() => navigation.navigate('Modal')}
+          onQrPress={() => navigation.navigate('QrReader')}
           input={<MainTitle>{OWNABLES.MAINTITLE}</MainTitle>} />
         <StyledView>
           <StyledTitle>{OWNABLES.TITLE}</StyledTitle>
@@ -35,7 +35,6 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
             <SocialMediaIcon source={socialMediaIcons.telegram} onPress={() => navigateToTelegram()} />
           </IconContainer>
         </StyledView>
-        <QRButton onPress={() => navigation.navigate('QrReader')} />
       </Container>
     </>
   )

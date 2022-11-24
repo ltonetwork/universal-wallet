@@ -3,27 +3,38 @@ import { IconButton } from "react-native-paper"
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
 import { HeaderContainer } from "./styles/OverviewHeader.styles"
+import {View} from "react-native";
 
 
 export default function OverviewHeader(props: {
-  onPress?: () => void
-  icon: React.ComponentProps<typeof IconButton>['icon']
-  input: any
-  marginLeft: number | undefined
+    onPress?: () => void
+    onQrPress?: () => void
+    icon: React.ComponentProps<typeof IconButton>['icon']
+    input: any
+    marginLeft: number | undefined
 }): JSX.Element {
 
-  const colorScheme = useColorScheme()
+    const colorScheme = useColorScheme()
 
-  return (
-    <HeaderContainer {...props}>
-      <>{props.input}</>
-      <IconButton
-        icon={props.icon}
-        color={Colors[colorScheme].tint}
-        size={25}
-        onPress={props.onPress}
-      />
-    </HeaderContainer >
+    return (
+        <HeaderContainer {...props}>
+            <>{props.input}</>
+            <View style={{flexDirection: "row"}}>
+                <IconButton
+                    testID='qr-button'
+                    size={25}
+                    icon="qrcode-scan"
+                    color='#A017B7'
+                    onPress={props.onQrPress}
+                />
+                <IconButton
+                    icon={props.icon}
+                    color={Colors[colorScheme].tint}
+                    size={25}
+                    onPress={props.onPress}
+                />
+            </View>
+        </HeaderContainer >
 
-  )
+    )
 }

@@ -4,7 +4,6 @@ import {BackHandler, ImageBackground, SectionList, Text, useWindowDimensions} fr
 import {Card, List, Paragraph} from 'react-native-paper'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
-import QRButton from '../../components/QRButton'
 import Spinner from '../../components/Spinner'
 import StatusBarIOS from '../../components/StatusBarIOS'
 import { StyledImage } from '../../components/styles/OverviewHeader.styles'
@@ -33,7 +32,6 @@ import {
 } from './WalletTabScreen.styles'
 import {useInterval} from "../../utils/useInterval";
 import {localeDate} from "../../utils/localeDate";
-import Header from "../../components/Header";
 import {shortAddress} from "../../utils/shortAddress";
 
 export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wallet'>) {
@@ -192,6 +190,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                             marginLeft={undefined}
                             icon={"menu"}
                             onPress={() => navigation.navigate('Modal')}
+                            onQrPress={() => navigation.navigate('QrReader')}
                             input={<StyledImage testID="logo-title" source={logoTitle} />} />
 
                         <TopCardsContainer>
@@ -214,7 +213,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                             </TopCard>
                         </TopCardsContainer>
 
-                        <BottomCardsContainer >
+                        <BottomCardsContainer>
                             <BottomCard>
                                 <Card.Content>
                                     <FieldName>{WALLET.LEASING}</FieldName>
@@ -224,7 +223,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                                 </Card.Content>
                             </BottomCard>
 
-                            <BottomCard >
+                            <BottomCard>
                                 <Card.Content>
                                     <FieldName>{WALLET.AVAILABLE}</FieldName>
                                     <AmountContainer>
@@ -268,7 +267,6 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                             </Card.Content>
                         </TransactionsCard>
                     </OverviewContainer>
-                    <QRButton onPress={() => navigation.navigate('QrReader')} />
                 </>
             }
         </>
