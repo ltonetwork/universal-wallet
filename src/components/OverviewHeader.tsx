@@ -5,6 +5,15 @@ import useColorScheme from '../hooks/useColorScheme'
 import { HeaderContainer } from "./styles/OverviewHeader.styles"
 import {View} from "react-native";
 
+const QRButton = (props: {onPress?: () => void}): JSX.Element => (
+    props.onPress ? <IconButton
+        testID='qr-button'
+        size={25}
+        icon="qrcode-scan"
+        color='#A017B7'
+        onPress={props.onPress}
+    /> : <></>
+)
 
 export default function OverviewHeader(props: {
     onPress?: () => void
@@ -20,13 +29,7 @@ export default function OverviewHeader(props: {
         <HeaderContainer {...props}>
             <>{props.input}</>
             <View style={{flexDirection: "row"}}>
-                <IconButton
-                    testID='qr-button'
-                    size={25}
-                    icon="qrcode-scan"
-                    color='#A017B7'
-                    onPress={props.onQrPress}
-                />
+                <QRButton onPress={props.onQrPress} />
                 <IconButton
                     icon={props.icon}
                     color={Colors[colorScheme].tint}
