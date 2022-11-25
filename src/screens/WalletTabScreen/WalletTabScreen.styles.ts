@@ -30,7 +30,7 @@ export const TopCardsContainer = styled.View`
 export const TopCard = styled(Card)`
     width: auto;
     height: auto;
-    box-shadow: 0px 0px 0px #ffffff;
+    box-shadow: 0 0 0 transparent;
 `
 
 export const BottomCardsContainer = styled.View`
@@ -42,19 +42,13 @@ export const BottomCardsContainer = styled.View`
 `
 
 export const BottomCard = styled(Card)`
-    shadow-color: #E1F9FC;
-    shadow-offset: 5px 9px;
-    shadow-opacity: 0.5;
-    box-shadow: 10px 5px 5px #E1F9FC;
-    shadow-radius: 10px;
-    border-radius: 20px;
-    elevation: 5;
+    box-shadow: 0 0 0 transparent;
     width: 130px;
     height: auto;
     background-color: transparent;
 `
 
-export const TransactionsCard = styled(Card)`
+export const ActivityCard = styled(Card)`
     margin: 20px;
 `
 

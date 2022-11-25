@@ -1,6 +1,6 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import {BackHandler, ImageBackground, SectionList, Text, useWindowDimensions} from 'react-native'
+import {BackHandler, FlatList, ImageBackground, SectionList, Text, useWindowDimensions} from 'react-native'
 import {Card, List, Paragraph} from 'react-native-paper'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
@@ -28,11 +28,14 @@ import {
     OverviewContainer,
     RedText,
     TopCard,
-    TopCardsContainer, TransactionsCard
+    TopCardsContainer, ActivityCard
 } from './WalletTabScreen.styles'
 import {useInterval} from "../../utils/useInterval";
-import {localeDate} from "../../utils/localeDate";
+import {formatDate} from "../../utils/formatDate";
 import {shortAddress} from "../../utils/shortAddress";
+import If from "../../components/If";
+import {TypedLease} from "../../interfaces/TypedLease";
+import CommunityNodesService from "../../services/CommunityNodes.service";
 
 export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wallet'>) {
 
@@ -40,6 +43,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
 
     const [accountAddress, setAccountAddress] = useState('')
     const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [leases, setLeases] = useState<{address: string, name?: string, amount: number}[]>([])
     const [transactions, setTransactions] = useState<{title: string, data: TypedTransaction[]}[]>([])
     const [details, setDetails] = useState<TypedDetails>({} as TypedDetails)
     const [coinData, setCoinData] = useState<TypedCoinData>({} as TypedCoinData)
@@ -68,6 +72,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
         React.useCallback(() => {
             Promise.all([
                 loadAccountDetails(),
+                loadLeases(),
                 loadTransactions(),
             ]).then(() => setIsLoading(false))
         },[accountAddress])
@@ -75,6 +80,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
 
     useInterval(() => {
         loadAccountDetails()
+        loadLeases()
         loadTransactions()
     }, 5 * 1000)
 
@@ -89,9 +95,36 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
             return
         }
 
-        return LTOService.getAccountDetails(accountAddress)
+        return LTOService.getBalance(accountAddress)
             .then(accountDetails => setDetails(accountDetails))
             .catch(error => { throw new Error(`Error retrieving account data. ${error}`) })
+    }
+
+    const loadLeases = async () => {
+        if (accountAddress === '') {
+            setLeases([])
+            return
+        }
+
+        try {
+            const leases: TypedLease[] = await LTOService.getLeases(accountAddress)
+            const groupedLeases: Map<string, number> = new Map()
+
+            for (const lease of leases) {
+                if (lease.sender !== accountAddress) continue
+                groupedLeases.set(lease.recipient, lease.amount + (groupedLeases.get(lease.recipient) || 0))
+            }
+
+            const activeLeases: {address: string, name?: string, amount: number}[] = []
+            for (const [address, amount] of groupedLeases.entries()) {
+                const node = await CommunityNodesService.info(address)
+                activeLeases.push({address, name: node?.name, amount})
+            }
+
+            setLeases(activeLeases.sort((a, b) => b.amount - a.amount))
+        } catch (error) {
+            throw new Error(`Error retrieving active leases. ${error}`)
+        }
     }
 
     const loadTransactions = async () => {
@@ -105,7 +138,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
             const txsByDate = new Map()
 
             for (const tx of txs.sort((a, b) => b.timestamp! - a.timestamp!)) {
-                const date = localeDate(tx.timestamp!)
+                const date = formatDate(tx.timestamp!)
                 txsByDate.set(date, [...txsByDate.get(date) || [], tx])
             }
             setTransactions(Array.from(txsByDate.entries()).map(([date, txs]) => ({title: date, data: txs})))
@@ -149,6 +182,16 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
         } else {
             return <GreenText>{value?.toFixed(2)}%(last 24h)</GreenText>
         }
+    }
+
+    const renderLease = (lease: {address: string, name?: string, amount: number}) => {
+        return <List.Item
+            title={lease.name ?? shortAddress(lease.address)}
+            titleStyle={{ fontSize: 14 }}
+            description={lease.name || true ? shortAddress(lease.address) : ''}
+            descriptionStyle={{ fontSize: 12, marginBottom: 0 }}
+            right={({style}) => <Text style={{...style, alignSelf: 'center'}}>{formatNumber(lease.amount)} LTO</Text>}
+        />
     }
 
     const renderTransaction = (tx: TypedTransaction) => {
@@ -223,26 +266,6 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                                 </Card.Content>
                             </BottomCard>
 
-                            <BottomCard>
-                                <Card.Content>
-                                    <FieldName>{WALLET.AVAILABLE}</FieldName>
-                                    <AmountContainer>
-                                        <Amount>{formatNumber(available)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
-                                    </AmountContainer>
-                                </Card.Content>
-                            </BottomCard>
-                        </BottomCardsContainer>
-
-                        <BottomCardsContainer>
-                            <BottomCard >
-                                <Card.Content>
-                                    <FieldName>{WALLET.EFFECTIVE}</FieldName>
-                                    <AmountContainer>
-                                        <Amount>{formatNumber(effective)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
-                                    </AmountContainer>
-                                </Card.Content>
-                            </BottomCard>
-
                             <BottomCard >
                                 <Card.Content>
                                     <FieldName>{WALLET.UNBONDING}</FieldName>
@@ -253,19 +276,48 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                             </BottomCard>
                         </BottomCardsContainer>
 
-                        <TransactionsCard>
-                            <Card.Title title="Recent Activity" />
-                            <Card.Content>
-                                <SectionList
-                                    sections={transactions}
-                                    renderSectionHeader={({ section: { title } }) => (
-                                        <Text>{title}</Text>
-                                    )}
-                                    renderItem={({ item }) => renderTransaction(item)}
-                                    keyExtractor={item => item.id!.toString()}
-                                />
-                            </Card.Content>
-                        </TransactionsCard>
+                        <BottomCardsContainer>
+                            <BottomCard>
+                                <Card.Content>
+                                    <FieldName>{WALLET.AVAILABLE}</FieldName>
+                                    <AmountContainer>
+                                        <Amount>{formatNumber(available)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
+                                    </AmountContainer>
+                                </Card.Content>
+                            </BottomCard>
+
+                            <BottomCard>
+                                <Card.Content>
+                                    <FieldName>{WALLET.EFFECTIVE}</FieldName>
+                                    <AmountContainer>
+                                        <Amount>{formatNumber(effective)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
+                                    </AmountContainer>
+                                </Card.Content>
+                            </BottomCard>
+                        </BottomCardsContainer>
+
+                        <If condition={() => leases.length > 0}>
+                            <ActivityCard>
+                                <Card.Title title="Active Leases" />
+                                <FlatList data={leases} renderItem={({item}) => renderLease(item)} />
+                            </ActivityCard>
+                        </If>
+
+                        <If condition={() => transactions.length > 0}>
+                            <ActivityCard>
+                                <Card.Title title="Recent Activity" />
+                                <Card.Content>
+                                    <SectionList
+                                        sections={transactions}
+                                        renderSectionHeader={({ section: { title } }) => (
+                                            <List.Subheader>{title}</List.Subheader>
+                                        )}
+                                        renderItem={({ item }) => renderTransaction(item)}
+                                        keyExtractor={item => item.id!.toString()}
+                                    />
+                                </Card.Content>
+                            </ActivityCard>
+                        </If>
                     </OverviewContainer>
                 </>
             }

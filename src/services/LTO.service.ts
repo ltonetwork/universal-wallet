@@ -59,7 +59,7 @@ export default class LTOService {
         return lto.nodeAddress.replace(/\/$/g, '') + path
     }
 
-    public static getAccountDetails = async (address: string) => {
+    public static getBalance = async (address: string) => {
         try {
             const url = LTOService.apiUrl(`/addresses/balance/details/${address}`)
             const response = await fetch(url)
@@ -70,13 +70,20 @@ export default class LTOService {
     }
 
     public static getTransactions = async (address: string, limit = 10, page = 1) => {
-        const offset = (page - 1) * limit;
+        const offset = (page - 1) * limit
         const url = LTOService.apiUrl(`/transactions/address/${address}?limit=${limit}&offset=${offset}`)
 
         const response = await fetch(url)
         const [txs] = await response.json()
 
         return txs
+    }
+
+    public static getLeases = async (address: string) => {
+        const url = LTOService.apiUrl(`/leasing/active/${address}`)
+
+        const response = await fetch(url)
+        return response.json()
     }
 
     public static broadcast = async (transaction: Transaction) => {

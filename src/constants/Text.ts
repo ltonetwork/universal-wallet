@@ -84,7 +84,7 @@ export const TAB_NAVIGATOR = {
 }
 
 export const WALLET = {
-    REGULAR: 'Regular account',
+    REGULAR: 'Balance',
     PRICE: 'Price',
     LEASING: 'Leasing',
     AVAILABLE: 'Available',
