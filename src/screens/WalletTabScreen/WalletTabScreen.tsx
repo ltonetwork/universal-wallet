@@ -320,6 +320,11 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                             </ActivityCard>
                         </If>
                     </OverviewContainer>
+
+                    <WalletFAB
+                        transfer={() => navigation.navigate('Menu')}
+                        lease={() => navigation.navigate('Menu')}
+                    />
                 </>
             }
         </>
