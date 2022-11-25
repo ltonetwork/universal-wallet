@@ -22,7 +22,7 @@ export default function CredentialsTabScreen({ navigation }: RootTabScreenProps<
         <OverviewHeader
           marginLeft={-10}
           icon={"menu"}
-          onPress={() => navigation.navigate('Modal')}
+          onPress={() => navigation.navigate('Menu')}
           onQrPress={() => navigation.navigate('QrReader')}
           input={<MainTitle>{CREDENTIALS.MAINTITLE}</MainTitle>} />
         <StyledView>
