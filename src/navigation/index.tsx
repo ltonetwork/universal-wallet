@@ -13,7 +13,7 @@ import SignUpScreen from '../screens/SignUpScreen/SignUpScreen'
 import CredentialsTabScreen from '../screens/CredentialsTabScreen/CredentialsTabScreen'
 import RegisterAccountScreen from '../screens/RegisterAccountScreen/RegisterAccountScreen'
 import ImportSeedScreen from '../screens/ImportWithSeedScreen/ImportWithSeedScreen'
-import ModalScreen from '../screens/ModalScreen/ModalScreen'
+import MenuScreen from '../screens/MenuScreen/MenuScreen'
 import NotFoundScreen from '../screens/NotFoundScreen'
 import OnboardingScreen from '../screens/OnBoardingScreen/OnBoardingScreen'
 import OwnablesTabScreen from '../screens/OwnablesTabScreen/OwnablesTabScreen'
@@ -117,9 +117,9 @@ function RootNavigator(): any {
         />
         <Stack.Group>
           <Stack.Screen
-            name='Modal'
-            component={ModalScreen}
-            options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
+            name='Menu'
+            component={MenuScreen}
+            options={({ navigation }: RootStackScreenProps<'Menu'>) => ({
               headerShown: false,
             })}
           />

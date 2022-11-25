@@ -36,6 +36,7 @@ import {shortAddress} from "../../utils/shortAddress";
 import If from "../../components/If";
 import {TypedLease} from "../../interfaces/TypedLease";
 import CommunityNodesService from "../../services/CommunityNodes.service";
+import WalletFAB from "../../components/WalletFAB";
 
 export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wallet'>) {
 
@@ -232,7 +233,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                         <OverviewHeader
                             marginLeft={undefined}
                             icon={"menu"}
-                            onPress={() => navigation.navigate('Modal')}
+                            onPress={() => navigation.navigate('Menu')}
                             onQrPress={() => navigation.navigate('QrReader')}
                             input={<StyledImage testID="logo-title" source={logoTitle} />} />
 

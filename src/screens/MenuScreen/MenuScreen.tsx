@@ -16,14 +16,14 @@ import {
   navigateToTelegram,
   navigateToTwitter, navigateToWebsite, navigateToWebWallet
 } from '../../utils/redirectSocialMedia'
-import { ButtonContainer, Container, Content, InfoContainer, MainCard, StyledNickname } from './ModalScreen.styles'
+import { ButtonContainer, Container, Content, InfoContainer, MainCard, StyledNickname } from './MenuScreen.styles'
 import {IconContainer} from "../../components/styles/NextFunctionality.styles";
 import SocialMediaIcon from "../../components/SocialMediaIcon";
 import PressToCopy from "../../components/PressToCopy";
 import LTOService from "../../services/LTO.service";
 
 
-export default function ModalScreen({ navigation }: RootStackScreenProps<'Modal'>) {
+export default function MenuScreen({ navigation }: RootStackScreenProps<'Menu'>) {
 
   const [accountAddress, setAccountAddress] = useState('')
   const [accountNickname, setAccountNickname] = useState('')

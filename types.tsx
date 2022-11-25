@@ -16,7 +16,7 @@ export type RootStackParamList = {
   RegisterAccount: { data: string }
   Root: NavigatorScreenParams<RootTabParamList> | undefined
   QrReader: undefined
-  Modal: undefined
+  Menu: undefined
   Profile: undefined
   NotFound: undefined
 }
