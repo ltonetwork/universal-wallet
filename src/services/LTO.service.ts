@@ -87,12 +87,23 @@ export default class LTOService {
     }
 
     public static broadcast = async (transaction: Transaction) => {
-        await fetch(LTOService.apiUrl('/broadcast'), {
+        const url = LTOService.apiUrl('/transactions/broadcast')
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(transaction)
         })
+
+        if (response.status >= 400) throw new Error('Broadcast transaction failed: ' + await response.text())
+    }
+
+    public static isValidAddress = (address: string): boolean => {
+        try {
+            return lto.isValidAddress(address)
+        } catch (e) {
+            return false
+        }
     }
 }

@@ -118,7 +118,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
             const transaction = txFromData({...tx, sender: null}).signWith(account)
             await LTOService.broadcast(transaction)
 
-            setMessageInfo('Transfer sent successfully!')
+            setMessageInfo('Transaction sent successfully!')
             setShowMessage(true)
         } catch (error) {
             console.error(`Transaction failed. ${error}`)

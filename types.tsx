@@ -18,6 +18,7 @@ export type RootStackParamList = {
   QrReader: undefined
   Menu: undefined
   Profile: undefined
+  Transfer: undefined
   NotFound: undefined
 }
 

@@ -24,6 +24,7 @@ import WalletTabScreen from '../screens/WalletTabScreen/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
 import { imagesIcon } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
+import TransferScreen from "../screens/TransferScreen/TransferScreen";
 
 const navTheme = {
   ...DefaultTheme,
@@ -133,6 +134,13 @@ function RootNavigator(): any {
             }}
           />
         </Stack.Group>
+        <Stack.Screen
+          name='Transfer'
+          component={TransferScreen}
+          options={({ navigation }: RootStackScreenProps<'Transfer'>) => ({
+            headerShown: false,
+          })}
+        />
       </Stack.Navigator>
     )
   )

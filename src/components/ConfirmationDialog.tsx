@@ -11,16 +11,13 @@ export default function ConfirmationDialog(props: {
     onPress: () => void
 }): JSX.Element {
 
-    const [visible, setVisible] = useState(true)
-    const hideDialog = () => setVisible(false)
-
     return (
         <Provider>
             <SafeAreaView>
                 <Portal>
                     <Dialog
-                        visible={visible}
-                        onDismiss={hideDialog}
+                        visible={props.visible}
+                        onDismiss={props.cancelPress}
                     >
                         <Dialog.Title testID='dialog'>Confirm:</Dialog.Title>
                         <Dialog.Content>
