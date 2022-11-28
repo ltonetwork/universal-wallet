@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import {BackHandler, FlatList, ImageBackground, SectionList, Text, useWindowDimensions} from 'react-native'
-import {Card, List, Paragraph} from 'react-native-paper'
+import {ActivityIndicator, Card, List, Paragraph} from 'react-native-paper'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
 import Spinner from '../../components/Spinner'
@@ -215,7 +215,10 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
             titleStyle={{ fontSize: 14 }}
             description={description}
             descriptionStyle={{ fontSize: 12, marginBottom: 0 }}
-            left={({color, style}) => <List.Icon color={color} style={style} icon={txTypes[tx.type].icon[direction]!}/>}
+            left={({color, style}) => tx.pending
+                ? <ActivityIndicator style={{...style, marginLeft: 8}} animating={true} color="#A017B7" />
+                : <List.Icon color={color} style={{...style, marginLeft: 0, marginRight: 8}} icon={txTypes[tx.type].icon[direction]!}/>
+            }
             right={({style}) => <Text style={{...style, alignSelf: 'center'}}>{tx.amount ? formatNumber(tx.amount) + ' LTO' : ''}</Text>}
         />
     }
