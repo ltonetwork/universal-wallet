@@ -1,4 +1,4 @@
-import { Card, Paragraph, Title } from 'react-native-paper'
+import {Card, Paragraph, Surface, Title, TouchableRipple} from 'react-native-paper'
 import styled from 'styled-components/native'
 import { Platform } from 'react-native'
 
@@ -10,6 +10,22 @@ export const OverviewContainer = styled.SafeAreaView`
 export const AmountContainer = styled.View`
     flex-direction: row;
     align-items: baseline;
+`
+
+export const TopContainer = styled(Surface)`
+  border-bottom-right-radius: 25px;
+  border-bottom-left-radius: 25px;
+  elevation: 3;
+  margin-bottom: 20px;
+  padding-top: 1px;
+  margin-top: -1px;
+`
+
+export const TopCardsRipple = styled(TouchableRipple)`
+  border: none;
+  padding-top: 0;
+  border-bottom-right-radius: 25px;
+  border-bottom-left-radius: 25px;
 `
 
 export const TopCardsContainer = styled.View`
@@ -24,7 +40,6 @@ export const TopCardsContainer = styled.View`
     border-color: #ffffff;
     border-bottom-right-radius: 25px;
     border-bottom-left-radius: 25px;
-    elevation: 1;
 `
 
 export const TopCard = styled(Card)`
@@ -34,7 +49,6 @@ export const TopCard = styled(Card)`
 `
 
 export const BottomCardsContainer = styled.View`
-    margin-top: 20px;
     flex-direction: row;
     justify-content: space-evenly;
     width: 100%;

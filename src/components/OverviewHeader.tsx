@@ -3,7 +3,7 @@ import { IconButton } from "react-native-paper"
 import Colors from '../constants/Colors'
 import useColorScheme from '../hooks/useColorScheme'
 import { HeaderContainer } from "./styles/OverviewHeader.styles"
-import {View} from "react-native";
+import { View } from "react-native";
 
 const QRButton = (props: {onPress?: () => void}): JSX.Element => (
     props.onPress ? <IconButton
@@ -20,7 +20,7 @@ export default function OverviewHeader(props: {
     onQrPress?: () => void
     icon: React.ComponentProps<typeof IconButton>['icon']
     input: any
-    marginLeft: number | undefined
+    marginLeft?: number | undefined
 }): JSX.Element {
 
     const colorScheme = useColorScheme()

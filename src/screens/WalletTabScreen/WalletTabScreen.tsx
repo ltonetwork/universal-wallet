@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import {BackHandler, FlatList, ImageBackground, SectionList, Text, useWindowDimensions} from 'react-native'
-import {ActivityIndicator, Card, List, Paragraph} from 'react-native-paper'
+import {BackHandler, FlatList, ImageBackground, SectionList, Text, useWindowDimensions, View} from 'react-native'
+import {ActivityIndicator, Card, List, Paragraph, Surface, TouchableRipple} from 'react-native-paper'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
 import Spinner from '../../components/Spinner'
@@ -28,7 +28,10 @@ import {
     OverviewContainer,
     RedText,
     TopCard,
-    TopCardsContainer, ActivityCard
+    TopCardsContainer,
+    TopCardsRipple,
+    TopContainer,
+    ActivityCard
 } from './WalletTabScreen.styles'
 import {useInterval} from "../../utils/useInterval";
 import {formatDate} from "../../utils/formatDate";
@@ -37,6 +40,7 @@ import If from "../../components/If";
 import {TypedLease} from "../../interfaces/TypedLease";
 import CommunityNodesService from "../../services/CommunityNodes.service";
 import WalletFAB from "../../components/WalletFAB";
+import Collapsible from "react-native-collapsible";
 
 export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wallet'>) {
 
@@ -44,6 +48,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
 
     const [accountAddress, setAccountAddress] = useState('')
     const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [showBalanceDetails, setShowBalanceDetails] = useState<boolean>(false)
     const [leases, setLeases] = useState<{address: string, name?: string, amount: number}[]>([])
     const [transactions, setTransactions] = useState<{title: string, data: TypedTransaction[]}[]>([])
     const [details, setDetails] = useState<TypedDetails>({} as TypedDetails)
@@ -233,72 +238,77 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                     <StatusBarIOS backgroundColor={'#ffffff'} />
                     <ImageBackground source={backgroundImage} style={{ width, height, position: "absolute" }} />
                     <OverviewContainer>
-                        <OverviewHeader
-                            marginLeft={undefined}
-                            icon={"menu"}
-                            onPress={() => navigation.navigate('Menu')}
-                            onQrPress={() => navigation.navigate('QrReader')}
-                            input={<StyledImage testID="logo-title" source={logoTitle} />} />
+                        <TopContainer>
+                            <OverviewHeader
+                                icon={"menu"}
+                                onPress={() => navigation.navigate('Menu')}
+                                onQrPress={() => navigation.navigate('QrReader')}
+                                input={<StyledImage testID="logo-title" source={logoTitle} />} />
 
-                        <TopCardsContainer>
-                            <TopCard>
-                                <Card.Content style={{ borderRadius: 80 }}>
-                                    <FieldName>{WALLET.REGULAR}</FieldName>
-                                    <AmountContainer>
-                                        <Amount>{formatNumber(regular)}</Amount><Paragraph>LTO</Paragraph>
-                                    </AmountContainer>
-                                    <BlueText>{WALLET.EQUIVALENT} {formatNumber(change)}{WALLET.DOLLAR_SYMBOL}</BlueText>
-                                </Card.Content>
-                            </TopCard>
+                            <TopCardsRipple onPress={() => setShowBalanceDetails(!showBalanceDetails)} borderless={true}>
+                                <TopCardsContainer>
+                                    <TopCard>
+                                        <Card.Content style={{ borderRadius: 80 }}>
+                                            <FieldName>{WALLET.REGULAR}</FieldName>
+                                            <AmountContainer>
+                                                <Amount>{formatNumber(regular)}</Amount><Paragraph>LTO</Paragraph>
+                                            </AmountContainer>
+                                            <BlueText>{WALLET.EQUIVALENT} {formatNumber(change)}{WALLET.DOLLAR_SYMBOL}</BlueText>
+                                        </Card.Content>
+                                    </TopCard>
 
-                            <TopCard>
-                                <Card.Content>
-                                    <FieldName>{WALLET.PRICE}</FieldName>
-                                    <Amount>{price?.toFixed(3)}{WALLET.DOLLAR_SYMBOL}</Amount>
-                                    {checkPositiveNegative(percent_change_24h)}
-                                </Card.Content>
-                            </TopCard>
-                        </TopCardsContainer>
+                                    <TopCard>
+                                        <Card.Content>
+                                            <FieldName>{WALLET.PRICE}</FieldName>
+                                            <Amount>{price?.toFixed(3)}{WALLET.DOLLAR_SYMBOL}</Amount>
+                                            {checkPositiveNegative(percent_change_24h)}
+                                        </Card.Content>
+                                    </TopCard>
+                                </TopCardsContainer>
+                            </TopCardsRipple>
+                        </TopContainer>
 
-                        <BottomCardsContainer>
-                            <BottomCard>
-                                <Card.Content>
-                                    <FieldName>{WALLET.LEASING}</FieldName>
-                                    <AmountContainer>
-                                        <Amount>{formatNumber(leasing)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
-                                    </AmountContainer>
-                                </Card.Content>
-                            </BottomCard>
+                        <Collapsible collapsed={!showBalanceDetails}>
+                            <BottomCardsContainer>
+                                <BottomCard>
+                                    <Card.Content>
+                                        <FieldName>{WALLET.LEASING}</FieldName>
+                                        <AmountContainer>
+                                            <Amount>{formatNumber(leasing)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
+                                        </AmountContainer>
+                                    </Card.Content>
+                                </BottomCard>
 
-                            <BottomCard >
-                                <Card.Content>
-                                    <FieldName>{WALLET.UNBONDING}</FieldName>
-                                    <AmountContainer>
-                                        <Amount>{formatNumber(unbonding)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
-                                    </AmountContainer>
-                                </Card.Content>
-                            </BottomCard>
-                        </BottomCardsContainer>
+                                <BottomCard>
+                                    <Card.Content>
+                                        <FieldName>{WALLET.UNBONDING}</FieldName>
+                                        <AmountContainer>
+                                            <Amount>{formatNumber(unbonding)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
+                                        </AmountContainer>
+                                    </Card.Content>
+                                </BottomCard>
+                            </BottomCardsContainer>
 
-                        <BottomCardsContainer>
-                            <BottomCard>
-                                <Card.Content>
-                                    <FieldName>{WALLET.AVAILABLE}</FieldName>
-                                    <AmountContainer>
-                                        <Amount>{formatNumber(available)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
-                                    </AmountContainer>
-                                </Card.Content>
-                            </BottomCard>
+                            <BottomCardsContainer style={{marginTop: 10}}>
+                                <BottomCard>
+                                    <Card.Content>
+                                        <FieldName>{WALLET.AVAILABLE}</FieldName>
+                                        <AmountContainer>
+                                            <Amount>{formatNumber(available)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
+                                        </AmountContainer>
+                                    </Card.Content>
+                                </BottomCard>
 
-                            <BottomCard>
-                                <Card.Content>
-                                    <FieldName>{WALLET.EFFECTIVE}</FieldName>
-                                    <AmountContainer>
-                                        <Amount>{formatNumber(effective)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
-                                    </AmountContainer>
-                                </Card.Content>
-                            </BottomCard>
-                        </BottomCardsContainer>
+                                <BottomCard>
+                                    <Card.Content>
+                                        <FieldName>{WALLET.EFFECTIVE}</FieldName>
+                                        <AmountContainer>
+                                            <Amount>{formatNumber(effective)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
+                                        </AmountContainer>
+                                    </Card.Content>
+                                </BottomCard>
+                            </BottomCardsContainer>
+                        </Collapsible>
 
                         <If condition={() => leases.length > 0}>
                             <ActivityCard>
