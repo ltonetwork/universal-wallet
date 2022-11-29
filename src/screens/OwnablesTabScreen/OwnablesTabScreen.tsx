@@ -17,13 +17,19 @@ import DocumentPicker, {
 } from 'react-native-document-picker'
 import PackageService from '../../services/Package.service'
 import LocalStorageService from '../../services/LocalStorage.service'
-import { Modal, Portal, Text, Button, Provider } from 'react-native-paper'
+import { Modal, Portal, Text, Button, Provider, List, ScrollView } from 'react-native-paper';
 
 export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ownables'>) {
 
   const { width, height } = useWindowDimensions()
+
+  const [visible, setVisible] = React.useState(false);
   const [result, setResult] = useState<DirectoryPickerResponse | undefined | null>()
-  const [ownableOptions, setOwnableOptions] = useState<string[]>([])
+  const [ownableOptions, setOwnableOptions] = useState<[]>([])
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+  const containerStyle = {backgroundColor: 'white', padding: 20};
 
   const handleError = (err: unknown) => {
     if (DocumentPicker.isCancel(err)) {
@@ -36,48 +42,26 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
     }
   }
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      marginTop: StatusBar.currentHeight || 0,
-      height: 100,
-      backgroundColor: 'black',
-    },
-    item: {
-      padding: 10,
-      marginVertical: 8,
-      marginHorizontal: 16,
-    },
-    title: {
-      fontSize: 14,
-    },
-  });
-
-
-  const Item = ({ item, onPress, backgroundColor, textColor }) => {
-    return (
-       <TouchableOpacity onPress={onPress} style={[styles.item, backgroundColor]}>
-         <Text style={[styles.title, textColor]}>{item.name}</Text>
-       </TouchableOpacity>
-    );
+  const importOwnable = async () => {
+    try {
+      const pickerResult = await DocumentPicker.pickSingle({
+        presentationStyle: 'fullScreen',
+        type: [types.zip],
+        copyTo: 'cachesDirectory'
+      })
+      setResult([pickerResult]);
+      await PackageService.unzipOwnable(result[0]);
+      await loadOwnableOptions();
+    } catch (e) {
+      handleError(e)
+    }
   }
 
-  const renderItem = ({ item }) => {
-    const backgroundColor = "#6e3b6e";
-    const color = 'black';
-    return (
-      <Item
-        item={item}
-        onPress={() => {
-          console.log('clicked button', item);
-        }}
-        backgroundColor={{ backgroundColor }}
-        textColor={{ color }}
-      />
-    );
-  };
-
-
+  const loadOwnableOptions = async () => {
+      const availableOwnableOptions = await LocalStorageService.getData('ownable-options');
+      setOwnableOptions(availableOwnableOptions);
+      console.log("ownable options:", availableOwnableOptions);
+  }
 
   return (
     <>
@@ -117,8 +101,32 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
             }
           }}
         />
-
       </Container>
+      <Provider>
+        <Portal>
+          <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
+            <List.Section>
+              <List.Subheader>Available Ownables</List.Subheader>
+              {ownableOptions.map((item) => (
+                <List.Item
+                  onPress={() => {
+                    console.log(`issuing ${item.name}`);
+                  }}
+                  title={item.name}
+                />
+              ))}
+            </List.Section>
+            <Button
+              mode="contained"
+              onPress={importOwnable}
+            >Import an Ownable</Button>
+          </Modal>
+        </Portal>
+        <PlusButton onPress={async () => {
+          await loadOwnableOptions();
+          showModal();
+        }} />
+      </Provider>
     </>
   )
 }
