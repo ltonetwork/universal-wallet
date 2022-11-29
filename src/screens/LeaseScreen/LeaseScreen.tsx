@@ -6,10 +6,10 @@ import {
   Container,
   InputContainer,
   FeeText
-} from './TransferScreen.styles'
+} from './LeaseScreen.styles'
 import {MainTitle} from '../../components/styles/NextFunctionality.styles'
 import LTOService from '../../services/LTO.service'
-import {HelperText} from 'react-native-paper';
+import {HelperText, List, TextInput} from 'react-native-paper'
 import { StyledInput } from '../../components/styles/StyledInput.styles'
 import {LTO_REPRESENTATION} from '../../constants/Quantities'
 import {TypedDetails} from '../../interfaces/TypedDetails'
@@ -19,24 +19,32 @@ import {StyledButton} from '../../components/styles/StyledButton.styles'
 import {confirmationMessage} from '../../utils/confirmationMessage'
 import ConfirmationDialog from '../../components/ConfirmationDialog'
 import {TypedTransaction} from '../../interfaces/TypedTransaction'
-import {Transfer as TransferTx} from '@ltonetwork/lto'
+import {Lease as LeaseTx} from '@ltonetwork/lto'
+import {TypedCommunityNode} from '../../interfaces/TypedCommunityNode'
+import CommunityNodesService from '../../services/CommunityNodes.service'
+import {shuffleArray} from '../../utils/shuffleArray'
+import {FlatList} from 'react-native'
 
 
-export default function TransferScreen({ navigation }: RootStackScreenProps<'Transfer'>) {
+export default function LeaseScreen({ navigation, route }: RootStackScreenProps<'Lease'>) {
   const [accountAddress, setAccountAddress] = useState('')
   const [details, setDetails] = useState<TypedDetails>({} as TypedDetails)
 
+  const [nodes, setNodes] = useState<TypedCommunityNode[]>([])
+  const [selectNode, setSelectNode] = useState(CommunityNodesService.isConfigured)
+
   const [recipient, setRecipient] = useState('')
+  const [recipientNode, setRecipientNode] = useState<TypedCommunityNode|undefined>(undefined)
   const [amountText, setAmountText] = useState('')
   const [amount, setAmount] = useState(0)
-  const [attachment, setAttachment] = useState('')
 
-  const [tx, setTx] = useState<TransferTx | undefined>()
+  const [tx, setTx] = useState<LeaseTx | undefined>()
 
   const { setShowMessage, setMessageInfo } = useContext(MessageContext)
   const [dialogVisible, setDialogVisible] = useState(false)
 
   const { available } = details
+  const fee = LTO_REPRESENTATION
 
   useEffect(() => {
     getAccountAddress()
@@ -66,6 +74,30 @@ export default function TransferScreen({ navigation }: RootStackScreenProps<'Tra
   }
 
   useEffect(() => {
+    CommunityNodesService.list()
+        .then(shuffleArray)
+        .then(nodes => setNodes(nodes))
+  }, [])
+
+  useEffect(() => {
+    CommunityNodesService.info(recipient)
+        .then(setRecipientNode)
+  }, [recipient])
+
+  const renderNode = (node: TypedCommunityNode) => {
+    return <List.Item
+        title={node.name}
+        titleStyle={{ fontSize: 14, fontWeight: 'bold' }}
+        description={node.address}
+        descriptionStyle={{ fontSize: 12, marginBottom: 0 }}
+        onPress={() => {
+          setRecipient(node.address)
+          setSelectNode(false)
+        }}
+    />
+  }
+
+  useEffect(() => {
     if (amountText === '') {
       setAmount(0)
     } else if (!amountText.match(/^\d+(\.\d+)?$/)) {
@@ -85,39 +117,73 @@ export default function TransferScreen({ navigation }: RootStackScreenProps<'Tra
     navigation.goBack()
   }
 
-  return (
+  return selectNode ? (
+    <>
+      <Container>
+        <OverviewHeader
+            marginLeft={-10}
+            icon={"close"}
+            onPress={() => navigation.goBack()}
+            input={<MainTitle>Lease</MainTitle>} />
+
+        <FlatList
+            style={{marginLeft: 24, marginRight: 24}}
+            data={nodes}
+            renderItem={({ item }) => renderNode(item)}
+            ListHeaderComponent={
+              <List.Item
+                  title="Custom"
+                  titleStyle={{fontWeight: 'bold'}}
+                  description="Lease to an unlisted node by entering the address"
+                  onPress={() => {
+                    setRecipient('')
+                    setSelectNode(false)
+                  }}
+              />
+            }
+        />
+      </Container>
+    </>
+  ) : (
     <>
       <Container>
         <OverviewHeader
           marginLeft={-10}
           icon={"close"}
           onPress={() => navigation.goBack()}
-          input={<MainTitle>Transfer</MainTitle>} />
+          input={<MainTitle>Lease</MainTitle>} />
 
         <InputContainer>
           <StyledInput
-            label="Recipient"
+            label="Address"
             value={recipient}
             error={recipient !== '' && !LTOService.isValidAddress(recipient)}
             onChangeText={setRecipient}
-          />
-          <StyledInput
-              label="Amount"
-              value={amountText}
-              error={isNaN(amount) || amount < 0 || amount > available}
-              onChangeText={setAmountText}
-              keyboardType="numeric"
+            right={<TextInput.Icon
+                name="format-list-bulleted"
+                color='#673ab7'
+                onPress={() => setSelectNode(true)}
+            />}
           />
           <HelperText type="info">
-            Available: { formatNumber(Math.max(available - LTO_REPRESENTATION, 0)) } LTO
+            {recipientNode?.name}
           </HelperText>
 
           <StyledInput
-              label="Attachment"
-              value={attachment}
-              error={attachment.length > 100}
-              onChangeText={setAttachment}
+              label="Amount"
+              value={amountText}
+              error={isNaN(amount) || amount < 0 || amount + fee > available}
+              onChangeText={setAmountText}
+              keyboardType="numeric"
+              right={<TextInput.Icon
+                  name="arrow-up-bold-circle-outline"
+                  color='#673ab7'
+                  onPress={() => setAmountText(((available - 2 * fee) / LTO_REPRESENTATION).toString())}
+              />}
           />
+          <HelperText type="info">
+            Available: { formatNumber(Math.max(available - fee, 0)) } LTO
+          </HelperText>
 
           <FeeText>Fee: 1 LTO</FeeText>
         </InputContainer>
@@ -129,7 +195,7 @@ export default function TransferScreen({ navigation }: RootStackScreenProps<'Tra
               uppercase={false}
               labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
               onPress={() => {
-                setTx(new TransferTx(recipient, amount, attachment))
+                setTx(new LeaseTx(recipient, amount))
                 setDialogVisible(true)
               }}
               disabled={(isNaN(amount) || amount <= 0 || amount > available) || (recipient === '' || !LTOService.isValidAddress(recipient))}

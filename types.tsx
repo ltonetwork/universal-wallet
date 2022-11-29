@@ -19,6 +19,7 @@ export type RootStackParamList = {
   Menu: undefined
   Profile: undefined
   Transfer: undefined
+  Lease: undefined
   NotFound: undefined
 }
 

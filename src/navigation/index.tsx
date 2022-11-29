@@ -25,6 +25,7 @@ import LocalStorageService from '../services/LocalStorage.service'
 import { imagesIcon } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
 import TransferScreen from "../screens/TransferScreen/TransferScreen";
+import LeaseScreen from "../screens/LeaseScreen/LeaseScreen";
 
 const navTheme = {
   ...DefaultTheme,
@@ -140,6 +141,14 @@ function RootNavigator(): any {
           options={({ navigation }: RootStackScreenProps<'Transfer'>) => ({
             headerShown: false,
           })}
+        />
+        <Stack.Screen
+            name='Lease'
+            component={LeaseScreen}
+            options={({ navigation }: RootStackScreenProps<'Lease'>) => ({
+                headerShown: false,
+
+            })}
         />
       </Stack.Navigator>
     )

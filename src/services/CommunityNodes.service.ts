@@ -1,9 +1,10 @@
-import {TypedCommunityNode} from "../interfaces/TypedCommunityNode";
+import {TypedCommunityNode} from '../interfaces/TypedCommunityNode'
 
 const COMMUNITY_NODES_URL = process.env.COMMUNITY_NODES_URL
 
 export default class CommunityNodesService {
-    private static nodes: TypedCommunityNode[];
+    public static readonly isConfigured = !!COMMUNITY_NODES_URL
+    private static nodes: TypedCommunityNode[]
 
     private static loadNodes = async () => {
         if (!COMMUNITY_NODES_URL) {
@@ -24,6 +25,6 @@ export default class CommunityNodesService {
 
     public static list = async (): Promise<TypedCommunityNode[]> => {
         if (!CommunityNodesService.nodes) await CommunityNodesService.loadNodes()
-        return CommunityNodesService.nodes
+        return CommunityNodesService.nodes.filter(node => !node.hide)
     }
 }

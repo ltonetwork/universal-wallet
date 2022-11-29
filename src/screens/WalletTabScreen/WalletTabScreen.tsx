@@ -1,7 +1,7 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import {BackHandler, FlatList, ImageBackground, SectionList, Text, useWindowDimensions, View} from 'react-native'
-import {ActivityIndicator, Card, List, Paragraph, Surface, TouchableRipple} from 'react-native-paper'
+import {ActivityIndicator, Card, List, Paragraph} from 'react-native-paper'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
 import Spinner from '../../components/Spinner'
@@ -336,7 +336,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
 
                     <WalletFAB
                         transfer={() => navigation.navigate('Transfer')}
-                        lease={() => navigation.navigate('Menu')}
+                        lease={() => navigation.navigate('Lease')}
                     />
                 </>
             }
