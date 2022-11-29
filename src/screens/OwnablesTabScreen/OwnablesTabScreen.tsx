@@ -1,7 +1,8 @@
 import React, { useState, useCallback} from 'react'
-import { ImageBackground, useWindowDimensions, Button, Text, FlatList, StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native'
+import { ImageBackground, useWindowDimensions, FlatList, StyleSheet, View, SafeAreaView, StatusBar, TouchableOpacity } from 'react-native'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
+import PlusButton from '../../components/PlusButton'
 import SocialMediaIcon from '../../components/SocialMediaIcon'
 import StatusBarIOS from '../../components/StatusBarIOS'
 import { Container, IconContainer, MainTitle, StyledText, StyledTitle, StyledView } from '../../components/styles/NextFunctionality.styles'
@@ -16,6 +17,7 @@ import DocumentPicker, {
 } from 'react-native-document-picker'
 import PackageService from '../../services/Package.service'
 import LocalStorageService from '../../services/LocalStorage.service'
+import { Modal, Portal, Text, Button, Provider } from 'react-native-paper'
 
 export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ownables'>) {
 
@@ -94,6 +96,7 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
         />
+        <PlusButton onPress={() => navigation.navigate('QrReader')} />
         <Button
           title="open picker for single file selection"
           onPress={async () => {
