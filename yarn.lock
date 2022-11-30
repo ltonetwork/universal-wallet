@@ -11098,6 +11098,11 @@ react-native-tab-view@^3.1.1:
   dependencies:
     use-latest-callback "^0.1.5"
 
+react-native-threads@^0.0.19:
+  version "0.0.19"
+  resolved "https://registry.yarnpkg.com/react-native-threads/-/react-native-threads-0.0.19.tgz#17464b60715d774ab60e1ca6a97e31d706aa6125"
+  integrity sha512-VAQB06D+qxGDm3XwNUaDtEh1pKEuRLx4w3/E81z+pK1luMyJhK1W0G+eA0xygcM74dShXCgG10ZNvN+LHfyCLg==
+
 react-native-udp@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/react-native-udp/-/react-native-udp-2.7.0.tgz#d04c5100fcbff343f8a2bf35a3025743d8960f93"
