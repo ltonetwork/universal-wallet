@@ -200,6 +200,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
 
     const renderLease = (lease: {address: string, name?: string, amount: number}) => {
         return <List.Item
+            key={`lease:${lease.address}`}
             title={lease.name ?? shortAddress(lease.address)}
             titleStyle={{ fontSize: 14 }}
             description={lease.name || true ? shortAddress(lease.address) : ''}
@@ -223,6 +224,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
         }
 
         return <List.Item
+            key={`transaction:${tx.id}`}
             style={{ padding: 0}}
             title={txTypes[tx.type].description}
             titleStyle={{ fontSize: 14 }}
@@ -325,7 +327,6 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                                     <ShortList
                                         data={leases}
                                         renderItem={({item}) => renderLease(item)}
-                                        keyExtractor={item => item.address}
                                     />
                                 </ActivityCard>
                             </If>
@@ -340,7 +341,6 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                                                 <List.Subheader>{date}</List.Subheader>
                                             )}
                                             renderItem={({ item }) => renderTransaction(item)}
-                                            keyExtractor={item => item.id!.toString()}
                                         />
                                     </Card.Content>
                                 </ActivityCard>
