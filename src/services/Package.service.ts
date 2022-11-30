@@ -18,10 +18,12 @@ export default class PackageService {
           for (let i = 0; i < directoryFiles.length; i++) {
             const file = directoryFiles[i];
             await LocalStorageService.storeData(file.name, file);
+            if (file.name.endsWith(".js")) {
+                await LocalStorageService.storeData(`${nameNoExtension}-bindgen`, file.path);
+            }
           }
         })
         .then(async () => {
-          await LocalStorageService.storeData(`${nameNoExtension}-uri-path`, fileCopyUri);
           await PackageService.addOwnableOption(nameNoExtension);
         })
         .catch((error) => {

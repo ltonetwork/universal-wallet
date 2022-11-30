@@ -17,6 +17,7 @@ import DocumentPicker, {
 } from 'react-native-document-picker'
 import PackageService from '../../services/Package.service'
 import LocalStorageService from '../../services/LocalStorage.service'
+import WASMService from '../../services/WASM.service'
 import { Modal, Portal, Text, Button, Provider, List, ScrollView } from 'react-native-paper';
 
 export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ownables'>) {
@@ -59,7 +60,7 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
 
   const loadOwnableOptions = async () => {
       const availableOwnableOptions = await LocalStorageService.getData('ownable-options');
-      setOwnableOptions(availableOwnableOptions);
+      setOwnableOptions(availableOwnableOptions ? availableOwnableOptions : []);
       console.log("ownable options:", availableOwnableOptions);
   }
 
@@ -107,14 +108,18 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
           <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={containerStyle}>
             <List.Section>
               <List.Subheader>Available Ownables</List.Subheader>
-              {ownableOptions.map((item) => (
-                <List.Item
-                  onPress={() => {
-                    console.log(`issuing ${item.name}`);
-                  }}
-                  title={item.name}
-                />
-              ))}
+              {ownableOptions.map((item) => {
+                item.key = item.id;
+                return (
+                  <List.Item
+                    onPress={async () => {
+                      console.log(`issuing ${item.name}`);
+                      await WASMService.spawnWASMThread(item.name);
+                    }}
+                    title={item.name}
+                  />
+                )
+              })}
             </List.Section>
             <Button
               mode="contained"
