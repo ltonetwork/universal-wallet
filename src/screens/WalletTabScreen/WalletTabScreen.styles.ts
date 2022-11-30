@@ -16,7 +16,6 @@ export const TopContainer = styled(Surface)`
   border-bottom-right-radius: 25px;
   border-bottom-left-radius: 25px;
   elevation: 3;
-  margin-bottom: 20px;
   padding-top: 1px;
   margin-top: -1px;
 `
@@ -53,6 +52,7 @@ export const BottomCardsContainer = styled.View`
     justify-content: space-evenly;
     width: 100%;
     height: auto;
+    margin-top: 10px;
 `
 
 export const BottomCard = styled(Card)`

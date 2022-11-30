@@ -1,6 +1,11 @@
 import { useFocusEffect } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import {BackHandler, FlatList, ImageBackground, SectionList, Text, useWindowDimensions, View} from 'react-native'
+import {
+    BackHandler, Dimensions,
+    ImageBackground,
+    Text,
+    useWindowDimensions
+} from 'react-native'
 import {ActivityIndicator, Card, List, Paragraph} from 'react-native-paper'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
@@ -41,6 +46,9 @@ import {TypedLease} from "../../interfaces/TypedLease";
 import CommunityNodesService from "../../services/CommunityNodes.service";
 import WalletFAB from "../../components/WalletFAB";
 import Collapsible from "react-native-collapsible";
+import ShortSectionList from "../../components/ShortSectionList";
+import ShortList from "../../components/ShortList";
+import ScrollContainer from "../../components/ScrollContainer";
 
 export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wallet'>) {
 
@@ -50,7 +58,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [showBalanceDetails, setShowBalanceDetails] = useState<boolean>(false)
     const [leases, setLeases] = useState<{address: string, name?: string, amount: number}[]>([])
-    const [transactions, setTransactions] = useState<{title: string, data: TypedTransaction[]}[]>([])
+    const [transactions, setTransactions] = useState<{date: string, data: TypedTransaction[]}[]>([])
     const [details, setDetails] = useState<TypedDetails>({} as TypedDetails)
     const [coinData, setCoinData] = useState<TypedCoinData>({} as TypedCoinData)
 
@@ -147,7 +155,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                 const date = formatDate(tx.timestamp!)
                 txsByDate.set(date, [...txsByDate.get(date) || [], tx])
             }
-            setTransactions(Array.from(txsByDate.entries()).map(([date, txs]) => ({title: date, data: txs})))
+            setTransactions(Array.from(txsByDate.entries()).map(([date, txs]) => ({date, data: txs})))
         } catch (error) {
             throw new Error(`Error retrieving latest transactions. ${error}`)
         }
@@ -237,7 +245,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                 <>
                     <StatusBarIOS backgroundColor={'#ffffff'} />
                     <ImageBackground source={backgroundImage} style={{ width, height, position: "absolute" }} />
-                    <OverviewContainer>
+                    <OverviewContainer style={{height: Dimensions.get('window').height}}>
                         <TopContainer>
                             <OverviewHeader
                                 icon={"menu"}
@@ -268,70 +276,76 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                             </TopCardsRipple>
                         </TopContainer>
 
-                        <Collapsible collapsed={!showBalanceDetails}>
-                            <BottomCardsContainer>
-                                <BottomCard>
-                                    <Card.Content>
-                                        <FieldName>{WALLET.LEASING}</FieldName>
-                                        <AmountContainer>
-                                            <Amount>{formatNumber(leasing)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
-                                        </AmountContainer>
-                                    </Card.Content>
-                                </BottomCard>
+                        <ScrollContainer style={{marginTop: 2}} innerStyle={{paddingBottom: 130}}>
+                            <Collapsible collapsed={!showBalanceDetails}>
+                                <BottomCardsContainer>
+                                    <BottomCard>
+                                        <Card.Content>
+                                            <FieldName>{WALLET.LEASING}</FieldName>
+                                            <AmountContainer>
+                                                <Amount>{formatNumber(leasing)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
+                                            </AmountContainer>
+                                        </Card.Content>
+                                    </BottomCard>
 
-                                <BottomCard>
-                                    <Card.Content>
-                                        <FieldName>{WALLET.UNBONDING}</FieldName>
-                                        <AmountContainer>
-                                            <Amount>{formatNumber(unbonding)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
-                                        </AmountContainer>
-                                    </Card.Content>
-                                </BottomCard>
-                            </BottomCardsContainer>
+                                    <BottomCard>
+                                        <Card.Content>
+                                            <FieldName>{WALLET.UNBONDING}</FieldName>
+                                            <AmountContainer>
+                                                <Amount>{formatNumber(unbonding)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
+                                            </AmountContainer>
+                                        </Card.Content>
+                                    </BottomCard>
+                                </BottomCardsContainer>
 
-                            <BottomCardsContainer style={{marginTop: 10}}>
-                                <BottomCard>
-                                    <Card.Content>
-                                        <FieldName>{WALLET.AVAILABLE}</FieldName>
-                                        <AmountContainer>
-                                            <Amount>{formatNumber(available)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
-                                        </AmountContainer>
-                                    </Card.Content>
-                                </BottomCard>
+                                <BottomCardsContainer>
+                                    <BottomCard>
+                                        <Card.Content>
+                                            <FieldName>{WALLET.AVAILABLE}</FieldName>
+                                            <AmountContainer>
+                                                <Amount>{formatNumber(available)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
+                                            </AmountContainer>
+                                        </Card.Content>
+                                    </BottomCard>
 
-                                <BottomCard>
-                                    <Card.Content>
-                                        <FieldName>{WALLET.EFFECTIVE}</FieldName>
-                                        <AmountContainer>
-                                            <Amount>{formatNumber(effective)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
-                                        </AmountContainer>
-                                    </Card.Content>
-                                </BottomCard>
-                            </BottomCardsContainer>
-                        </Collapsible>
+                                    <BottomCard>
+                                        <Card.Content>
+                                            <FieldName>{WALLET.EFFECTIVE}</FieldName>
+                                            <AmountContainer>
+                                                <Amount>{formatNumber(effective)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
+                                            </AmountContainer>
+                                        </Card.Content>
+                                    </BottomCard>
+                                </BottomCardsContainer>
+                            </Collapsible>
 
-                        <If condition={() => leases.length > 0}>
-                            <ActivityCard>
-                                <Card.Title title="Active Leases" />
-                                <FlatList data={leases} renderItem={({item}) => renderLease(item)} />
-                            </ActivityCard>
-                        </If>
-
-                        <If condition={() => transactions.length > 0}>
-                            <ActivityCard>
-                                <Card.Title title="Recent Activity" />
-                                <Card.Content>
-                                    <SectionList
-                                        sections={transactions}
-                                        renderSectionHeader={({ section: { title } }) => (
-                                            <List.Subheader>{title}</List.Subheader>
-                                        )}
-                                        renderItem={({ item }) => renderTransaction(item)}
-                                        keyExtractor={item => item.id!.toString()}
+                            <If condition={() => leases.length > 0}>
+                                <ActivityCard>
+                                    <Card.Title title="Active Leases" />
+                                    <ShortList
+                                        data={leases}
+                                        renderItem={({item}) => renderLease(item)}
+                                        keyExtractor={item => item.address}
                                     />
-                                </Card.Content>
-                            </ActivityCard>
-                        </If>
+                                </ActivityCard>
+                            </If>
+
+                            <If condition={() => transactions.length > 0}>
+                                <ActivityCard>
+                                    <Card.Title title="Recent Activity" />
+                                    <Card.Content>
+                                        <ShortSectionList
+                                            sections={transactions}
+                                            renderSectionHeader={({ section: { date } }) => (
+                                                <List.Subheader>{date}</List.Subheader>
+                                            )}
+                                            renderItem={({ item }) => renderTransaction(item)}
+                                            keyExtractor={item => item.id!.toString()}
+                                        />
+                                    </Card.Content>
+                                </ActivityCard>
+                            </If>
+                        </ScrollContainer>
                     </OverviewContainer>
 
                     <WalletFAB
