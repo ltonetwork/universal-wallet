@@ -47,11 +47,11 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
     try {
       const pickerResult = await DocumentPicker.pickSingle({
         presentationStyle: 'fullScreen',
-        type: [types.zip],
-        copyTo: 'cachesDirectory'
-      })
+        type: [types.allFiles],
+        copyTo: 'documentDirectory'
+      });
       setResult([pickerResult]);
-      await PackageService.unzipOwnable(result[0]);
+      await PackageService.unzipOwnable(pickerResult);
       await loadOwnableOptions();
     } catch (e) {
       handleError(e)
