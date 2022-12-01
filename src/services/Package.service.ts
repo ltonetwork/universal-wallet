@@ -1,6 +1,8 @@
 import LocalStorageService from './LocalStorage.service'
 import { zip, unzip, unzipAssets, subscribe } from 'react-native-zip-archive';
 import RNFS from 'react-native-fs';
+import RNFetchBlob from "rn-fetch-blob";
+import { Asset } from 'expo-asset';
 
 export default class PackageService {
 
@@ -10,27 +12,40 @@ export default class PackageService {
         const fileCopyUri = documentPickerResponse.fileCopyUri;
         const ownableTargetUri = `${fileCopyUri.substring(0, fileCopyUri.indexOf(name))}${nameNoExtension}/`;
 
-        // TODO: async/await
-        unzip(`${fileCopyUri}/`, ownableTargetUri)
+        const targetPath = RNFS.DocumentDirectoryPath + `/${nameNoExtension}`;
+        console.log(targetPath);
+
+        unzip(`${fileCopyUri}/`, targetPath)
         .then(async (path) => {
-          console.log(`unzip completed at ${path}`)
-          const directoryFiles = await RNFS.readDir(ownableTargetUri);
+          const directoryFiles = await RNFS.readDir(targetPath);
+          console.log('dir files: ', directoryFiles);
           for (let i = 0; i < directoryFiles.length; i++) {
             const file = directoryFiles[i];
             await LocalStorageService.storeData(file.name, file);
             if (file.name.endsWith(".js")) {
-                await LocalStorageService.storeData(`${nameNoExtension}-bindgen`, file.path);
+              console.log("bindgen file:");
+              console.log(file);
+              const targetDir = RNFS.DocumentDirectoryPath + `/${nameNoExtension}/bindgen.js`;
+              console.log("target path: ", targetDir);
+              RNFS.copyFile(file.path, targetDir)
+                  .then((result) => console.log('DONE'))
+                  .catch((error) => console.log(error, 'ERROR'));
+              RNFS.readDir(RNFS.DocumentDirectoryPath + `/${nameNoExtension}`)
+                  .then((result) => console.log('things in directory:', result));
+              await LocalStorageService.storeData(`${nameNoExtension}-bindgen`, file.path);
             }
           }
+          console.log(`unzip completed at ${targetPath}`);
         })
         .then(async () => {
           await PackageService.addOwnableOption(nameNoExtension);
         })
         .catch((error) => {
-          console.error(`\n\n unzip failed at ${fileCopyUri} \n\n`)
+          console.error(`\n\n unzip failed at ${targetPath} \n\n`)
           console.error(error)
-        })
+        });
     }
+
 
     public static addOwnableOption = async (ownableName: string) => {
       var ownableOptions = await LocalStorageService.getData('ownable-options');
