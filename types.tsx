@@ -20,6 +20,7 @@ export type RootStackParamList = {
   Profile: undefined
   Transfer: undefined
   Lease: undefined
+  Transactions: undefined
   NotFound: undefined
 }
 

@@ -6,7 +6,7 @@ import {
     Text,
     useWindowDimensions
 } from 'react-native'
-import {ActivityIndicator, Card, List, Paragraph} from 'react-native-paper'
+import { Button, Card, List, Paragraph} from 'react-native-paper'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
 import Spinner from '../../components/Spinner'
@@ -14,7 +14,6 @@ import StatusBarIOS from '../../components/StatusBarIOS'
 import { StyledImage } from '../../components/styles/OverviewHeader.styles'
 import { LATEST_TRANSACTIONS } from '../../constants/Quantities'
 import { WALLET } from '../../constants/Text'
-import txTypes from '../../constants/TransactionTypes'
 import { TypedCoinData } from '../../interfaces/TypedCoinData'
 import { TypedDetails } from '../../interfaces/TypedDetails'
 import { TypedTransaction } from "../../interfaces/TypedTransaction";
@@ -49,6 +48,7 @@ import Collapsible from "react-native-collapsible";
 import ShortSectionList from "../../components/ShortSectionList";
 import ShortList from "../../components/ShortList";
 import ScrollContainer from "../../components/ScrollContainer";
+import TransactionListItem from "../../components/TransactionListItem";
 
 export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wallet'>) {
 
@@ -210,32 +210,6 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
     }
 
     const renderTransaction = (tx: TypedTransaction) => {
-        const direction = tx.sender === accountAddress ? 'out' : 'in'
-
-        let description = ''
-        if (direction === 'out') {
-            if (tx.type === 11) {
-                description = `To: ${tx.transfers.length} recipients`
-            } else if (tx.recipient) {
-                description = 'To: ' + shortAddress(tx.recipient)
-            }
-        } else {
-            description = 'From: ' + shortAddress(tx.sender)
-        }
-
-        return <List.Item
-            key={`transaction:${tx.id}`}
-            style={{ padding: 0}}
-            title={txTypes[tx.type].description}
-            titleStyle={{ fontSize: 14 }}
-            description={description}
-            descriptionStyle={{ fontSize: 12, marginBottom: 0 }}
-            left={({color, style}) => tx.pending
-                ? <ActivityIndicator style={{...style, marginLeft: 8}} animating={true} color="#A017B7" />
-                : <List.Icon color={color} style={{...style, marginLeft: 0, marginRight: 8}} icon={txTypes[tx.type].icon[direction]!}/>
-            }
-            right={({style}) => <Text style={{...style, alignSelf: 'center'}}>{tx.amount ? formatNumber(tx.amount) + ' LTO' : ''}</Text>}
-        />
     }
 
     return (
@@ -323,7 +297,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
 
                             <If condition={() => leases.length > 0}>
                                 <ActivityCard>
-                                    <Card.Title title="Active Leases" />
+                                    <Card.Title title={WALLET.ACTIVE_LEASES} />
                                     <ShortList
                                         data={leases}
                                         renderItem={({item}) => renderLease(item)}
@@ -333,16 +307,26 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
 
                             <If condition={() => transactions.length > 0}>
                                 <ActivityCard>
-                                    <Card.Title title="Recent Activity" />
+                                    <Card.Title title={WALLET.RECENT_ACTIVITY} />
                                     <Card.Content>
                                         <ShortSectionList
                                             sections={transactions}
                                             renderSectionHeader={({ section: { date } }) => (
-                                                <List.Subheader>{date}</List.Subheader>
+                                                <List.Subheader key={`transaction.section:${date}`}>{date}</List.Subheader>
                                             )}
-                                            renderItem={({ item }) => renderTransaction(item)}
+                                            renderItem={({ item }) => (
+                                                <TransactionListItem
+                                                    direction={item.sender === accountAddress ? 'out' : 'in'}
+                                                    tx={item}
+                                                />
+                                            )}
                                         />
                                     </Card.Content>
+                                    <Card.Actions>
+                                        <Button style={{width: '100%'}} onPress={() => navigation.navigate('Transactions')}>
+                                            {WALLET.MORE}
+                                        </Button>
+                                    </Card.Actions>
                                 </ActivityCard>
                             </If>
                         </ScrollContainer>

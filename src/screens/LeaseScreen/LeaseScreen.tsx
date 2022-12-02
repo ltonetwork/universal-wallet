@@ -24,6 +24,7 @@ import {TypedCommunityNode} from '../../interfaces/TypedCommunityNode'
 import CommunityNodesService from '../../services/CommunityNodes.service'
 import {shuffleArray} from '../../utils/shuffleArray'
 import {FlatList} from 'react-native'
+import {WALLET} from "../../constants/Text";
 
 
 export default function LeaseScreen({ navigation, route }: RootStackScreenProps<'Lease'>) {
@@ -124,7 +125,7 @@ export default function LeaseScreen({ navigation, route }: RootStackScreenProps<
             marginLeft={-10}
             icon={"close"}
             onPress={() => navigation.goBack()}
-            input={<MainTitle>Lease</MainTitle>} />
+            input={<MainTitle>{WALLET.LEASE}</MainTitle>} />
 
         <FlatList
             style={{marginLeft: 24, marginRight: 24}}
@@ -151,7 +152,7 @@ export default function LeaseScreen({ navigation, route }: RootStackScreenProps<
           marginLeft={-10}
           icon={"close"}
           onPress={() => navigation.goBack()}
-          input={<MainTitle>Lease</MainTitle>} />
+          input={<MainTitle>{WALLET.LEASE}</MainTitle>} />
 
         <InputContainer>
           <StyledInput

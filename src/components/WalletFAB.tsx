@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { FAB, Portal, Provider } from 'react-native-paper'
 import {useState} from "react"
+import {WALLET} from "../constants/Text";
 
 export default function WalletFAB(props: {transfer: () => void, lease: () => void}): JSX.Element {
     const [state, setState] = useState({ open: false })
@@ -17,7 +18,7 @@ export default function WalletFAB(props: {transfer: () => void, lease: () => voi
                     actions={[
                         {
                             icon: 'arrow-expand-up',
-                            label: 'Transfer',
+                            label: WALLET.TRANSFER,
                             onPress: props.transfer,
                             color: "#A017B7",
                             style: {backgroundColor: "#ede7f6"},
@@ -26,7 +27,7 @@ export default function WalletFAB(props: {transfer: () => void, lease: () => voi
                         },
                         {
                             icon: 'bank-outline',
-                            label: 'Lease',
+                            label: WALLET.LEASE,
                             onPress: props.lease,
                             color: "#A017B7",
                             style: {backgroundColor: "#ede7f6"},

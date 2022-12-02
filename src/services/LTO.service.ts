@@ -70,13 +70,19 @@ export default class LTOService {
         }
     }
 
-    public static getTransactions = async (address: string, limit = 10, page = 1) => {
+    public static getTransactions = async (address: string, limit?: number, page = 1) => {
         const pending = await LTOService.getPendingTransactions(address)
 
-        let offset = limit * (page - 1) - pending.length
-        if (offset < 0) {
-            limit = limit + offset
+        let offset
+        if (!limit) {
             offset = 0
+            limit = 100
+        } else {
+            offset = limit * (page - 1) - pending.length
+            if (offset < 0) {
+                limit = limit + offset
+                offset = 0
+            }
         }
 
         return ([] as TypedTransaction[]).concat(
@@ -96,7 +102,7 @@ export default class LTOService {
         return txs;
     }
 
-    private static getProcessedTransactions = async (address: string, limit = 10, offset = 0) => {
+    private static getProcessedTransactions = async (address: string, limit = 100, offset = 0) => {
         const url = LTOService.apiUrl(`/transactions/address/${address}?limit=${limit}&offset=${offset}`)
         const response = await fetch(url)
         const [txs] = await response.json()

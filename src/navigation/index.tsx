@@ -26,6 +26,7 @@ import { imagesIcon } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
 import TransferScreen from "../screens/TransferScreen/TransferScreen";
 import LeaseScreen from "../screens/LeaseScreen/LeaseScreen";
+import TransactionsScreen from "../screens/TransactionsScreen/TransactionsScreen";
 
 const navTheme = {
   ...DefaultTheme,
@@ -143,12 +144,18 @@ function RootNavigator(): any {
           })}
         />
         <Stack.Screen
-            name='Lease'
-            component={LeaseScreen}
-            options={({ navigation }: RootStackScreenProps<'Lease'>) => ({
-                headerShown: false,
-
-            })}
+          name='Lease'
+          component={LeaseScreen}
+          options={({ navigation }: RootStackScreenProps<'Lease'>) => ({
+            headerShown: false,
+          })}
+        />
+        <Stack.Screen
+          name='Transactions'
+          component={TransactionsScreen}
+          options={({ navigation }: RootStackScreenProps<'Transactions'>) => ({
+            headerShown: false,
+          })}
         />
       </Stack.Navigator>
     )

@@ -1,5 +1,5 @@
 export interface TypedTransaction {
-    id?: number
+    id?: string
     type: number
     version: string
     fee: number
