@@ -13,25 +13,27 @@ export default class PackageService {
         const ownableTargetUri = `${fileCopyUri.substring(0, fileCopyUri.indexOf(name))}${nameNoExtension}/`;
 
         const targetPath = RNFS.DocumentDirectoryPath + `/${nameNoExtension}`;
-        console.log(targetPath);
+
+        // path where assets, resolves to bundle-assets://threads/test.txt
+        let myAsset= RNFetchBlob.fs.asset('threads/test.txt');
 
         unzip(`${fileCopyUri}/`, targetPath)
         .then(async (path) => {
           const directoryFiles = await RNFS.readDir(targetPath);
-          console.log('dir files: ', directoryFiles);
           for (let i = 0; i < directoryFiles.length; i++) {
             const file = directoryFiles[i];
             await LocalStorageService.storeData(file.name, file);
             if (file.name.endsWith(".js")) {
-              console.log("bindgen file:");
-              console.log(file);
-              const targetDir = RNFS.DocumentDirectoryPath + `/${nameNoExtension}/bindgen.js`;
-              console.log("target path: ", targetDir);
-              RNFS.copyFile(file.path, targetDir)
-                  .then((result) => console.log('DONE'))
-                  .catch((error) => console.log(error, 'ERROR'));
-              RNFS.readDir(RNFS.DocumentDirectoryPath + `/${nameNoExtension}`)
-                  .then((result) => console.log('things in directory:', result));
+              console.log("file: ", file);
+
+              RNFS.readFileAssets('threads/test.txt').then((res) => {
+                console.log('read file res: ', res);
+              });
+              // fails to find provider at target path
+//               RNFS.copyFile(file.path, 'bundle-assets://threads/')
+//                   .then((result) => console.log('DONE'))
+//                   .catch((error) => console.log(error, 'ERROR'));
+
               await LocalStorageService.storeData(`${nameNoExtension}-bindgen`, file.path);
             }
           }
