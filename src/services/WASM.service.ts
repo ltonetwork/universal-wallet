@@ -14,9 +14,40 @@ export default class WASMService {
 //
 //     const storedBindgenPath = await LocalStorageService.getData(`${ownableType}-bindgen`);
 //     console.log("stored bindgen @", storedBindgenPath);
-    const threadSourceDir =  RNFS.DocumentDirectoryPath + `/${ownableType}/bindgen.js`;
-    console.log("target thread dir: ", threadSourceDir);
-    const thread = new Thread(threadSourceDir);
+//     const threadSourceDir =  RNFS.DocumentDirectoryPath + `/${ownableType}/bindgen.js`;
+//     console.log("target thread dir: ", threadSourceDir);
 
+    const thread = new Thread("./ownable_potion.js");
+
+    thread.onmessage = (event) => {
+      console.log("msg from worker:", event);
+    };
+    thread.onerror = (err) => console.error(err);
+    thread.onmessageerror = (err) => console.error(err);
+
+    RNFS.readDir(RNFS.DocumentDirectoryPath)
+      .then((result) => {
+        return Promise.all([RNFS.stat(result[0].path), result[0].path]);
+      })
+      .then((statResult) => {
+        if (statResult[0].isFile()) {
+          return RNFS.readFile(statResult[1], 'utf8');
+        }
+        return 'no file';
+      })
+      .then((contents) => {
+        console.log(contents);
+      })
+      .catch((err) => {
+        console.log(err.message, err.code);
+      });
+
+//     RNFS.readFileAssets("ownable_potion_bg.wasm", "base64")
+//     .then(binary => {
+//       console.log(binary);
+//     })
+//     .catch(console.error)
+//     const wasmArrayBuffer = await getBlobFromObjectStoreAsArrayBuffer(ownableType, "wasm");
+//     worker.postMessage(wasmArrayBuffer, [wasmArrayBuffer]);
   }
 }
