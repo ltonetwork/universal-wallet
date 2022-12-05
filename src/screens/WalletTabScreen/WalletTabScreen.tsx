@@ -333,8 +333,8 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                     </OverviewContainer>
 
                     <WalletFAB
-                        transfer={() => navigation.navigate('Transfer')}
-                        lease={() => navigation.navigate('Lease')}
+                        transfer={() => navigation.navigate('CreateTransfer')}
+                        lease={() => navigation.navigate('CreateLease')}
                     />
                 </>
             }

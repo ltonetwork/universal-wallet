@@ -18,8 +18,8 @@ export type RootStackParamList = {
   QrReader: undefined
   Menu: undefined
   Profile: undefined
-  Transfer: undefined
-  Lease: undefined
+  CreateTransfer: undefined
+  CreateLease: undefined
   Transactions: undefined
   NotFound: undefined
 }

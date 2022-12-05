@@ -24,8 +24,8 @@ import WalletTabScreen from '../screens/WalletTabScreen/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
 import { imagesIcon } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
-import TransferScreen from "../screens/TransferScreen/TransferScreen";
-import LeaseScreen from "../screens/LeaseScreen/LeaseScreen";
+import CreateTransferScreen from "../screens/CreateTransferScreen/CreateTransferScreen";
+import CreateLeaseScreen from "../screens/CreateLeaseScreen/CreateLeaseScreen";
 import TransactionsScreen from "../screens/TransactionsScreen/TransactionsScreen";
 
 const navTheme = {
@@ -137,16 +137,16 @@ function RootNavigator(): any {
           />
         </Stack.Group>
         <Stack.Screen
-          name='Transfer'
-          component={TransferScreen}
-          options={({ navigation }: RootStackScreenProps<'Transfer'>) => ({
+          name="CreateTransfer"
+          component={CreateTransferScreen}
+          options={({ navigation }: RootStackScreenProps<'CreateTransfer'>) => ({
             headerShown: false,
           })}
         />
         <Stack.Screen
-          name='Lease'
-          component={LeaseScreen}
-          options={({ navigation }: RootStackScreenProps<'Lease'>) => ({
+          name="CreateLease"
+          component={CreateLeaseScreen}
+          options={({ navigation }: RootStackScreenProps<'CreateLease'>) => ({
             headerShown: false,
           })}
         />
