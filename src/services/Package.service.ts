@@ -24,15 +24,9 @@ export default class PackageService {
             const file = directoryFiles[i];
             await LocalStorageService.storeData(file.name, file);
             if (file.name.endsWith(".js")) {
-              console.log("file: ", file);
-
-              RNFS.readFileAssets('threads/test.txt').then((res) => {
-                console.log('read file res: ', res);
-              });
-              // fails to find provider at target path
-//               RNFS.copyFile(file.path, 'bundle-assets://threads/')
-//                   .then((result) => console.log('DONE'))
-//                   .catch((error) => console.log(error, 'ERROR'));
+              RNFetchBlob.fs.stat(file.path)
+                  .then((stats) => console.log(stats))
+                  .catch((err) => {})
 
               await LocalStorageService.storeData(`${nameNoExtension}-bindgen`, file.path);
             }
