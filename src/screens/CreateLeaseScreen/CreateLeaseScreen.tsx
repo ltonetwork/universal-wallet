@@ -32,9 +32,9 @@ export default function CreateLeaseScreen({ navigation, route }: RootStackScreen
   const [details, setDetails] = useState<TypedDetails>({} as TypedDetails)
 
   const [nodes, setNodes] = useState<TypedCommunityNode[]>([])
-  const [selectNode, setSelectNode] = useState(CommunityNodesService.isConfigured)
+  const [selectNode, setSelectNode] = useState(CommunityNodesService.isConfigured && !(route.params?.address))
 
-  const [recipient, setRecipient] = useState('')
+  const [recipient, setRecipient] = useState(route.params?.address || '')
   const [recipientNode, setRecipientNode] = useState<TypedCommunityNode|undefined>(undefined)
   const [amountText, setAmountText] = useState('')
   const [amount, setAmount] = useState(0)
@@ -81,7 +81,7 @@ export default function CreateLeaseScreen({ navigation, route }: RootStackScreen
   }, [])
 
   useEffect(() => {
-    CommunityNodesService.info(recipient)
+    CommunityNodesService.info(recipient || '')
         .then(setRecipientNode)
   }, [recipient])
 
@@ -209,7 +209,7 @@ export default function CreateLeaseScreen({ navigation, route }: RootStackScreen
           visible={dialogVisible}
           message={tx ? confirmationMessage(tx.toJSON() as TypedTransaction) : ''}
           onPress={sendTx}
-          cancelPress={() => {
+          onCancel={() => {
             setTx(undefined)
             setDialogVisible(false)
           }}

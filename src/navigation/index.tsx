@@ -27,6 +27,7 @@ import LinkingConfiguration from './LinkingConfiguration'
 import CreateTransferScreen from "../screens/CreateTransferScreen/CreateTransferScreen";
 import CreateLeaseScreen from "../screens/CreateLeaseScreen/CreateLeaseScreen";
 import TransactionsScreen from "../screens/TransactionsScreen/TransactionsScreen";
+import LeaseScreen from "../screens/LeaseScreen/LeaseScreen";
 
 const navTheme = {
   ...DefaultTheme,
@@ -147,6 +148,13 @@ function RootNavigator(): any {
           name="CreateLease"
           component={CreateLeaseScreen}
           options={({ navigation }: RootStackScreenProps<'CreateLease'>) => ({
+            headerShown: false,
+          })}
+        />
+        <Stack.Screen
+          name='Lease'
+          component={LeaseScreen}
+          options={({ navigation }: RootStackScreenProps<'Lease'>) => ({
             headerShown: false,
           })}
         />

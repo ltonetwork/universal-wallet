@@ -1,4 +1,4 @@
-import {Account, LTO, Transaction} from "@ltonetwork/lto"
+import {Account, CancelLease, Lease, LTO, Transaction} from "@ltonetwork/lto"
 import LocalStorageService from "./LocalStorage.service";
 import {TypedTransaction} from "../interfaces/TypedTransaction";
 export const lto = new LTO(process.env.LTO_NETWORK_ID)
@@ -111,6 +111,21 @@ export default class LTOService {
     }
 
     public static getLeases = async (address: string) => {
+        const [pending, active] = await Promise.all([
+            LTOService.getPendingTransactions(address),
+            LTOService.getActiveLeases(address)
+        ])
+        const leases = [...pending.filter(tx => tx.type === Lease.TYPE), ...active]
+
+        for (const cancel of pending.filter(tx => tx.type === CancelLease.TYPE)) {
+            const lease = leases.find(tx => tx.id === cancel.leaseId)
+            if (lease) lease.pending = true
+        }
+
+        return leases
+    }
+
+    private static getActiveLeases = async (address: string) => {
         const url = LTOService.apiUrl(`/leasing/active/${address}`)
 
         const response = await fetch(url)

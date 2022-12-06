@@ -11,5 +11,7 @@ export interface TypedTransaction {
     accounts?: any
     amount?: number
     recipient?: string
+    leaseId?: string
+    lease?: {id: string, recipient: string, amount: number}
     pending?: boolean
 }

@@ -19,7 +19,8 @@ export type RootStackParamList = {
   Menu: undefined
   Profile: undefined
   CreateTransfer: undefined
-  CreateLease: undefined
+  CreateLease: { address: string } | undefined
+  Lease: { address: string }
   Transactions: undefined
   NotFound: undefined
 }

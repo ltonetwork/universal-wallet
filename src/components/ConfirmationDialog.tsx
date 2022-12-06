@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Button, Dialog, Paragraph, Portal, Provider } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { ButtonContainer } from './styles/ConfirmationDialog.styles'
@@ -7,7 +7,7 @@ import { ButtonContainer } from './styles/ConfirmationDialog.styles'
 export default function ConfirmationDialog(props: {
     visible: boolean,
     message: string,
-    cancelPress: () => void,
+    onCancel: () => void,
     onPress: () => void
 }): JSX.Element {
 
@@ -17,7 +17,7 @@ export default function ConfirmationDialog(props: {
                 <Portal>
                     <Dialog
                         visible={props.visible}
-                        onDismiss={props.cancelPress}
+                        onDismiss={props.onCancel}
                     >
                         <Dialog.Title testID='dialog'>Confirm:</Dialog.Title>
                         <Dialog.Content>
@@ -25,7 +25,7 @@ export default function ConfirmationDialog(props: {
                         </Dialog.Content>
                         <ButtonContainer>
                             <Dialog.Actions>
-                                <Button testID='cancel' onPress={props.cancelPress}>Cancel</Button>
+                                <Button testID='cancel' onPress={props.onCancel}>Cancel</Button>
                             </Dialog.Actions>
                             <Dialog.Actions>
                                 <Button testID='continue' onPress={props.onPress}>Continue</Button>

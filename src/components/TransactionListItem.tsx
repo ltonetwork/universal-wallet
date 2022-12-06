@@ -13,12 +13,16 @@ export default function TransactionListItem(params: {direction: 'in' | 'out', tx
     if (direction === 'out') {
         if (tx.type === 11) {
             description = `To: ${tx.transfers.length} recipients`
+        } else if (tx.lease?.recipient) {
+            description = 'To: ' + shortAddress(tx.lease?.recipient)
         } else if (tx.recipient) {
             description = 'To: ' + shortAddress(tx.recipient)
         }
     } else {
         description = 'From: ' + shortAddress(tx.sender)
     }
+
+    const amount = tx.amount ?? tx.lease?.amount
 
     return (
         <List.Item
@@ -32,7 +36,7 @@ export default function TransactionListItem(params: {direction: 'in' | 'out', tx
                 ? <ActivityIndicator style={{...style, marginLeft: 8}} animating={true} color="#A017B7" />
                 : <List.Icon color={color} style={{...style, marginLeft: 0, marginRight: 8}} icon={txTypes[tx.type].icon[direction]!}/>
             }
-            right={({style}) => <Text style={{...style, alignSelf: 'center'}}>{tx.amount ? formatNumber(tx.amount) + ' LTO' : ''}</Text>}
+            right={({style}) => <Text style={{...style, alignSelf: 'center'}}>{amount ? formatNumber(amount) + ' LTO' : ''}</Text>}
         />
     )
 }

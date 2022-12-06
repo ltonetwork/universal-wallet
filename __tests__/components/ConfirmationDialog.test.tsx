@@ -40,7 +40,7 @@ it('Should shows a dialog and cancel/continue buttons', () => {
             visible={true}
             onPress={mockedState.onPress}
             message={''}
-            cancelPress={mockedState.cancelPress}
+            onCancel={mockedState.cancelPress}
         />
     )
 
@@ -55,7 +55,7 @@ it('Should shows a dialog and cancel/continue buttons', () => {
 
 it('Should do nothing and navigate to dashboard screen', () => {
     const { getByTestId } = render(
-        <ConfirmationDialog visible={true} onPress={mockedNavigate} message={''} cancelPress={mockedNavigate} />
+        <ConfirmationDialog visible={true} onPress={mockedNavigate} message={''} onCancel={mockedNavigate} />
     )
 
     const cancelButton = getByTestId('cancel')
@@ -66,7 +66,7 @@ it('Should do nothing and navigate to dashboard screen', () => {
 
 it('Should execute transaction and navigate to dashboard screen', () => {
     const { getByTestId } = render(
-        <ConfirmationDialog visible={true} onPress={mockedNavigate} message={''} cancelPress={mockedNavigate} />
+        <ConfirmationDialog visible={true} onPress={mockedNavigate} message={''} onCancel={mockedNavigate} />
     )
 
     const continueButton = getByTestId('continue')

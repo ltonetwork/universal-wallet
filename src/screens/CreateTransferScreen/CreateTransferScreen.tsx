@@ -142,7 +142,7 @@ export default function CreateTransferScreen({ navigation }: RootStackScreenProp
           visible={dialogVisible}
           message={tx ? confirmationMessage(tx.toJSON() as TypedTransaction) : ''}
           onPress={sendTx}
-          cancelPress={() => {
+          onCancel={() => {
             setTx(undefined)
             setDialogVisible(false)
           }}
