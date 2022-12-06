@@ -2,29 +2,12 @@ import LocalStorageService from './LocalStorage.service'
 import { Thread } from 'react-native-threads'
 import RNFS from 'react-native-fs'
 import * as FileSystem from 'expo-file-system';
+import {decode as atob, encode as btoa} from 'base-64'
 
 export default class WASMService {
 
   public static spawnWASMThread = async (ownableType: string) => {
     console.log(`spawning ${ownableType} thread...`);
-//     // get path to bindgen of ownableType
-//     const uriPath = await LocalStorageService.getData(`${ownableType}-bindgen`);
-//     console.log("uri path: ", uriPath);
-//     await RNFS.copyFile(uriPath, RNFS.DocumentDirectoryPath + `/${ownableType}-bindgen.js`);
-//     await LocalStorageService.storeData(`${ownableType}-bindgen`, RNFS.DocumentDirectoryPath + `/${ownableType}-bindgen.js`);
-//
-//     const storedBindgenPath = await LocalStorageService.getData(`${ownableType}-bindgen`);
-//     console.log("stored bindgen @", storedBindgenPath);
-//     const threadSourceDir =  RNFS.DocumentDirectoryPath + `/${ownableType}/bindgen.js`;
-//     console.log("target thread dir: ", threadSourceDir);
-
-    const thread = new Thread("./ownable_potion.js");
-
-    thread.onmessage = (event) => {
-      console.log("msg from worker:", event);
-    };
-    thread.onerror = (err) => console.error(err);
-    thread.onmessageerror = (err) => console.error(err);
 
     RNFS.readDir(RNFS.DocumentDirectoryPath + `/${ownableType}`)
       .then((result) => {
@@ -34,6 +17,7 @@ export default class WASMService {
       .then((statResult) => {
         console.log("stat result: ", statResult);
         if (statResult[0].isFile()) {
+          console.log('reading file ', statResult[1]);
           const file = RNFS.readFile(statResult[1], 'base64');
           return file;
         }
@@ -41,25 +25,24 @@ export default class WASMService {
       })
       .then(async (contents) => {
         console.log("File contents", contents);
-//            let blob = await fetch(`file://${contents.path}`).blob()
+        const byteCharacters = atob(contents);
+        const byteArrays = [];
+        const sliceSize = 512;
+        const contentType = '';
 
-//         let fr = new FileReader();
-//         fr.onload = (f) => {
-//           console.log("fr read file ", f);
-//         }
-//         fr.readAsText(contents);
-//         let wasm = await fetch("./ownable_potion_bg.wasm");
-//         const prefix = "data:text/javascript;base64,";
-//         const fileSrc = prefix + contents;
-//
-//         const byteNumbers = new Array(fileSrc.length);
-//         for (let i = 0; i < fileSrc.length; i++) {
-//             byteNumbers[i] = fileSrc.charCodeAt(i);
-//         }
-//         const byteArray = new Uint8Array(byteNumbers);
-//         const blob = new Blob([byteArray], {type: 'application/javascript'});
-//
-//         console.log(fileSrc);
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+          const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+          const byteNumbers = new Array(slice.length);
+          for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+          }
+          const byteArray = new Uint8Array(byteNumbers);
+          byteArrays.push(byteArray);
+        }
+
+        const blob = new Blob(byteArrays, { type: contentType });
+        console.log("blob", blob);
       })
       .catch((err) => {
         console.log(err.message, err.code);
