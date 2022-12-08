@@ -75,13 +75,6 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
           onPress={() => navigation.navigate('Menu')}
           onQrPress={() => navigation.navigate('QrReader')}
           input={<MainTitle>{OWNABLES.MAINTITLE}</MainTitle>} />
-        <Text>Ownable options:</Text>
-        <FlatList
-          data={ownableOptions}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-        />
-        <PlusButton onPress={() => navigation.navigate('QrReader')} />
         <Button
           title="open picker for single file selection"
           onPress={async () => {
