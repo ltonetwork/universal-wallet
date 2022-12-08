@@ -8,7 +8,7 @@ export const PlusIcon = styled(IconButton)`
     border-radius: 60px;
     width: 60px;
     height: 60px;
-    margin-top: ${Dimensions.get("window").height * 0.73}px;
+    margin-top: ${Dimensions.get("window").height * 0.65}px;
     margin-left: ${Dimensions.get("window").width * 0.78}px;
     elevation: 5;
     position: absolute;
