@@ -1,5 +1,5 @@
 import { Account, CancelLease, Lease, LTO, Transaction } from "@ltonetwork/lto"
-import LocalStorageService from "./LocalStorage.service"
+import StorageService from "./Storage.service"
 import { TypedTransaction } from "../interfaces/TypedTransaction"
 
 export const lto = new LTO(process.env.LTO_NETWORK_ID)
@@ -13,7 +13,7 @@ export default class LTOService {
     }
 
     public static unlock = async (password: string | undefined, signature?: string) => {
-        const [encryptedAccount] = await LocalStorageService.getData('@accountData')
+        const [encryptedAccount] = await StorageService.getItem('@accountData')
         const encodedSignature = signature && encodeURIComponent(signature)
 
         const seedIndex = encodedSignature ? 0 : 1
@@ -48,7 +48,7 @@ export default class LTOService {
         const encryptedWithPassword = this.account.encryptSeed(password)
 
 
-        await LocalStorageService.storeData('@accountData', [{
+        await StorageService.setItem('@accountData', [{
             nickname: nickname,
             address: this.account.address,
             seed: [encryptedWithSignature, encryptedWithPassword],
@@ -73,8 +73,8 @@ export default class LTOService {
 
     public static deleteAccount = async () => {
         await Promise.all([
-            LocalStorageService.removeData('@accountData'),
-            LocalStorageService.removeData('@userAlias')
+            StorageService.removeItem('@accountData'),
+            StorageService.removeItem('@userAlias')
         ])
         this.lock()
     }

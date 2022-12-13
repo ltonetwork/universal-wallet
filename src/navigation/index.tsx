@@ -21,7 +21,7 @@ import ProfileScreen from '../screens/ProfileScreen/ProfileScreen'
 import QrReaderScreen from '../screens/QrReaderScreen/QrReaderScreen'
 import SignInScreen from '../screens/SignInScreen/SignInScreen'
 import WalletTabScreen from '../screens/WalletTabScreen/WalletTabScreen'
-import LocalStorageService from '../services/LocalStorage.service'
+import StorageService from '../services/Storage.service'
 import { imagesIcon } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
 import CreateTransferScreen from "../screens/CreateTransferScreen/CreateTransferScreen"
@@ -59,11 +59,11 @@ function RootNavigator(): any {
 
   const skipOnboarding = (): void => {
     setAppFirstLaunch(false)
-    /*LocalStorageService.getData('@appFirstLaunch')
+    /*StorageService.getData('@appFirstLaunch')
       .then((data) => {
         if (data === null) {
           setAppFirstLaunch(true)
-          LocalStorageService.storeData('@appFirstLaunch', false)
+          StorageService.setItem('@appFirstLaunch', false)
         } else {
           setAppFirstLaunch(false)
         }
@@ -73,7 +73,7 @@ function RootNavigator(): any {
       })*/
   }
 
-  LocalStorageService.getData('@userAlias')
+  StorageService.getItem('@userAlias')
     .then((data) => {
       setUserAlias(data !== null)
     })

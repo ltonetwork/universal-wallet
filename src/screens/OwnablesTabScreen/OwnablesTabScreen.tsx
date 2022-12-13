@@ -1,29 +1,31 @@
 import React, { useState} from 'react'
-import { ImageBackground, useWindowDimensions } from 'react-native'
+import {ImageBackground, Text, useWindowDimensions} from 'react-native'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
-import PlusButton from '../../components/PlusButton'
 import StatusBarIOS from '../../components/StatusBarIOS'
 import { Container, MainTitle } from '../../components/styles/NextFunctionality.styles'
 import { OWNABLES } from '../../constants/Text'
 import { backgroundImage } from '../../utils/images'
 import DocumentPicker, { isInProgress, types } from 'react-native-document-picker'
-import PackageService from '../../services/Package.service'
-import WASMService from '../../services/WASM.service'
-import { Modal, Portal, Button, Provider, List } from 'react-native-paper'
+import OwnableService from '../../services/Ownable.service'
+import {Modal, Portal, Button, Provider, List, Card} from 'react-native-paper'
 import {useFocusEffect} from "@react-navigation/native";
+import ShortList from "../../components/ShortList";
+import PageFAB from "../../components/PageFAB";
 
 export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ownables'>) {
 
   const { width, height } = useWindowDimensions()
 
   const [showAddModal, setShowAddModal] = React.useState(false)
-  const [ownableOptions, setOwnableOptions] = useState<{id: string, key: string, name: string}[]>([])
-
-  const containerStyle = {backgroundColor: 'white', padding: 20}
+  const [ownableOptions, setOwnableOptions] = useState<{id: string, name: string}[]>([])
+  const [ownables, setOwnables] = useState<{id: string, option: {id: string, name: string}}[]>([])
 
   useFocusEffect(
-      React.useCallback(() => { loadOwnableOptions() },[])
+      React.useCallback(() => {
+          loadOwnableOptions()
+          loadOwnables()
+      },[])
   )
 
   const importOwnable = async () => {
@@ -33,7 +35,7 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
         type: [types.allFiles],
         copyTo: 'documentDirectory'
       })
-      await PackageService.importOwnable(pickerResult)
+      await OwnableService.import(pickerResult)
       loadOwnableOptions()
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
@@ -48,8 +50,28 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
   }
 
   const loadOwnableOptions = () => {
-    PackageService.getOwnableOptions().then(setOwnableOptions)
+    OwnableService.listOptions().then(setOwnableOptions)
   }
+
+  const loadOwnables = () => {
+    OwnableService.list().then(setOwnables)
+  }
+
+  const renderOwnableOption = (option: {id: string, name: string}) =>
+    <List.Item
+        key={`ownable:${option.id}`}
+        onPress={async () => {
+          await OwnableService.issue(option.id)
+          loadOwnables()
+          setShowAddModal(false)
+        }}
+        title={option.name}
+    />
+
+  const renderOwnable = (ownable: {id: string, option: {id: string, name: string}}) =>
+      <>
+        <Text>{ownable.option.name}</Text>
+      </>
 
   return (
     <>
@@ -62,34 +84,31 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
           onPress={() => navigation.navigate('Menu')}
           onQrPress={() => navigation.navigate('QrReader')}
           input={<MainTitle>{OWNABLES.MAINTITLE}</MainTitle>} />
-        <Button onPress={importOwnable}>Select file</Button>
+
+        <ShortList
+            data={ownables}
+            renderItem={({item}) => renderOwnable(item)}
+        />
       </Container>
 
       <Provider>
         <Portal>
-          <Modal visible={showAddModal} onDismiss={() => setShowAddModal(false)} contentContainerStyle={containerStyle}>
-            <List.Section>
-              <List.Subheader>Available Ownables</List.Subheader>
-              {ownableOptions.map((item) => {
-                item.key = item.id
-                return (
-                  <List.Item
-                    onPress={async () => {
-                      console.log(`issuing ${item.name}`)
-                      await WASMService.spawnWASMThread(item.name)
-                      setShowAddModal(false)
-                    }}
-                    title={item.name}
-                  />
-                )
-              })}
-            </List.Section>
-            <Button
-              onPress={importOwnable}
-            >Import</Button>
+          <Modal visible={showAddModal} onDismiss={() => setShowAddModal(false)} style={{margin: 20}}>
+            <Card>
+              <Card.Content>
+                <ShortList
+                    data={ownableOptions}
+                    renderItem={({item}) => renderOwnableOption(item)}
+                />
+              </Card.Content>
+              <Card.Actions>
+                <Button onPress={importOwnable} style={{width: '100%'}}>Import</Button>
+              </Card.Actions>
+            </Card>
           </Modal>
         </Portal>
-        <PlusButton onPress={() => { setShowAddModal(true) }} />
+
+        <PageFAB onPress={() => { setShowAddModal(true) }} />
       </Provider>
     </>
   )

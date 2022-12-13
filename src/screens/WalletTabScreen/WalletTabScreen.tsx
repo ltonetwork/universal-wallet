@@ -342,6 +342,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                                     )}
                                     renderItem={({ item }) => (
                                         <TransactionListItem
+                                            key={`transaction:${item.id}`}
                                             direction={item.sender === accountAddress ? 'out' : 'in'}
                                             tx={item}
                                         />

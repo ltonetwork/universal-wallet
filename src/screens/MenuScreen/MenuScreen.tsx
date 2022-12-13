@@ -7,7 +7,7 @@ import OverviewHeader from '../../components/OverviewHeader'
 import { StyledImage } from '../../components/styles/OverviewHeader.styles'
 import { View } from '../../components/Themed'
 import { MessageContext } from '../../context/UserMessage.context'
-import LocalStorageService from '../../services/LocalStorage.service'
+import StorageService from '../../services/Storage.service'
 import {logoTitle, socialMediaIcons} from '../../utils/images'
 import {
   navigateToExplorer,
@@ -36,7 +36,7 @@ export default function MenuScreen({ navigation }: RootStackScreenProps<'Menu'>)
   }, [accountAddress, accountNickname])
 
   const getNickname = () => {
-    LocalStorageService.getData('@userAlias')
+    StorageService.getItem('@userAlias')
       .then(data => setAccountNickname(data.nickname))
       .catch(error => {
         throw new Error(`Error retrieving data. ${error}`)

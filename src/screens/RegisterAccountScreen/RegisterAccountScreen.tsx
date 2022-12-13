@@ -7,7 +7,7 @@ import { StyledButton } from '../../components/styles/StyledButton.styles'
 import { StyledInput } from '../../components/styles/StyledInput.styles'
 import TermsModal from '../../components/TermsModal'
 import { MessageContext } from '../../context/UserMessage.context'
-import LocalStorageService from '../../services/LocalStorage.service'
+import StorageService from '../../services/Storage.service'
 import { View } from 'react-native'
 import { REGISTER } from '../../constants/Text'
 import LTOService from "../../services/LTO.service"
@@ -100,8 +100,7 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
             }
             setIsLoading(true)
 
-            await LocalStorageService.storeData('@userAlias', { nickname: loginForm.nickname })
-
+            await StorageService.setItem('@userAlias', {nickname: loginForm.nickname})
             await LTOService.storeAccount(loginForm.nickname, loginForm.password, signature)
 
             const message = route.params.data === 'created'
@@ -186,7 +185,7 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                             label={REGISTER.INPUT_NICKNAME.LABEL}
                             placeholder={REGISTER.INPUT_NICKNAME.PLACEHOLDER}
                             value={loginForm.nickname}
-                            onChangeText={(text) => handleInputChange('nickname', text)}
+                            onChangeText={(text: string) => handleInputChange('nickname', text)}
                         >
                         </StyledInput>
 
@@ -194,7 +193,7 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                             style={{ marginBottom: 5 }}
                             label={REGISTER.INPUT_PASSWORD.LABEL}
                             value={loginForm.password}
-                            onChangeText={(text) => handleInputChange('password', text)}
+                            onChangeText={(text: string) => handleInputChange('password', text)}
                             secureTextEntry={passwordVisible}
                             placeholder={REGISTER.INPUT_PASSWORD.PLACEHOLDER}
                             right={<StyledInput.Icon
@@ -205,7 +204,7 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                         <StyledInput
                             label={REGISTER.INPUT_PASSWORD_REPEAT.LABEL}
                             value={loginForm.passwordConfirmation}
-                            onChangeText={(text) => handleInputChange('passwordConfirmation', text)}
+                            onChangeText={(text: string) => handleInputChange('passwordConfirmation', text)}
                             secureTextEntry={repeatedPasswordVisible}
                             placeholder={REGISTER.INPUT_PASSWORD_REPEAT.PLACEHOLDER}
                             right={<StyledInput.Icon
