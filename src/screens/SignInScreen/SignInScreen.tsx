@@ -3,7 +3,7 @@ import { RootStackScreenProps } from '../../../types'
 import { StyledButton } from '../../components/styles/StyledButton.styles'
 import { StyledInput } from '../../components/styles/StyledInput.styles'
 import { MessageContext } from '../../context/UserMessage.context'
-import LocalStorageService from '../../services/LocalStorage.service'
+import StorageService from '../../services/Storage.service'
 import { ButtonContainer, Container, InputContainer, StyledText, StyledTitle } from './SignInScreen.styles'
 import LTOService from '../../services/LTO.service'
 import { SIGNIN } from '../../constants/Text'
@@ -22,7 +22,7 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
     }, [])
 
     const getAlias = () => {
-        LocalStorageService.getData('@userAlias')
+        StorageService.getItem('@userAlias')
             .then((data) => {
                 setUserAlias(data)
             })

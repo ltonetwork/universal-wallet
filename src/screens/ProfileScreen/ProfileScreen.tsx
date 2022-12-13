@@ -3,7 +3,7 @@ import {TouchableOpacity, View} from 'react-native'
 import {Card, Paragraph, Text} from 'react-native-paper'
 import Spinner from '../../components/Spinner'
 import { PROFILE } from '../../constants/Text'
-import LocalStorageService from '../../services/LocalStorage.service'
+import StorageService from '../../services/Storage.service'
 import { CardsContainer, Content, Field, HiddenTitle, MainCard } from './ProfileScreen.styles'
 import PressToCopy from "../../components/PressToCopy";
 import LTOService from "../../services/LTO.service";
@@ -58,7 +58,7 @@ export default function ProfileScreen({ navigation }: RootStackScreenProps<'Prof
     }
 
     const getNickname = () => {
-        LocalStorageService.getData('@userAlias')
+        StorageService.getItem('@userAlias')
             .then(data => setAccountNickname(data.nickname))
             .catch(error => {
                 throw new Error(`Error retrieving data. ${error}`)

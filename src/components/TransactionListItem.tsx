@@ -27,7 +27,6 @@ export default function TransactionListItem(params: {direction: 'in' | 'out', tx
 
     return (
         <List.Item
-            key={`transaction:${tx.id}`}
             style={{ padding: 0}}
             title={txTypes[tx.type].description}
             titleStyle={{ fontSize: 14 }}
