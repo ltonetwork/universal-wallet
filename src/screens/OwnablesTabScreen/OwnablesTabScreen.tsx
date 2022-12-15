@@ -1,5 +1,5 @@
 import React, { useState} from 'react'
-import {ImageBackground, Text, useWindowDimensions} from 'react-native'
+import {ImageBackground, Text, useWindowDimensions, View} from 'react-native'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
 import StatusBarIOS from '../../components/StatusBarIOS'
@@ -12,6 +12,8 @@ import {Modal, Portal, Button, Provider, List, Card} from 'react-native-paper'
 import {useFocusEffect} from "@react-navigation/native";
 import ShortList from "../../components/ShortList";
 import PageFAB from "../../components/PageFAB";
+import WebView from "react-native-webview";
+import Ownable from "../../components/Ownable";
 
 export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ownables'>) {
 
@@ -59,7 +61,7 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
 
   const renderOwnableOption = (option: {id: string, name: string}) =>
     <List.Item
-        key={`ownable:${option.id}`}
+        key={`ownable-option:${option.id}`}
         onPress={async () => {
           await OwnableService.issue(option.id)
           loadOwnables()
@@ -68,10 +70,6 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
         title={option.name}
     />
 
-  const renderOwnable = (ownable: {id: string, option: {id: string, name: string}}) =>
-      <>
-        <Text>{ownable.option.name}</Text>
-      </>
 
   return (
     <>
@@ -87,7 +85,7 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
 
         <ShortList
             data={ownables}
-            renderItem={({item}) => renderOwnable(item)}
+            renderItem={({item}) => <Ownable key={item.id} id={item.id} option={item.option} /> }
         />
       </Container>
 

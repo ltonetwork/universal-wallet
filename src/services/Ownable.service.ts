@@ -47,17 +47,33 @@ export default class OwnableService {
         }
     }
 
-    public static issue = async (id: string) => {
-        const option = await OwnableService.getOption(id)
+    public static getJs = async (optionId: string): Promise<string> => {
+        const option = await OwnableService.getOption(optionId)
         if (!option) throw Error('No such ownable option')
 
-        const result = await RNFS.readDir(`${OWNABLE_PATH}/${id}`)
+        const result = await RNFS.readDir(`${OWNABLE_PATH}/${optionId}`)
 
         const jsFile = result.find(file => file.name === 'ownable.js' || file.name === `ownable_${option.name}.js`)
         if (!jsFile) throw new Error('Package doesn\'t contain an ownable.js file')
 
-        const statResult = await RNFS.stat(jsFile.path)
-        if (!statResult.isFile()) throw new Error('not a file')
+        return RNFS.readFile(jsFile.path, 'utf8')
+    }
+
+    public static getWasm = async (optionId: string): Promise<string> => {
+        const option = await OwnableService.getOption(optionId)
+        if (!option) throw Error('No such ownable option')
+
+        const result = await RNFS.readDir(`${OWNABLE_PATH}/${optionId}`)
+
+        const jsFile = result.find(file => file.name === 'ownable_bg.wasm' || file.name === `ownable_${option.name}_bg.wasm`)
+        if (!jsFile) throw new Error('Package doesn\'t contain an ownable_bg.wasm file')
+
+        return RNFS.readFile(jsFile.path, 'base64')
+    }
+
+    public static issue = async (optionId: string) => {
+        const option = await OwnableService.getOption(optionId)
+        if (!option) throw Error('No such ownable option')
 
         OwnableService._issued.push({id: (Math.random() + 1).toString(36).substring(7), option})
         StorageService.setItem('ownables', OwnableService._issued)
