@@ -1,4 +1,4 @@
-import { Card, Paragraph, Title } from 'react-native-paper'
+import {Card, Paragraph, Surface, Title, TouchableRipple} from 'react-native-paper'
 import styled from 'styled-components/native'
 import { Platform } from 'react-native'
 
@@ -10,6 +10,21 @@ export const OverviewContainer = styled.SafeAreaView`
 export const AmountContainer = styled.View`
     flex-direction: row;
     align-items: baseline;
+`
+
+export const TopContainer = styled(Surface)`
+  border-bottom-right-radius: 25px;
+  border-bottom-left-radius: 25px;
+  elevation: 3;
+  padding-top: 1px;
+  margin-top: -1px;
+`
+
+export const TopCardsRipple = styled(TouchableRipple)`
+  border: none;
+  padding-top: 0;
+  border-bottom-right-radius: 25px;
+  border-bottom-left-radius: 25px;
 `
 
 export const TopCardsContainer = styled.View`
@@ -24,34 +39,31 @@ export const TopCardsContainer = styled.View`
     border-color: #ffffff;
     border-bottom-right-radius: 25px;
     border-bottom-left-radius: 25px;
-    elevation: 1;
 `
 
 export const TopCard = styled(Card)`
     width: auto;
     height: auto;
-    box-shadow: 0px 0px 0px #ffffff;
+    box-shadow: 0 0 0 transparent;
 `
 
 export const BottomCardsContainer = styled.View`
-    margin-top: 20px;
     flex-direction: row;
     justify-content: space-evenly;
     width: 100%;
     height: auto;
+    margin-top: 10px;
 `
 
 export const BottomCard = styled(Card)`
-    shadow-color: #E1F9FC;
-    shadow-offset: 5px 9px;
-    shadow-opacity: 0.5;
-    box-shadow: 10px 5px 5px #E1F9FC;
-    shadow-radius: 10px;
-    border-radius: 20px;
-    elevation: 5;
+    box-shadow: 0 0 0 transparent;
     width: 130px;
     height: auto;
     background-color: transparent;
+`
+
+export const ActivityCard = styled(Card)`
+    margin: 20px;
 `
 
 export const FieldName = styled(Paragraph)`

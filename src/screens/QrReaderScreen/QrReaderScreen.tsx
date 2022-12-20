@@ -76,7 +76,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
         }
     }
 
-    const handleLogin = async (auth: TypedTransaction) => {
+    const handleLogin = async (auth: {url: string}) => {
         setIsLoading(true)
         try {
             const account = await LTOService.getAccount()
@@ -118,7 +118,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
             const transaction = txFromData({...tx, sender: null}).signWith(account)
             await LTOService.broadcast(transaction)
 
-            setMessageInfo('Transfer sent successfully!')
+            setMessageInfo('Transaction sent successfully!')
             setShowMessage(true)
         } catch (error) {
             console.error(`Transaction failed. ${error}`)
@@ -146,7 +146,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
                     <ConfirmationDialog
                         visible={dialogVisible}
                         message={confirmationMessage(tx)}
-                        cancelPress={() => navigation.goBack()}
+                        onCancel={() => navigation.goBack()}
                         onPress={() => handleTx(tx)}
                     />
                 ) : null}

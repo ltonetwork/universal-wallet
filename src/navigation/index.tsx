@@ -13,7 +13,7 @@ import SignUpScreen from '../screens/SignUpScreen/SignUpScreen'
 import CredentialsTabScreen from '../screens/CredentialsTabScreen/CredentialsTabScreen'
 import RegisterAccountScreen from '../screens/RegisterAccountScreen/RegisterAccountScreen'
 import ImportSeedScreen from '../screens/ImportWithSeedScreen/ImportWithSeedScreen'
-import ModalScreen from '../screens/ModalScreen/ModalScreen'
+import MenuScreen from '../screens/MenuScreen/MenuScreen'
 import NotFoundScreen from '../screens/NotFoundScreen'
 import OnboardingScreen from '../screens/OnBoardingScreen/OnBoardingScreen'
 import OwnablesTabScreen from '../screens/OwnablesTabScreen/OwnablesTabScreen'
@@ -24,6 +24,10 @@ import WalletTabScreen from '../screens/WalletTabScreen/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
 import { imagesIcon } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
+import CreateTransferScreen from "../screens/CreateTransferScreen/CreateTransferScreen";
+import CreateLeaseScreen from "../screens/CreateLeaseScreen/CreateLeaseScreen";
+import TransactionsScreen from "../screens/TransactionsScreen/TransactionsScreen";
+import LeaseScreen from "../screens/LeaseScreen/LeaseScreen";
 
 const navTheme = {
   ...DefaultTheme,
@@ -117,9 +121,9 @@ function RootNavigator(): any {
         />
         <Stack.Group>
           <Stack.Screen
-            name='Modal'
-            component={ModalScreen}
-            options={({ navigation }: RootStackScreenProps<'Modal'>) => ({
+            name='Menu'
+            component={MenuScreen}
+            options={({ navigation }: RootStackScreenProps<'Menu'>) => ({
               headerShown: false,
             })}
           />
@@ -133,6 +137,34 @@ function RootNavigator(): any {
             }}
           />
         </Stack.Group>
+        <Stack.Screen
+          name="CreateTransfer"
+          component={CreateTransferScreen}
+          options={({ navigation }: RootStackScreenProps<'CreateTransfer'>) => ({
+            headerShown: false,
+          })}
+        />
+        <Stack.Screen
+          name="CreateLease"
+          component={CreateLeaseScreen}
+          options={({ navigation }: RootStackScreenProps<'CreateLease'>) => ({
+            headerShown: false,
+          })}
+        />
+        <Stack.Screen
+          name='Lease'
+          component={LeaseScreen}
+          options={({ navigation }: RootStackScreenProps<'Lease'>) => ({
+            headerShown: false,
+          })}
+        />
+        <Stack.Screen
+          name='Transactions'
+          component={TransactionsScreen}
+          options={({ navigation }: RootStackScreenProps<'Transactions'>) => ({
+            headerShown: false,
+          })}
+        />
       </Stack.Navigator>
     )
   )

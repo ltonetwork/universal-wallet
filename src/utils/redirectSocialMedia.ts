@@ -1,5 +1,9 @@
 import * as WebBrowser from "expo-web-browser"
 
+export const nagivateTo = (url: string) => {
+    WebBrowser.openBrowserAsync(url)
+}
+
 export const navigateToWebsite = () => {
     WebBrowser.openBrowserAsync("https://ltonetwork.com")
 }

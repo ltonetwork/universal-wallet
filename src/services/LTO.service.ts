@@ -1,5 +1,6 @@
-import {Account, LTO, Transaction} from "@ltonetwork/lto"
+import {Account, CancelLease, Lease, LTO, Transaction} from "@ltonetwork/lto"
 import LocalStorageService from "./LocalStorage.service";
+import {TypedTransaction} from "../interfaces/TypedTransaction";
 export const lto = new LTO(process.env.LTO_NETWORK_ID)
 if (process.env.LTO_API_URL) lto.nodeAddress = process.env.LTO_API_URL;
 
@@ -55,9 +56,13 @@ export default class LTOService {
         }
     }
 
-    public static getAccountDetails = async (address: string) => {
+    private static apiUrl = (path: string): string => {
+        return lto.nodeAddress.replace(/\/$/g, '') + path
+    }
+
+    public static getBalance = async (address: string) => {
         try {
-            const url = lto.nodeAddress.replace(/\/$/g, '') + '/addresses/balance/details/' + address
+            const url = LTOService.apiUrl(`/addresses/balance/details/${address}`)
             const response = await fetch(url)
             return response.json()
         } catch (error) {
@@ -65,7 +70,86 @@ export default class LTOService {
         }
     }
 
+    public static getTransactions = async (address: string, limit?: number, page = 1) => {
+        const pending = await LTOService.getPendingTransactions(address)
+
+        let offset
+        if (!limit) {
+            offset = 0
+            limit = 100
+        } else {
+            offset = limit * (page - 1) - pending.length
+            if (offset < 0) {
+                limit = limit + offset
+                offset = 0
+            }
+        }
+
+        return ([] as TypedTransaction[]).concat(
+            pending.slice(limit * (page - 1), limit),
+            limit > 0 ? await LTOService.getProcessedTransactions(address, limit, offset) : []
+        )
+    }
+
+    private static getPendingTransactions = async (address: string) => {
+        const url = LTOService.apiUrl(`/transactions/unconfirmed`)
+        const response = await fetch(url)
+        const utx: TypedTransaction[] = await response.json()
+
+        const txs = utx.filter(tx => tx.sender === address || tx.recipient === address)
+        txs.forEach(tx => { tx.pending = true })
+
+        return txs;
+    }
+
+    private static getProcessedTransactions = async (address: string, limit = 100, offset = 0) => {
+        const url = LTOService.apiUrl(`/transactions/address/${address}?limit=${limit}&offset=${offset}`)
+        const response = await fetch(url)
+        const [txs] = await response.json()
+
+        return txs
+    }
+
+    public static getLeases = async (address: string) => {
+        const [pending, active] = await Promise.all([
+            LTOService.getPendingTransactions(address),
+            LTOService.getActiveLeases(address)
+        ])
+        const leases = [...pending.filter(tx => tx.type === Lease.TYPE), ...active]
+
+        for (const cancel of pending.filter(tx => tx.type === CancelLease.TYPE)) {
+            const lease = leases.find(tx => tx.id === cancel.leaseId)
+            if (lease) lease.pending = true
+        }
+
+        return leases
+    }
+
+    private static getActiveLeases = async (address: string) => {
+        const url = LTOService.apiUrl(`/leasing/active/${address}`)
+
+        const response = await fetch(url)
+        return response.json()
+    }
+
     public static broadcast = async (transaction: Transaction) => {
-        return lto.node.broadcast(transaction)
+        const url = LTOService.apiUrl('/transactions/broadcast')
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(transaction)
+        })
+
+        if (response.status >= 400) throw new Error('Broadcast transaction failed: ' + await response.text())
+    }
+
+    public static isValidAddress = (address: string): boolean => {
+        try {
+            return lto.isValidAddress(address)
+        } catch (e) {
+            return false
+        }
     }
 }

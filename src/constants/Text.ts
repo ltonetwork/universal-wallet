@@ -84,7 +84,7 @@ export const TAB_NAVIGATOR = {
 }
 
 export const WALLET = {
-    REGULAR: 'Regular account',
+    REGULAR: 'Balance',
     PRICE: 'Price',
     LEASING: 'Leasing',
     AVAILABLE: 'Available',
@@ -92,7 +92,13 @@ export const WALLET = {
     UNBONDING: 'Unbonding',
     LTO: 'LTO',
     EQUIVALENT: 'Equivalent to',
-    DOLLAR_SYMBOL: '$'
+    DOLLAR_SYMBOL: '$',
+    ACTIVE_LEASES: 'Active Leases',
+    RECENT_ACTIVITY: 'Recent Activity',
+    MORE: 'More',
+    TRANSACTIONS: 'Transactions',
+    TRANSFER: 'Transer',
+    LEASE: 'Lease',
 }
 
 export const CREDENTIALS = {
