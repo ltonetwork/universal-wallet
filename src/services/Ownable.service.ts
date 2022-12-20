@@ -2,6 +2,7 @@ import StorageService from './Storage.service'
 import { unzip } from 'react-native-zip-archive'
 import RNFS from 'react-native-fs'
 import {DocumentPickerResponse} from "react-native-document-picker"
+import injectAssets from "../utils/injectAssets";
 
 const OWNABLE_PATH = RNFS.DocumentDirectoryPath + '/ownables'
 
@@ -71,9 +72,29 @@ export default class OwnableService {
         return RNFS.readFile(jsFile.path, 'base64')
     }
 
+    public static getHTML = async (optionId: string): Promise<string> => {
+        const option = await OwnableService.getOption(optionId)
+        if (!option) throw Error('No such ownable option')
+
+        const result = await RNFS.readDir(`${OWNABLE_PATH}/${optionId}`)
+
+        const jsFile = result.find(file => file.name === 'index.html' || file.name === `${option.name}.html`)
+        if (!jsFile) throw new Error('Package doesn\'t contain an index.html file')
+
+        const contents = await RNFS.readFile(jsFile.path, 'utf8')
+
+        return injectAssets(
+            contents,
+            (filename: string) => RNFS.readFile(`${OWNABLE_PATH}/${optionId}/${filename}`, 'base64')
+        )
+    }
+
     public static issue = async (optionId: string) => {
         const option = await OwnableService.getOption(optionId)
         if (!option) throw Error('No such ownable option')
+
+        // Create event chain
+        // id will be the event chain id
 
         OwnableService._issued.push({id: (Math.random() + 1).toString(36).substring(7), option})
         StorageService.setItem('ownables', OwnableService._issued)
@@ -82,5 +103,10 @@ export default class OwnableService {
     public static list = async (): Promise<{id: string, option: {id: string, name: string}}[]> => {
         await OwnableService.init()
         return OwnableService._issued
+    }
+
+    public static clear = async () => {
+        OwnableService._issued = []
+        StorageService.setItem('ownables', [])
     }
 }
