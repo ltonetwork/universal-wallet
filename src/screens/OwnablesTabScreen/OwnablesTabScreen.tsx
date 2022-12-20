@@ -67,7 +67,7 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
           loadOwnables()
           setShowAddModal(false)
         }}
-        title={option.name}
+        title={`${option.name} (${option.id})`}
     />
 
 
@@ -83,10 +83,8 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
           onQrPress={() => navigation.navigate('QrReader')}
           input={<MainTitle>{OWNABLES.MAINTITLE}</MainTitle>} />
 
-        <ShortList
-            data={ownables}
-            renderItem={({item}) => <Ownable key={item.id} id={item.id} option={item.option} /> }
-        />
+          <Button onPress={() => { OwnableService.clear().then(loadOwnables) }}>Clear</Button>
+        { ownables.map(ownable => <Ownable key={ownable.id} ownable={ownable} />) }
       </Container>
 
       <Provider>
