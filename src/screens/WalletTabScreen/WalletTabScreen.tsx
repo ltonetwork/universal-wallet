@@ -17,7 +17,6 @@ import { TypedCoinData } from '../../interfaces/TypedCoinData'
 import { TypedDetails } from '../../interfaces/TypedDetails'
 import { TypedTransaction } from "../../interfaces/TypedTransaction";
 import LTOService from '../../services/LTO.service'
-import CoinMarketCapService from '../../services/CoinMarketCap.service'
 import { formatNumber } from '../../utils/formatNumber'
 import { backgroundImage, logoTitle } from "../../utils/images"
 import {
@@ -49,6 +48,7 @@ import ShortList from "../../components/ShortList";
 import ScrollContainer from "../../components/ScrollContainer";
 import TransactionListItem from "../../components/TransactionListItem";
 import Loader from "../../components/Loader";
+import CoinPriceService from "../../services/CoinPrice.service";
 
 export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wallet'>) {
 
@@ -166,8 +166,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
         const signal = controller.signal
         const getPrizeInfo = () => {
             setIsLoading(true)
-            CoinMarketCapService.getCoinInfo(signal)
-                .then(data => data.data[3714].quote.USD)
+            CoinPriceService.getCoinInfo(signal)
                 .then(price => {
                     setCoinData(price)
                 })
