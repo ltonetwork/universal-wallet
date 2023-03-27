@@ -10,7 +10,8 @@ import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { View } from 'react-native'
 import { REGISTER } from '../../constants/Text'
-import LTOService from "../../services/LTO.service";
+import LTOService from "../../services/LTO.service"
+import { setKeychainDataObject } from '../../utils/keychain'
 
 
 export default function RegisterAccountScreen({ navigation, route }: RootStackScreenProps<'RegisterAccount'>) {
@@ -90,8 +91,9 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
         try {
             setIsLoading(true)
 
-            await LocalStorageService.storeData('@userAlias', {nickname: loginForm.nickname})
+            await LocalStorageService.storeData('@userAlias', { nickname: loginForm.nickname })
             await LTOService.storeAccount(loginForm.nickname, loginForm.password)
+            await setKeychainDataObject({ pin: loginForm.password })
 
             if (route.params.data === 'created') {
                 setMessageInfo('Account created successfully!')
