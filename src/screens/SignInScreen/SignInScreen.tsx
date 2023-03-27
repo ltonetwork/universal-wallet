@@ -8,6 +8,7 @@ import { ButtonContainer, Container, InputContainer, StyledText, StyledTitle } f
 import LTOService from '../../services/LTO.service'
 import * as LocalAuthentication from 'expo-local-authentication'
 import { getPassword } from '../../utils/keychain'
+import { SIGNIN } from '../../constants/Text'
 
 export default function SignInScreen({ navigation }: RootStackScreenProps<'SignIn'>) {
     const [userAlias, setUserAlias] = useState<any>()
@@ -104,23 +105,23 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
     return (
         <Container>
             <InputContainer>
-                <StyledTitle>Sign in</StyledTitle>
-                <StyledText>Sign in with your account name and password</StyledText>
+                <StyledTitle>{SIGNIN.TITLE}</StyledTitle>
+                <StyledText>{SIGNIN.SUBTITLE}</StyledText>
                 {userAlias?.nickname !== undefined && (
                     <StyledInput
                         mode={'flat'}
                         style={{ marginBottom: 5 }}
                         disabled={true}
-                        label='Nickname'
+                        label={SIGNIN.INPUT_NICKNAME.LABEL}
                         value={userAlias?.nickname}
                     ></StyledInput>
                 )}
                 <StyledInput
-                    label='Wallet password'
+                    label={SIGNIN.INPUT_PASSWORD.LABEL}
                     value={password}
                     onChangeText={(password) => setPassword(password)}
                     secureTextEntry={passwordVisible}
-                    placeholder='Type your password'
+                    placeholder={SIGNIN.INPUT_PASSWORD.PLACEHOLDER}
                     right={
                         <StyledInput.Icon
                             name={passwordVisible ? 'eye' : 'eye-off'}

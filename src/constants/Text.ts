@@ -23,9 +23,15 @@ export const SIGNUP = {
 
 export const SIGNIN = {
     TITLE: 'SIGN IN',
-    SUBTITLE: 'Create and account or import one with your seed phrase',
-    BUTTON_CREATE: 'Create new account',
-    BUTTON_IMPORT: 'Import account with your seeds',
+    SUBTITLE: 'Sign in with your account name and password',
+    INPUT_NICKNAME: {
+        LABEL: 'Nickname',
+    },
+    INPUT_PASSWORD: {
+        LABEL: 'Wallet password',
+        PLACEHOLDER: 'Type your password'
+    },
+    BUTTON_CREATE: 'Sign in',
 }
 
 export const IMPORT_WITHSEEDS = {
