@@ -5,7 +5,9 @@ import { StyledInput } from '../../components/styles/StyledInput.styles'
 import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { ButtonContainer, Container, InputContainer, StyledText, StyledTitle } from './SignInScreen.styles'
-import LTOService from "../../services/LTO.service";
+import LTOService from '../../services/LTO.service'
+import * as LocalAuthentication from 'expo-local-authentication'
+import { getPassword } from '../../utils/keychain'
 
 export default function SignInScreen({ navigation }: RootStackScreenProps<'SignIn'>) {
     const [userAlias, setUserAlias] = useState<any>()
@@ -57,6 +59,47 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                 setShowMessage(true)
             })
     }
+
+    useEffect(() => {
+        const authenticateWithBiometrics = async (): Promise<void> => {
+            try {
+                const hasHardware: boolean = await LocalAuthentication.hasHardwareAsync()
+                const isEnrolled: boolean = await LocalAuthentication.isEnrolledAsync()
+
+                if (!hasHardware) {
+                    throw new Error('Biometric authentication not available')
+                }
+
+                const passCode: string | null = await getPassword()
+
+                if (!passCode) {
+                    throw new Error('Unable to retrieve password')
+                }
+
+                if (isEnrolled) {
+                    const result = await LocalAuthentication.authenticateAsync({
+                        promptMessage: 'Enter your pin',
+                        cancelLabel: 'Cancel',
+                    })
+
+                    if (!result.success) {
+                        throw new Error('Authentication failed')
+                    }
+
+                    if (passCode) {
+                        await LTOService.unlock(passCode)
+                        navigation.navigate('Root')
+                    }
+                }
+            } catch (error: unknown) {
+                setMessageInfo('Biometric authentication failed!')
+                setShowMessage(true)
+                console.error(`Error during biometric authentication: ${error}`)
+            }
+        }
+        authenticateWithBiometrics()
+    }, [])
+
 
     return (
         <Container>
