@@ -141,3 +141,14 @@ export const PROFILE = {
 }
 
 
+export const LOCKED_SCREEN = {
+    TITLE: 'ACCOUNT LOCKED!',
+    SUBTITLE: 'Enter your wallet password to unlock your account',
+    INPUT_PASSWORD: {
+        LABEL: 'Wallet password',
+        PLACEHOLDER: 'Type your password'
+    },
+    BUTTON: 'Unlock',
+}
+
+
