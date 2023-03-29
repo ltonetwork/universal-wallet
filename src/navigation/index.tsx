@@ -14,7 +14,7 @@ import CredentialsTabScreen from '../screens/CredentialsTabScreen/CredentialsTab
 import RegisterAccountScreen from '../screens/RegisterAccountScreen/RegisterAccountScreen'
 import ImportSeedScreen from '../screens/ImportWithSeedScreen/ImportWithSeedScreen'
 import MenuScreen from '../screens/MenuScreen/MenuScreen'
-import NotFoundScreen from '../screens/NotFoundScreen'
+import LockedScreen from '../screens/LockedScreen/LockedScreen'
 import OnboardingScreen from '../screens/OnBoardingScreen/OnBoardingScreen'
 import OwnablesTabScreen from '../screens/OwnablesTabScreen/OwnablesTabScreen'
 import ProfileScreen from '../screens/ProfileScreen/ProfileScreen'
@@ -24,10 +24,10 @@ import WalletTabScreen from '../screens/WalletTabScreen/WalletTabScreen'
 import LocalStorageService from '../services/LocalStorage.service'
 import { imagesIcon } from '../utils/images'
 import LinkingConfiguration from './LinkingConfiguration'
-import CreateTransferScreen from "../screens/CreateTransferScreen/CreateTransferScreen";
-import CreateLeaseScreen from "../screens/CreateLeaseScreen/CreateLeaseScreen";
-import TransactionsScreen from "../screens/TransactionsScreen/TransactionsScreen";
-import LeaseScreen from "../screens/LeaseScreen/LeaseScreen";
+import CreateTransferScreen from "../screens/CreateTransferScreen/CreateTransferScreen"
+import CreateLeaseScreen from "../screens/CreateLeaseScreen/CreateLeaseScreen"
+import TransactionsScreen from "../screens/TransactionsScreen/TransactionsScreen"
+import LeaseScreen from "../screens/LeaseScreen/LeaseScreen"
 
 const navTheme = {
   ...DefaultTheme,
@@ -108,7 +108,7 @@ function RootNavigator(): any {
           options={{ headerTitle: '', headerBackTitleVisible: false }}
         />
         <Stack.Screen name='Root' component={BottomTabNavigator} options={{ headerShown: false }} />
-        <Stack.Screen name='NotFound' component={NotFoundScreen} options={{ title: 'Oops!' }} />
+        <Stack.Screen name='LockedScreen' component={LockedScreen} options={{ headerShown: false }} />
         <Stack.Screen
           name='QrReader'
           component={QrReaderScreen}
