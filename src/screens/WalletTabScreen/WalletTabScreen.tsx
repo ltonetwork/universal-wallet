@@ -224,7 +224,9 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
         try {
             if (appState === 'active' && nextAppState.match(/background/)) {
                 LTOService.lock()
-                navigation.navigate('LockedScreen')
+                setTimeout(() => {
+                    navigation.navigate('LockedScreen')
+                }, 200)
             }
             setAppState(nextAppState)
 
