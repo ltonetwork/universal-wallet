@@ -31,7 +31,9 @@ export const SIGNIN = {
         LABEL: 'Wallet password',
         PLACEHOLDER: 'Type your password'
     },
-    BUTTON_CREATE: 'Sign in',
+    BUTTON_SIGNIN: 'Sign in',
+    BUTTON_BIOMETRICS: 'Use biometrics',
+    BIOMETRICS_CONFIRMATION: `Would you like to enable biometric authentication (if available: face ID, fingerprint, iris), for this app?\n\nThis will allow you to securely and quickly access your account without having to enter your password every time. By enabling use of biometrics you agree to our Privacy Policy and Terms of Service\n\nDo you want to proceed?`
 }
 
 export const IMPORT_WITHSEEDS = {
@@ -139,7 +141,6 @@ export const PROFILE = {
     DISCOVER_PRIVATEKEY: 'Show private key',
     DISCOVER_PHRASE: 'Show backup phrase',
 }
-
 
 export const LOCKED_SCREEN = {
     TITLE: 'ACCOUNT LOCKED!',

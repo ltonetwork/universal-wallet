@@ -8,11 +8,15 @@ import { ButtonContainer, Container, InputContainer, StyledText, StyledTitle } f
 import LTOService from '../../services/LTO.service'
 import { SIGNIN } from '../../constants/Text'
 import { authenticateWithBiometrics } from '../../utils/authenticateWithBiometrics'
+import ConfirmationDialog from '../../components/ConfirmationDialog'
+import * as LocalAuthentication from 'expo-local-authentication'
 
 export default function SignInScreen({ navigation }: RootStackScreenProps<'SignIn'>) {
     const [userAlias, setUserAlias] = useState<any>()
     const [password, setPassword] = useState<string>('')
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
+    const [dialogVisible, setDialogVisible] = useState(false)
+    const [isEnrolled, setIsEnrolled] = useState(false)
     const { setShowMessage, setMessageInfo } = useContext(MessageContext)
 
     useEffect(() => {
@@ -59,13 +63,17 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                 setShowMessage(true)
             })
     }
-
     useEffect(() => {
-        authenticateWithBiometrics({ navigation })
+        const verifyForEnrollment = async () => {
+            const isEnrolled: boolean = await LocalAuthentication.isEnrolledAsync()
+            if (isEnrolled) setIsEnrolled(true)
+        }
+        verifyForEnrollment()
     }, [])
 
-
     return (
+
+
         <Container>
             <InputContainer>
                 <StyledTitle>{SIGNIN.TITLE}</StyledTitle>
@@ -102,9 +110,34 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                     onPress={() => handleSignIn()}
                 >
-                    Sign in
+                    {SIGNIN.BUTTON_SIGNIN}
+                </StyledButton>
+                <StyledButton
+                    mode='outlined'
+                    color='#A017B7'
+                    uppercase={false}
+                    labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
+                    onPress={() => {
+                        console.log('pressing...')
+                        isEnrolled ? authenticateWithBiometrics({ navigation }) : setDialogVisible(true)
+                    }}
+                >
+                    {SIGNIN.BUTTON_BIOMETRICS}
                 </StyledButton>
             </ButtonContainer>
+            <ConfirmationDialog
+                visible={dialogVisible}
+                message={SIGNIN.BIOMETRICS_CONFIRMATION}
+                onPress={() => {
+                    authenticateWithBiometrics({ navigation })
+                    setDialogVisible(false)
+                }}
+                onCancel={() => {
+                    setDialogVisible(false)
+                }}
+            />
         </Container>
+
+
     )
 }
