@@ -12,29 +12,25 @@ export default function ConfirmationDialog(props: {
 }): JSX.Element {
 
     return (
-        <Provider>
-            <SafeAreaView>
-                <Portal>
-                    <Dialog
-                        visible={props.visible}
-                        onDismiss={props.onCancel}
-                    >
-                        <Dialog.Title testID='dialog'>Confirm:</Dialog.Title>
-                        <Dialog.Content>
-                            <Paragraph>{props.message}</Paragraph>
-                        </Dialog.Content>
-                        <ButtonContainer>
-                            <Dialog.Actions>
-                                <Button testID='cancel' onPress={props.onCancel}>Cancel</Button>
-                            </Dialog.Actions>
-                            <Dialog.Actions>
-                                <Button testID='continue' onPress={props.onPress}>Continue</Button>
-                            </Dialog.Actions>
-                        </ButtonContainer>
+        <Portal>
+            <Dialog
+                visible={props.visible}
+                onDismiss={props.onCancel}
+            >
+                <Dialog.Title testID='dialog'>Confirm:</Dialog.Title>
+                <Dialog.Content>
+                    <Paragraph>{props.message}</Paragraph>
+                </Dialog.Content>
+                <ButtonContainer>
+                    <Dialog.Actions>
+                        <Button testID='cancel' onPress={props.onCancel}>Cancel</Button>
+                    </Dialog.Actions>
+                    <Dialog.Actions>
+                        <Button testID='continue' onPress={props.onPress}>Continue</Button>
+                    </Dialog.Actions>
+                </ButtonContainer>
 
-                    </Dialog>
-                </Portal>
-            </SafeAreaView>
-        </Provider>
+            </Dialog>
+        </Portal>
     )
 }
