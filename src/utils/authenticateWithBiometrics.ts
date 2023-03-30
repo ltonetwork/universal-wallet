@@ -11,35 +11,43 @@ interface Props {
 
 export const authenticateWithBiometrics = async ({ navigation, goBack }: Props): Promise<void> => {
   try {
-    const hasHardware: boolean = await LocalAuthentication.hasHardwareAsync()
-    const isEnrolled: boolean = await LocalAuthentication.isEnrolledAsync()
+    const hasHardwareSupport: boolean = await LocalAuthentication.hasHardwareAsync()
+    const isEnrolledOnDevice: boolean = await LocalAuthentication.isEnrolledAsync()
 
-    if (!hasHardware) {
-      throw new Error('Biometric authentication not available')
+    if (!hasHardwareSupport) {
+      throw new Error('Biometric authentication is not available on this device')
     }
 
     const passCode: string | null = await getPassword()
 
     if (!passCode) {
-      throw new Error('Unable to retrieve password')
+      throw new Error('Unable to retrieve password.')
     }
 
-    if (isEnrolled) {
+    if (isEnrolledOnDevice) {
       const result = await LocalAuthentication.authenticateAsync({
-        promptMessage: 'Enter your pin',
+        promptMessage: 'Authenticate',
         cancelLabel: 'Cancel',
       })
 
       if (!result.success) {
-        throw new Error('Authentication failed')
+        throw new Error('Authentication failed.')
       }
 
-      if (passCode) {
-        await LTOService.unlock(passCode)
-        setTimeout(() => {
-          goBack ? navigation.goBack() : navigation.navigate('Root')
-        }, 1000)
-      }
+      await LTOService.unlock(passCode)
+      setTimeout(() => {
+        goBack && navigation.goBack() || navigation.navigate('Root')
+      }, 1000)
+    } else {
+      await LocalAuthentication.authenticateAsync({
+        promptMessage: 'You must be enrolled on your device to use biometrics',
+        cancelLabel: 'Cancel',
+      })
+
+      await LTOService.unlock(passCode)
+      setTimeout(() => {
+        goBack && navigation.goBack() || navigation.navigate('Root')
+      }, 1000)
     }
   } catch (error: unknown) {
     console.error(`Error during biometric authentication: ${error}`)

@@ -118,7 +118,6 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                     onPress={() => {
-                        console.log('pressing...')
                         isEnrolled ? authenticateWithBiometrics({ navigation }) : setDialogVisible(true)
                     }}
                 >
