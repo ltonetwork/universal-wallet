@@ -176,7 +176,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
     useEffect(() => {
         const controller = new AbortController()
         const signal = controller.signal
-        const getPrizeInfo = () => {
+        const getPriceInfo = () => {
             setIsLoading(true)
             CoinPriceService.getCoinInfo(signal)
                 .then(price => {
@@ -186,7 +186,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                     throw new Error(`Error retrieving coin data. ${error}`)
                 })
         }
-        getPrizeInfo()
+        getPriceInfo()
         return () => {
             controller.abort()
         }

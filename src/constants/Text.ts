@@ -105,7 +105,7 @@ export const WALLET = {
     RECENT_ACTIVITY: 'Recent Activity',
     MORE: 'More',
     TRANSACTIONS: 'Transactions',
-    TRANSFER: 'Transer',
+    TRANSFER: 'Transfer',
     LEASE: 'Lease',
 }
 
