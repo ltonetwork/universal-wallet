@@ -1,4 +1,6 @@
-# LTO Wallet
+![LTO github readme](https://user-images.githubusercontent.com/100821/196711741-96cd4ba5-932a-4e95-b420-42d4d61c21fd.png)
+
+# LTO Universal Wallet
 
 ## Install
 
@@ -42,7 +44,9 @@ You also can refer to the `.env.example` file within the repository.
 
 ## To run on Android/IOS
 
-To run the project first [configure SDK](https://reactnative.dev/docs/running-on-device) and [sign the Android app](https://reactnative.dev/docs/signed-apk-android) (explained below). Once configured and as this is an expo ejected project, you can initialize it by running:
+To run the project first [configure SDK](https://reactnative.dev/docs/running-on-device) and
+[sign the Android app](https://reactnative.dev/docs/signed-apk-android) (explained below). Once configured and as this
+is an expo ejected project, you can initialize it by running:
 
 Android:
 
@@ -62,17 +66,22 @@ On both cases, metro bundler will start and will load the app.
 
 To configure the signing you need to have the keystore.
 
-Then you need to store the following envvars in your `$HOME/.gradle/gradle.properties`.
+```
+keytool -genkey -v -keystore android/app/lto.keystore -alias lto -keyalg RSA -keysize 2048 -validity 10000
+```
 
-You can follow [this tutorial](https://reactnative.dev/docs/signed-apk-android#setting-up-gradle-variables) and [this one](https://pilloxa.gitlab.io/posts/safer-passwords-in-gradle/) to see how to configure the mac keychain to use this.
+Follow [this tutorial](https://reactnative.dev/docs/signed-apk-android#setting-up-gradle-variables) to configure gradle
+properties. You'll need to store the following env vars in `$HOME/.gradle/gradle.properties` or `android/local.properties`.
 
 ```bash
- # $HOME/.gradle/gradle.properties
-LTO_UPLOAD_STORE_FILE=android-release.keystore  # The keystore file path
-LTO_UPLOAD_KEY_ALIAS=my-key-alias               # The alias of the keystore file
-LTO_MAC_USERNAME=javaguirre                     # your mac user name
-LTO_MAC_KEYSTORE_NAME=lto-android               # Your mac keychain store name (see link above)
+LTO_UPLOAD_STORE_FILE=lto.keystore
+LTO_UPLOAD_KEY_ALIAS=lto
+LTO_UPLOAD_STORE_PASSWORD=*****
+LTO_UPLOAD_KEY_PASSWORD=*****
 ```
+
+If you are using a mac, you can follow [this article](https://pilloxa.gitlab.io/posts/safer-passwords-in-gradle/)
+to see how to configure the mac keychain and prevent your keystore password to be stored in plain text.
 
 ## Prepare Android build
 
@@ -85,24 +94,22 @@ yarn build:android
 To get a new apk debug file use:
 
 ```bash
-cd android
-./gradlew assembleDebug
+yarn build:android:apk
 ```
 
 This will generate APK Debug file so you can test your app on your device directly or mount it on emulator.
 
-To get an Release version use:
+To get a release version use:
 
 ```bash
-cd android
-./gradlew bundleRelease
+yarn build:android:aab
 ```
 
-This will bundle and generate ABB file, ready to be uploaded to Google Play Console. Follow [these indications](https://reactnative.dev/docs/signed-apk-android#generating-the-release-aab)
+This will bundle and generate AAB file, ready to be uploaded to Google Play Console. Follow [these indications](https://reactnative.dev/docs/signed-apk-android#generating-the-release-aab)
 
 ## Prepare iOS build
 
-To update `main.jsbundle` so project is prepared to be uploaded for testing purposes or to the appstore use:
+To update `main.jsbundle` so project is prepared to be uploaded for testing purposes or to the App Store use:
 
 ```bash
 yarn build:ios
