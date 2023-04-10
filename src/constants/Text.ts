@@ -33,7 +33,6 @@ export const SIGNIN = {
     },
     BUTTON_SIGNIN: 'Sign in',
     BUTTON_BIOMETRICS: 'Use biometrics',
-    BIOMETRICS_CONFIRMATION: `Would you like to enable biometric authentication (if available: face ID, fingerprint, iris), for this app?\n\nThis will allow you to securely and quickly access your account without having to enter your password every time. By enabling use of biometrics you agree to our Privacy Policy and Terms of Service\n\nDo you want to proceed?`
 }
 
 export const IMPORT_WITHSEEDS = {
@@ -67,7 +66,11 @@ export const REGISTER = {
     BUTTON_CREATE: 'Create new account',
     BUTTON_IMPORT: 'Import account',
     MODAL_TITLE: 'TERMS AND CONDITIONS',
-    BUTTON_MODAL: 'I agree'
+    BUTTON_MODAL: 'I agree',
+    BIOMETRICS_CONFIRMATION: `Would you like to enable biometric authentication for this app?\n\nThis feature allows you to use the available biometric technology such as Face ID, Fingerprint, or Iris to access your account securely and conveniently, without having to enter your password each time. By enabling biometric authentication, you agree to our Privacy Policy and Terms of Service.\n\n Would you like to proceed?`,
+    DIALOG_TITLE: 'Biometric authentication',
+    DIALOG_CANCEL_BUTTON: 'No, continue',
+    DIALOG_CONTINUE_BUTTON: 'Enable biometric auth'
 }
 
 
