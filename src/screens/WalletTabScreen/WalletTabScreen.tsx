@@ -220,19 +220,14 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
         />
     }
 
-    const handleAppStateChange = async (nextAppState: AppStateStatus): Promise<void> => {
-        try {
-            if (appState === 'active' && nextAppState.match(/background/)) {
-                LTOService.lock()
-                setTimeout(() => {
-                    navigation.navigate('LockedScreen')
-                }, 200)
-            }
-            setAppState(nextAppState)
-
-        } catch (error) {
-            console.error(`Error during app state change: ${error}`)
+    const handleAppStateChange = (nextAppState: AppStateStatus): void => {
+        if (appState === 'active' && nextAppState?.match(/background/)) {
+            LTOService.lock()
+            setTimeout(() => {
+                navigation.navigate('LockedScreen')
+            }, 500)
         }
+        setAppState(nextAppState)
     }
 
     useEffect(() => {
