@@ -6530,13 +6530,6 @@ expo-linking@~3.1.0:
     qs "^6.9.1"
     url-parse "^1.5.9"
 
-expo-local-authentication@^13.2.1:
-  version "13.2.1"
-  resolved "https://registry.yarnpkg.com/expo-local-authentication/-/expo-local-authentication-13.2.1.tgz#7139a67d4a980e55347ac2b079015e52eb7da974"
-  integrity sha512-DugTdymppsXyW0EDuYwUO6l2I9YK+FkDOUmuPQRGXPkYvmETSGEoGI7JQf0i/unihhS1uzyYvqNBAT3mPM4Tpg==
-  dependencies:
-    invariant "^2.2.4"
-
 expo-localization@~13.0.0:
   version "13.0.0"
   resolved "https://registry.yarnpkg.com/expo-localization/-/expo-localization-13.0.0.tgz#f78969151e8db18abc2ebb8fc423b836e21ab918"
