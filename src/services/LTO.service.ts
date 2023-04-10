@@ -1,19 +1,28 @@
-import {Account, CancelLease, Lease, LTO, Transaction} from "@ltonetwork/lto"
-import LocalStorageService from "./LocalStorage.service";
-import {TypedTransaction} from "../interfaces/TypedTransaction";
+import { Account, CancelLease, Lease, LTO, Transaction } from "@ltonetwork/lto"
+import LocalStorageService from "./LocalStorage.service"
+import { TypedTransaction } from "../interfaces/TypedTransaction"
 export const lto = new LTO(process.env.LTO_NETWORK_ID)
-if (process.env.LTO_API_URL) lto.nodeAddress = process.env.LTO_API_URL;
+if (process.env.LTO_API_URL) lto.nodeAddress = process.env.LTO_API_URL
 
 export default class LTOService {
-    static account?: Account;
+    static account?: Account
 
     public static isUnlocked = (): boolean => {
         return !!LTOService.account
     }
 
-    public static unlock = async (password: string) => {
+    public static unlock = async (password: string | undefined, signature?: string) => {
         const [encryptedAccount] = await LocalStorageService.getData('@accountData')
-        LTOService.account = lto.account({seedPassword: password, ...encryptedAccount})
+        const encodedSignature = signature && encodeURIComponent(signature)
+
+        const seedIndex = encodedSignature ? 0 : 1
+        const seed = encryptedAccount.seed[seedIndex]
+
+        if (signature) {
+            LTOService.account = lto.account({ seedPassword: encodedSignature, seed })
+        } else {
+            LTOService.account = lto.account({ seedPassword: password, seed })
+        }
     }
 
     public static lock = () => {
@@ -28,15 +37,20 @@ export default class LTOService {
         return LTOService.account
     }
 
-    public static storeAccount = async (nickname: string, password: string) => {
+    public static storeAccount = async (nickname: string, password: string, signature?: string) => {
         if (!LTOService.account) {
             throw new Error("Account not created")
         }
+        const encodedSignature = signature && encodeURIComponent(signature)
+
+        const encryptedWithSignature = encodedSignature ? LTOService.account.encryptSeed(encodedSignature) : undefined
+        const encryptedWithPassword = LTOService.account.encryptSeed(password)
+
 
         await LocalStorageService.storeData('@accountData', [{
             nickname: nickname,
             address: LTOService.account.address,
-            seed: LTOService.account.encryptSeed(password),
+            seed: [encryptedWithSignature, encryptedWithPassword],
         }])
     }
 
@@ -99,7 +113,7 @@ export default class LTOService {
         const txs = utx.filter(tx => tx.sender === address || tx.recipient === address)
         txs.forEach(tx => { tx.pending = true })
 
-        return txs;
+        return txs
     }
 
     private static getProcessedTransactions = async (address: string, limit = 100, offset = 0) => {
