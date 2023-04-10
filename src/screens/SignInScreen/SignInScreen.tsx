@@ -8,14 +8,12 @@ import { ButtonContainer, Container, InputContainer, StyledText, StyledTitle } f
 import LTOService from '../../services/LTO.service'
 import { SIGNIN } from '../../constants/Text'
 import { authenticateWithBiometrics } from '../../utils/authenticateWithBiometrics'
-import ConfirmationDialog from '../../components/ConfirmationDialog'
-import * as LocalAuthentication from 'expo-local-authentication'
+import ReactNativeBiometrics from 'react-native-biometrics'
 
 export default function SignInScreen({ navigation }: RootStackScreenProps<'SignIn'>) {
     const [userAlias, setUserAlias] = useState<any>()
     const [password, setPassword] = useState<string>('')
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
-    const [dialogVisible, setDialogVisible] = useState(false)
     const [isEnrolled, setIsEnrolled] = useState(false)
     const { setShowMessage, setMessageInfo } = useContext(MessageContext)
 
@@ -65,14 +63,14 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
     }
     useEffect(() => {
         const verifyForEnrollment = async () => {
-            const isEnrolled: boolean = await LocalAuthentication.isEnrolledAsync()
+            const rnBiometrics = new ReactNativeBiometrics()
+            const isEnrolled = (await rnBiometrics.biometricKeysExist()).keysExist
             if (isEnrolled) setIsEnrolled(true)
         }
         verifyForEnrollment()
     }, [])
 
     return (
-
 
         <Container>
             <InputContainer>
@@ -112,31 +110,20 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                 >
                     {SIGNIN.BUTTON_SIGNIN}
                 </StyledButton>
-                <StyledButton
-                    mode='outlined'
-                    color='#A017B7'
-                    uppercase={false}
-                    labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                    onPress={() => {
-                        isEnrolled ? authenticateWithBiometrics({ navigation }) : setDialogVisible(true)
-                    }}
-                >
-                    {SIGNIN.BUTTON_BIOMETRICS}
-                </StyledButton>
+                {isEnrolled &&
+                    <StyledButton
+                        mode='outlined'
+                        color='#A017B7'
+                        uppercase={false}
+                        labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
+                        onPress={() => {
+                            authenticateWithBiometrics({ navigation })
+                        }}
+                    >
+                        {SIGNIN.BUTTON_BIOMETRICS}
+                    </StyledButton>
+                }
             </ButtonContainer>
-            <ConfirmationDialog
-                visible={dialogVisible}
-                message={SIGNIN.BIOMETRICS_CONFIRMATION}
-                onPress={() => {
-                    authenticateWithBiometrics({ navigation })
-                    setDialogVisible(false)
-                }}
-                onCancel={() => {
-                    setDialogVisible(false)
-                }}
-            />
         </Container>
-
-
     )
 }
