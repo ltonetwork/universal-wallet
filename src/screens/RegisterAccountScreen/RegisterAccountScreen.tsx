@@ -11,11 +11,13 @@ import LocalStorageService from '../../services/LocalStorage.service'
 import { View } from 'react-native'
 import { REGISTER } from '../../constants/Text'
 import LTOService from "../../services/LTO.service"
-import { setKeychainDataObject } from '../../utils/keychain'
+import ReactNativeBiometrics from 'react-native-biometrics'
+import ConfirmationDialog from '../../components/ConfirmationDialog'
 
 
 export default function RegisterAccountScreen({ navigation, route }: RootStackScreenProps<'RegisterAccount'>) {
     const [isLoading, setIsLoading] = useState<boolean>(true)
+    const [dialogVisible, setDialogVisible] = useState(false)
 
     const [loginForm, setloginForm] = useState({
         nickname: '',
@@ -29,6 +31,8 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
     const [modalVisible, setModalVisible] = useState<boolean>(false)
     const [accountAddress, setAccountAddress] = useState('')
     const { setShowMessage, setMessageInfo } = useContext(MessageContext)
+
+    const rnBiometrics = new ReactNativeBiometrics()
 
     useEffect(() => {
         getAccountAddress()
@@ -79,7 +83,7 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
         return {}
     }
 
-    const handleImportAccount = async () => {
+    const handleAccount = async (requireBiometrics: boolean = false) => {
         const { err } = validateForm()
 
         if (err) {
@@ -89,30 +93,67 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
         }
 
         try {
+            let signature
+            if (requireBiometrics) {
+                signature = await addSignature()
+                if (!signature) throw new Error('User cancelled biometrics request')
+            }
             setIsLoading(true)
 
             await LocalStorageService.storeData('@userAlias', { nickname: loginForm.nickname })
-            await LTOService.storeAccount(loginForm.nickname, loginForm.password)
-            await setKeychainDataObject({ pin: loginForm.password })
 
-            if (route.params.data === 'created') {
-                setMessageInfo('Account created successfully!')
-                setShowMessage(true)
-                setTimeout(() => {
-                    navigation.navigate('Root')
-                }, 1000)
+            await LTOService.storeAccount(loginForm.nickname, loginForm.password, signature)
 
-            } else {
-                setMessageInfo('Account imported successfully!')
-                setShowMessage(true)
-                setTimeout(() => {
-                    navigation.navigate('Root')
-                }, 1000)
-            }
+            const message = route.params.data === 'created'
+                ? 'Account created successfully!'
+                : 'Account imported successfully!'
+
+            setMessageInfo(message)
+            setShowMessage(true)
+
+            setTimeout(() => {
+                navigation.navigate('Root')
+            }, 1000)
+
         } catch (error) {
             throw new Error(`Error storing account data. ${error}`)
         }
     }
+
+    const checkForBiometrics = async () => {
+        const isSupported = (await rnBiometrics.isSensorAvailable()).available
+        if (isSupported) {
+            setDialogVisible(true)
+            return true
+        } else {
+            handleAccount()
+        }
+    }
+
+    const SuscribeBiometrics = async () => {
+        await handleAccount(true)
+    }
+
+    const addSignature = async (): Promise<string | undefined> => {
+        const { keysExist } = await rnBiometrics.biometricKeysExist()
+
+        if (!keysExist) {
+            await rnBiometrics.createKeys()
+        }
+
+        const signatureResult = await rnBiometrics.createSignature({
+            promptMessage: "Authenticate",
+            payload: 'payload',
+
+        })
+
+        if (!signatureResult.success) {
+            throw new Error(signatureResult.error)
+        }
+
+        return signatureResult.signature
+    }
+
 
     return (
         <>
@@ -201,7 +242,7 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                                 disabled={false}
                                 uppercase={false}
                                 labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                                onPress={() => handleImportAccount()
+                                onPress={() => checkForBiometrics()
                                 }>
                                 {REGISTER.BUTTON_CREATE}
                             </StyledButton>
@@ -211,14 +252,29 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                                 disabled={false}
                                 uppercase={false}
                                 labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
-                                onPress={() => handleImportAccount()
+                                onPress={() => checkForBiometrics()
                                 }>
                                 {REGISTER.BUTTON_IMPORT}
                             </StyledButton>
                         }
                     </ButtonContainer>
-                </Container >
 
+                    <ConfirmationDialog
+                        visible={dialogVisible}
+                        message={REGISTER.BIOMETRICS_CONFIRMATION}
+                        onPress={() => {
+                            SuscribeBiometrics()
+                            setDialogVisible(false)
+                        }}
+                        titleLabel={REGISTER.DIALOG_TITLE}
+                        cancelButtonLabel={REGISTER.DIALOG_CANCEL_BUTTON}
+                        continueButtonLabel={REGISTER.DIALOG_CONTINUE_BUTTON}
+                        onCancel={() => {
+                            handleAccount()
+                            setDialogVisible(false)
+                        }}
+                    />
+                </Container >
             }
         </>
     )
