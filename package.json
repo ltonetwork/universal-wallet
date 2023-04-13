@@ -1,6 +1,5 @@
 {
-  "name": "ltowallet",
-  "version": "1.0.0",
+  "name": "@ltonetwork/universal-wallet",
   "scripts": {
     "start": "react-native start",
     "android": "react-native run-android",
