@@ -11,7 +11,6 @@
     "watch": "jest --watchAll",
     "postinstall": "node_modules/.bin/rn-nodeify --install crypto,assert,url,stream,events --hack",
     "build:ios": "react-native bundle --entry-file='index.js' --bundle-output='./ios/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
-    "build:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "build:android:apk": "cd android && ./gradlew assembleDebug",
     "build:android:aab": "cd android && ./gradlew bundleRelease"
   },

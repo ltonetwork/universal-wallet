@@ -85,11 +85,7 @@ to see how to configure the mac keychain and prevent your keystore password to b
 
 ## Prepare Android build
 
-To update `index.android.bundle` so project is prepared and updated use:
-
-```bash
-yarn build:android
-```
+To update `index.android.bundle` so project is prepared and updated.
 
 To get a new apk debug file use:
 
