@@ -5,12 +5,16 @@ import { StyledInput } from '../../components/styles/StyledInput.styles'
 import { MessageContext } from '../../context/UserMessage.context'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { ButtonContainer, Container, InputContainer, StyledText, StyledTitle } from './SignInScreen.styles'
-import LTOService from "../../services/LTO.service";
+import LTOService from '../../services/LTO.service'
+import { SIGNIN } from '../../constants/Text'
+import { authenticateWithBiometrics } from '../../utils/authenticateWithBiometrics'
+import ReactNativeBiometrics from 'react-native-biometrics'
 
 export default function SignInScreen({ navigation }: RootStackScreenProps<'SignIn'>) {
     const [userAlias, setUserAlias] = useState<any>()
     const [password, setPassword] = useState<string>('')
     const [passwordVisible, setPasswordVisible] = useState<boolean>(true)
+    const [isEnrolled, setIsEnrolled] = useState(false)
     const { setShowMessage, setMessageInfo } = useContext(MessageContext)
 
     useEffect(() => {
@@ -57,27 +61,36 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                 setShowMessage(true)
             })
     }
+    useEffect(() => {
+        const verifyForEnrollment = async () => {
+            const rnBiometrics = new ReactNativeBiometrics()
+            const isEnrolled = (await rnBiometrics.biometricKeysExist()).keysExist
+            if (isEnrolled) setIsEnrolled(true)
+        }
+        verifyForEnrollment()
+    }, [])
 
     return (
+
         <Container>
             <InputContainer>
-                <StyledTitle>Sign in</StyledTitle>
-                <StyledText>Sign in with your account name and password</StyledText>
+                <StyledTitle>{SIGNIN.TITLE}</StyledTitle>
+                <StyledText>{SIGNIN.SUBTITLE}</StyledText>
                 {userAlias?.nickname !== undefined && (
                     <StyledInput
                         mode={'flat'}
                         style={{ marginBottom: 5 }}
                         disabled={true}
-                        label='Nickname'
+                        label={SIGNIN.INPUT_NICKNAME.LABEL}
                         value={userAlias?.nickname}
                     ></StyledInput>
                 )}
                 <StyledInput
-                    label='Wallet password'
+                    label={SIGNIN.INPUT_PASSWORD.LABEL}
                     value={password}
                     onChangeText={(password) => setPassword(password)}
                     secureTextEntry={passwordVisible}
-                    placeholder='Type your password'
+                    placeholder={SIGNIN.INPUT_PASSWORD.PLACEHOLDER}
                     right={
                         <StyledInput.Icon
                             name={passwordVisible ? 'eye' : 'eye-off'}
@@ -95,8 +108,21 @@ export default function SignInScreen({ navigation }: RootStackScreenProps<'SignI
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
                     onPress={() => handleSignIn()}
                 >
-                    Sign in
+                    {SIGNIN.BUTTON_SIGNIN}
                 </StyledButton>
+                {isEnrolled &&
+                    <StyledButton
+                        mode='outlined'
+                        color='#A017B7'
+                        uppercase={false}
+                        labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
+                        onPress={() => {
+                            authenticateWithBiometrics({ navigation })
+                        }}
+                    >
+                        {SIGNIN.BUTTON_BIOMETRICS}
+                    </StyledButton>
+                }
             </ButtonContainer>
         </Container>
     )
