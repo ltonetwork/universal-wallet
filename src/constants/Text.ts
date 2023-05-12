@@ -23,9 +23,16 @@ export const SIGNUP = {
 
 export const SIGNIN = {
     TITLE: 'SIGN IN',
-    SUBTITLE: 'Create and account or import one with your seed phrase',
-    BUTTON_CREATE: 'Create new account',
-    BUTTON_IMPORT: 'Import account with your seeds',
+    SUBTITLE: 'Sign in with your account name and password',
+    INPUT_NICKNAME: {
+        LABEL: 'Nickname',
+    },
+    INPUT_PASSWORD: {
+        LABEL: 'Wallet password',
+        PLACEHOLDER: 'Type your password'
+    },
+    BUTTON_SIGNIN: 'Sign in',
+    BUTTON_BIOMETRICS: 'Use biometrics',
 }
 
 export const IMPORT_WITHSEEDS = {
@@ -59,7 +66,11 @@ export const REGISTER = {
     BUTTON_CREATE: 'Create new account',
     BUTTON_IMPORT: 'Import account',
     MODAL_TITLE: 'TERMS AND CONDITIONS',
-    BUTTON_MODAL: 'I agree'
+    BUTTON_MODAL: 'I agree',
+    BIOMETRICS_CONFIRMATION: `Would you like to enable biometric authentication for this app?\n\nThis feature allows you to use the available biometric technology such as Face ID, Fingerprint, or Iris to access your account securely and conveniently, without having to enter your password each time. By enabling biometric authentication, you agree to our Privacy Policy and Terms of Service.\n\n Would you like to proceed?`,
+    DIALOG_TITLE: 'Biometric authentication',
+    DIALOG_CANCEL_BUTTON: 'No, continue',
+    DIALOG_CONTINUE_BUTTON: 'Enable biometric auth'
 }
 
 
@@ -97,7 +108,7 @@ export const WALLET = {
     RECENT_ACTIVITY: 'Recent Activity',
     MORE: 'More',
     TRANSACTIONS: 'Transactions',
-    TRANSFER: 'Transer',
+    TRANSFER: 'Transfer',
     LEASE: 'Lease',
 }
 
@@ -132,6 +143,16 @@ export const PROFILE = {
     PHRASE: 'Backup Phrase (Seed)',
     DISCOVER_PRIVATEKEY: 'Show private key',
     DISCOVER_PHRASE: 'Show backup phrase',
+}
+
+export const LOCKED_SCREEN = {
+    TITLE: 'ACCOUNT LOCKED!',
+    SUBTITLE: 'Enter your wallet password to unlock your account',
+    INPUT_PASSWORD: {
+        LABEL: 'Wallet password',
+        PLACEHOLDER: 'Type your password'
+    },
+    BUTTON: 'Unlock',
 }
 
 

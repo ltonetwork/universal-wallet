@@ -22,7 +22,7 @@ export type RootStackParamList = {
   CreateLease: { address: string } | undefined
   Lease: { address: string }
   Transactions: undefined
-  NotFound: undefined
+  LockedScreen: undefined
 }
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<

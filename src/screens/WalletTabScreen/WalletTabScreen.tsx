@@ -1,12 +1,14 @@
-import { useFocusEffect } from '@react-navigation/native'
+import { useFocusEffect, useIsFocused } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import {
+    AppState,
+    AppStateStatus,
     BackHandler,
     ImageBackground,
     Text,
     useWindowDimensions
 } from 'react-native'
-import { Button, Card, List, Paragraph} from 'react-native-paper'
+import { Button, Card, List, Paragraph } from 'react-native-paper'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
 import StatusBarIOS from '../../components/StatusBarIOS'
@@ -15,7 +17,7 @@ import { LATEST_TRANSACTIONS } from '../../constants/Quantities'
 import { WALLET } from '../../constants/Text'
 import { TypedCoinData } from '../../interfaces/TypedCoinData'
 import { TypedDetails } from '../../interfaces/TypedDetails'
-import { TypedTransaction } from "../../interfaces/TypedTransaction";
+import { TypedTransaction } from "../../interfaces/TypedTransaction"
 import LTOService from '../../services/LTO.service'
 import { formatNumber } from '../../utils/formatNumber'
 import { backgroundImage, logoTitle } from "../../utils/images"
@@ -35,35 +37,45 @@ import {
     TopContainer,
     ActivityCard
 } from './WalletTabScreen.styles'
-import {useInterval} from "../../utils/useInterval";
-import {formatDate} from "../../utils/formatDate";
-import {shortAddress} from "../../utils/shortAddress";
-import If from "../../components/If";
-import {TypedLease} from "../../interfaces/TypedLease";
-import CommunityNodesService from "../../services/CommunityNodes.service";
-import WalletFAB from "../../components/WalletFAB";
-import Collapsible from "react-native-collapsible";
-import ShortSectionList from "../../components/ShortSectionList";
-import ShortList from "../../components/ShortList";
-import ScrollContainer from "../../components/ScrollContainer";
-import TransactionListItem from "../../components/TransactionListItem";
-import Loader from "../../components/Loader";
-import CoinPriceService from "../../services/CoinPrice.service";
+import { useInterval } from "../../utils/useInterval"
+import { formatDate } from "../../utils/formatDate"
+import { shortAddress } from "../../utils/shortAddress"
+import If from "../../components/If"
+import { TypedLease } from "../../interfaces/TypedLease"
+import CommunityNodesService from "../../services/CommunityNodes.service"
+import WalletFAB from "../../components/WalletFAB"
+import Collapsible from "react-native-collapsible"
+import ShortSectionList from "../../components/ShortSectionList"
+import ShortList from "../../components/ShortList"
+import ScrollContainer from "../../components/ScrollContainer"
+import TransactionListItem from "../../components/TransactionListItem"
+import Loader from "../../components/Loader"
+import CoinPriceService from "../../services/CoinPrice.service"
 
 export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wallet'>) {
 
     const { width, height } = useWindowDimensions()
 
+    const [appState, setAppState] = useState<AppStateStatus>(AppState.currentState)
     const [accountAddress, setAccountAddress] = useState('')
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [showBalanceDetails, setShowBalanceDetails] = useState<boolean>(false)
-    const [leases, setLeases] = useState<{address: string, name?: string, amount: number}[]>([])
-    const [transactions, setTransactions] = useState<{date: string, data: TypedTransaction[]}[]>([])
+    const [leases, setLeases] = useState<{ address: string, name?: string, amount: number }[]>([])
+    const [transactions, setTransactions] = useState<{ date: string, data: TypedTransaction[] }[]>([])
     const [details, setDetails] = useState<TypedDetails>({} as TypedDetails)
     const [coinData, setCoinData] = useState<TypedCoinData>({} as TypedCoinData)
 
     const { available, effective, leasing, regular, unbonding } = details
     const { price, percent_change_24h } = coinData
+
+    const isFocused = useIsFocused()
+
+    useEffect(() => {
+        if (isFocused) {
+            loadAccount()
+        }
+    }, [isFocused])
+
 
     useFocusEffect(
         React.useCallback(() => {
@@ -79,7 +91,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
     useFocusEffect(
         React.useCallback(() => {
             loadAccount()
-        },[])
+        }, [])
     )
 
     useFocusEffect(
@@ -89,7 +101,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                 loadLeases(),
                 loadTransactions(),
             ]).then(() => setIsLoading(false))
-        },[accountAddress])
+        }, [accountAddress])
     )
 
     useInterval(() => {
@@ -105,7 +117,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
 
     const loadAccountDetails = async () => {
         if (accountAddress === '') {
-            setDetails({} as TypedDetails);
+            setDetails({} as TypedDetails)
             return
         }
 
@@ -129,10 +141,10 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                 groupedLeases.set(lease.recipient, lease.amount + (groupedLeases.get(lease.recipient) || 0))
             }
 
-            const activeLeases: {address: string, name?: string, amount: number}[] = []
+            const activeLeases: { address: string, name?: string, amount: number }[] = []
             for (const [address, amount] of groupedLeases.entries()) {
                 const node = await CommunityNodesService.info(address)
-                activeLeases.push({address, name: node?.name, amount})
+                activeLeases.push({ address, name: node?.name, amount })
             }
 
             setLeases(activeLeases.sort((a, b) => b.amount - a.amount))
@@ -155,7 +167,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                 const date = formatDate(tx.timestamp!)
                 txsByDate.set(date, [...txsByDate.get(date) || [], tx])
             }
-            setTransactions(Array.from(txsByDate.entries()).map(([date, txs]) => ({date, data: txs})))
+            setTransactions(Array.from(txsByDate.entries()).map(([date, txs]) => ({ date, data: txs })))
         } catch (error) {
             throw new Error(`Error retrieving latest transactions. ${error}`)
         }
@@ -164,7 +176,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
     useEffect(() => {
         const controller = new AbortController()
         const signal = controller.signal
-        const getPrizeInfo = () => {
+        const getPriceInfo = () => {
             setIsLoading(true)
             CoinPriceService.getCoinInfo(signal)
                 .then(price => {
@@ -174,7 +186,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                     throw new Error(`Error retrieving coin data. ${error}`)
                 })
         }
-        getPrizeInfo()
+        getPriceInfo()
         return () => {
             controller.abort()
         }
@@ -196,23 +208,41 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
         }
     }
 
-    const renderLease = (lease: {address: string, name?: string, amount: number}) => {
+    const renderLease = (lease: { address: string, name?: string, amount: number }) => {
         return <List.Item
             key={`lease:${lease.address}`}
             title={lease.name ?? shortAddress(lease.address)}
             titleStyle={{ fontSize: 14 }}
             description={lease.name || true ? shortAddress(lease.address) : ''}
             descriptionStyle={{ fontSize: 12, marginBottom: 0 }}
-            right={({style}) => <Text style={{...style, alignSelf: 'center'}}>{formatNumber(lease.amount)} LTO</Text>}
-            onPress={() => navigation.navigate('Lease', {address: lease.address})}
+            right={({ style }) => <Text style={{ ...style, alignSelf: 'center' }}>{formatNumber(lease.amount)} LTO</Text>}
+            onPress={() => navigation.navigate('Lease', { address: lease.address })}
         />
     }
+
+    const handleAppStateChange = (nextAppState: AppStateStatus): void => {
+        if (appState === 'active' && nextAppState?.match(/background/)) {
+            LTOService.lock()
+            setTimeout(() => {
+                navigation.navigate('LockedScreen')
+            }, 500)
+        }
+        setAppState(nextAppState)
+    }
+
+    useEffect(() => {
+        const unsubscribeAppState = AppState.addEventListener('change', handleAppStateChange)
+        return () => {
+            unsubscribeAppState.remove()
+        }
+    }, [])
+
 
     return (
         <Loader loading={isLoading}>
             <StatusBarIOS backgroundColor={'#ffffff'} />
             <ImageBackground source={backgroundImage} style={{ width, height, position: "absolute" }} />
-            <OverviewContainer style={{height}}>
+            <OverviewContainer style={{ height }}>
                 <TopContainer>
                     <OverviewHeader
                         icon={"menu"}
@@ -243,7 +273,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                     </TopCardsRipple>
                 </TopContainer>
 
-                <ScrollContainer style={{marginTop: 2}} innerStyle={{paddingBottom: 130}}>
+                <ScrollContainer style={{ marginTop: 2 }} innerStyle={{ paddingBottom: 130 }}>
                     <Collapsible collapsed={!showBalanceDetails}>
                         <BottomCardsContainer>
                             <BottomCard>
@@ -291,7 +321,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                             <Card.Title title={WALLET.ACTIVE_LEASES} />
                             <ShortList
                                 data={leases}
-                                renderItem={({item}) => renderLease(item)}
+                                renderItem={({ item }) => renderLease(item)}
                             />
                         </ActivityCard>
                     </If>
@@ -314,7 +344,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                                 />
                             </Card.Content>
                             <Card.Actions>
-                                <Button style={{width: '100%'}} onPress={() => navigation.navigate('Transactions')}>
+                                <Button style={{ width: '100%' }} onPress={() => navigation.navigate('Transactions')}>
                                     {WALLET.MORE}
                                 </Button>
                             </Card.Actions>
