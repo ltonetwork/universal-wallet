@@ -1,4 +1,4 @@
-package lto.net.com;
+package com.ltonetwork.universal;
 
 import android.os.Build;
 import android.os.Bundle;

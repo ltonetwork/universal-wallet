@@ -1,4 +1,4 @@
-package lto.net.com.newarchitecture;
+package com.ltonetwork.universal.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import lto.net.com.BuildConfig;
-import lto.net.com.newarchitecture.components.MainComponentsRegistry;
-import lto.net.com.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.ltonetwork.universal.BuildConfig;
+import com.ltonetwork.universal.newarchitecture.components.MainComponentsRegistry;
+import com.ltonetwork.universal.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

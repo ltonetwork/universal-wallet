@@ -26,7 +26,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>myapp</string>
-				<string>lto.net.com</string>
+				<string>com.ltonetwork.universal</string>
 			</array>
 		</dict>
 	</array>

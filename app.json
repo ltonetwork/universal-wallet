@@ -20,14 +20,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "lto.net.com"
+      "bundleIdentifier": "com.ltonetwork.universal"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "lto.net.com",
+      "package": "com.ltonetwork.universal",
       "userInterfaceStyle": "light"
     },
     "web": {
