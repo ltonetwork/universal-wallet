@@ -127,7 +127,7 @@ export const OWNABLES = {
 export const QR_READER = {
     TITLE: 'QR Scanner',
     SUBTITLE: `Scan the QR code from LTO's web application to log in to your account or confirm your transactions`,
-    DENIED: 'Permission denied!'
+    DENIED: 'Permission for the camera are needed!'
 }
 
 export const MODAL_SCREEN = {
@@ -147,7 +147,7 @@ export const PROFILE = {
 
 export const LOCKED_SCREEN = {
     TITLE: 'ACCOUNT LOCKED!',
-    SUBTITLE: 'Enter your wallet password to unlock your account',
+    SUBTITLE: 'Enter your wallet password to continue',
     INPUT_PASSWORD: {
         LABEL: 'Wallet password',
         PLACEHOLDER: 'Type your password'
