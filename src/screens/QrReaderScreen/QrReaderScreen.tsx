@@ -1,5 +1,5 @@
 import { txFromData } from '@ltonetwork/lto'
-import { BarCodeScanner } from 'expo-barcode-scanner'
+import { BarCodeScanner, getPermissionsAsync } from 'expo-barcode-scanner'
 import React, { useContext, useEffect, useState } from 'react'
 import { Text } from 'react-native-paper'
 import { RootStackScreenProps } from '../../../types'
@@ -29,19 +29,19 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
     const [dialogVisible, setDialogVisible] = useState(false)
 
     useEffect(() => {
-        requestCameraPermission()
-    }, [permission])
+        checkCameraPermission()
+        setIsLoading(false)
+    }, [])
 
-    const requestCameraPermission = () => {
-        BarCodeScanner.requestPermissionsAsync()
-            .then(({ status }) => {
-                status === 'granted' ? setPermission(true) : setPermission(false)
-                setIsLoading(false)
-            })
-            .catch(() => {
-                setPermission(false)
-                setIsLoading(false)
-            })
+    const checkCameraPermission = async () => {
+        const { status } = await BarCodeScanner.getPermissionsAsync()
+        setPermission(status === 'granted')
+        if (status === 'undetermined') requestCameraPermission()
+    }
+
+    const requestCameraPermission = async () => {
+        const { status } = await BarCodeScanner.requestPermissionsAsync()
+        setPermission(status === 'granted')
     }
 
     useEffect(() => {
@@ -76,7 +76,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
         }
     }
 
-    const handleLogin = async (auth: {url: string}) => {
+    const handleLogin = async (auth: { url: string }) => {
         setIsLoading(true)
         try {
             const account = await LTOService.getAccount()
@@ -96,7 +96,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
             setMessageInfo(`Successful log in!`)
             setShowMessage(true)
         } catch (error) {
-            console.error(error + (error.response? `. ${error.response.data}` : ''))
+            console.error(error + (error.response ? `. ${error.response.data}` : ''))
             setMessageInfo('Login failed: scan QR again!')
             setShowMessage(true)
         }
@@ -115,7 +115,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
         }
 
         try {
-            const transaction = txFromData({...tx, sender: null}).signWith(account)
+            const transaction = txFromData({ ...tx, sender: null }).signWith(account)
             await LTOService.broadcast(transaction)
 
             setMessageInfo('Transaction sent successfully!')
