@@ -280,7 +280,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                                 <Card.Content>
                                     <FieldName>{WALLET.LEASING}</FieldName>
                                     <AmountContainer>
-                                        <Amount>{formatNumber(leasing)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
+                                        <Amount>{formatNumber(leasing, 0)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
@@ -289,7 +289,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                                 <Card.Content>
                                     <FieldName>{WALLET.UNBONDING}</FieldName>
                                     <AmountContainer>
-                                        <Amount>{formatNumber(unbonding)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
+                                        <Amount>{formatNumber(unbonding, 0)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
@@ -300,7 +300,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                                 <Card.Content>
                                     <FieldName>{WALLET.AVAILABLE}</FieldName>
                                     <AmountContainer>
-                                        <Amount>{formatNumber(available)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
+                                        <Amount>{formatNumber(available, 0)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
@@ -309,7 +309,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                                 <Card.Content>
                                     <FieldName>{WALLET.EFFECTIVE}</FieldName>
                                     <AmountContainer>
-                                        <Amount>{formatNumber(effective)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
+                                        <Amount>{formatNumber(effective, 0)}</Amount><Paragraph>{WALLET.LTO}</Paragraph>
                                     </AmountContainer>
                                 </Card.Content>
                             </BottomCard>
