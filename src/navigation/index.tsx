@@ -130,11 +130,11 @@ function RootNavigator(): any {
           <Stack.Screen
             name='Profile'
             component={ProfileScreen}
-            options={{
+            options={({ navigation }: RootStackScreenProps<'Profile'>) => ({
               headerBackTitleVisible: false,
               headerTitle: 'MY ACCOUNT',
               headerTitleStyle: { fontSize: 20, color: '#000000' },
-            }}
+            })}
           />
         </Stack.Group>
         <Stack.Screen

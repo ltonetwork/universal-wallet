@@ -143,6 +143,10 @@ export const PROFILE = {
     PHRASE: 'Backup Phrase (Seed)',
     DISCOVER_PRIVATEKEY: 'Show private key',
     DISCOVER_PHRASE: 'Show backup phrase',
+    DELETE_ACCOUNT: 'Delete account',
+    DELETE_ACCOUNT_LABEL: 'Are you sure you want to delete your account?',
+    DELETE_ACCOUNT_MESSAGE: 'You\'re about to delete your account. This action is irreversible and may result in a loss of funds.',
+    DELETE_ACCOUNT_MESSAGE_2: 'Make sure you have a backup of your seed phrase before proceeding.',
 }
 
 export const LOCKED_SCREEN = {

@@ -6,12 +6,12 @@ export const StyledButton = styled(Button)`
     height: 40px;
     width: 290px;
     border-radius: 20px;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     font-size: 16px;
     font-weight: 800;
     ${props => props.mode === `contained` && props.disabled === false
-        ? `background-color: #A017B7; border-color: #A017B7; border-width: 1px; color: #ffffff;`
-        : `border-width: 1px; color: #A017B7; border-color: #A017B7;`};
+        ? `background-color: ${props.color || '#A017B7'}; border-color: ${props.color || '#A017B7'}; border-width: 1px; color: #ffffff;`
+        : `border-width: 1px; color: ${props.color || '#A017B7'}; border-color: ${props.color || '#A017B7'};`};
     ${props => props.disabled === true && `border-color: transparent;`};
 `

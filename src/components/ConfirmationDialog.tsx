@@ -5,17 +5,19 @@ import { ButtonContainer } from './styles/ConfirmationDialog.styles'
 
 export default function ConfirmationDialog(props: {
     visible: boolean,
-    message: string,
+    message?: string,
     onCancel: () => void,
     onPress: () => void,
     titleLabel?: string,
     cancelButtonLabel?: string,
-    continueButtonLabel?: string
+    continueButtonLabel?: string,
+    danger: boolean,
+    children?: React.ReactNode
 }): JSX.Element {
 
     const titleLabel = props.titleLabel || 'Confirm:'
-    const cancelButtonLabel = props.cancelButtonLabel || 'Cancel'
-    const continueButtonLabel = props.continueButtonLabel || 'Continue'
+    const cancelButtonLabel = props.cancelButtonLabel || 'Abort'
+    const continueButtonLabel = props.continueButtonLabel || 'Confirm'
 
     return (
         <Portal>
@@ -25,15 +27,17 @@ export default function ConfirmationDialog(props: {
                 onDismiss={props.onCancel}
             >
                 <Dialog.Title testID='dialog'>{titleLabel}</Dialog.Title>
-                <Dialog.Content>
-                    <Paragraph style={{ textAlign: 'justify' }}>{props.message}</Paragraph>
-                </Dialog.Content>
+                <Dialog.Content>{
+                    props.message
+                        ? <Paragraph style={{ textAlign: 'justify' }}>{props.message}</Paragraph>
+                        : props.children
+                }</Dialog.Content>
                 <ButtonContainer>
                     <Dialog.Actions>
-                        <Button uppercase={false} testID='cancel' onPress={props.onCancel}>{cancelButtonLabel}</Button>
+                        <Button color="#666" uppercase={false} testID='cancel' onPress={props.onCancel}>{cancelButtonLabel}</Button>
                     </Dialog.Actions>
                     <Dialog.Actions>
-                        <Button uppercase={false} testID='continue' onPress={props.onPress}>{continueButtonLabel}</Button>
+                        <Button color={props.danger ? 'red' : ''} uppercase={false} testID='continue' onPress={props.onPress}>{continueButtonLabel}</Button>
                     </Dialog.Actions>
                 </ButtonContainer>
 
