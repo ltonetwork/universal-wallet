@@ -239,6 +239,7 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                             ?
                             <StyledButton
                                 mode="contained"
+                                color="#A017B7"
                                 disabled={false}
                                 uppercase={false}
                                 labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
@@ -249,6 +250,7 @@ export default function RegisterAccountScreen({ navigation, route }: RootStackSc
                             :
                             <StyledButton
                                 mode="contained"
+                                color="#A017B7"
                                 disabled={false}
                                 uppercase={false}
                                 labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}

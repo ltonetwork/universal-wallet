@@ -11,7 +11,7 @@ export const StyledButton = styled(Button)`
     font-size: 16px;
     font-weight: 800;
     ${props => props.mode === `contained` && props.disabled === false
-        ? `background-color: ${props.color || '#A017B7'}; border-color: ${props.color || '#A017B7'}; border-width: 1px; color: #ffffff;`
-        : `border-width: 1px; color: ${props.color || '#A017B7'}; border-color: ${props.color || '#A017B7'};`};
+        ? `background-color: ${props.color}; border-color: ${props.color}; border-width: 1px; color: #ffffff;`
+        : `border-width: 1px; color: ${props.color}; border-color: ${props.color};`};
     ${props => props.disabled === true && `border-color: transparent;`};
 `
