@@ -1,6 +1,7 @@
 import { Account, CancelLease, Lease, LTO, Transaction } from "@ltonetwork/lto"
 import LocalStorageService from "./LocalStorage.service"
 import { TypedTransaction } from "../interfaces/TypedTransaction"
+
 export const lto = new LTO(process.env.LTO_NETWORK_ID)
 if (process.env.LTO_API_URL) lto.nodeAddress = process.env.LTO_API_URL
 
@@ -8,7 +9,7 @@ export default class LTOService {
     static account?: Account
 
     public static isUnlocked = (): boolean => {
-        return !!LTOService.account
+        return !!this.account
     }
 
     public static unlock = async (password: string | undefined, signature?: string) => {
@@ -19,44 +20,44 @@ export default class LTOService {
         const seed = encryptedAccount.seed[seedIndex]
 
         if (signature) {
-            LTOService.account = lto.account({ seedPassword: encodedSignature, seed })
+            this.account = lto.account({ seedPassword: encodedSignature, seed })
         } else {
-            LTOService.account = lto.account({ seedPassword: password, seed })
+            this.account = lto.account({ seedPassword: password, seed })
         }
     }
 
     public static lock = () => {
-        delete LTOService.account
+        delete this.account
     }
 
     public static getAccount = async (): Promise<Account> => {
-        if (!LTOService.account) {
+        if (!this.account) {
             throw new Error("Not logged in")
         }
 
-        return LTOService.account
+        return this.account
     }
 
     public static storeAccount = async (nickname: string, password: string, signature?: string) => {
-        if (!LTOService.account) {
+        if (!this.account) {
             throw new Error("Account not created")
         }
         const encodedSignature = signature && encodeURIComponent(signature)
 
-        const encryptedWithSignature = encodedSignature ? LTOService.account.encryptSeed(encodedSignature) : undefined
-        const encryptedWithPassword = LTOService.account.encryptSeed(password)
+        const encryptedWithSignature = encodedSignature ? this.account.encryptSeed(encodedSignature) : undefined
+        const encryptedWithPassword = this.account.encryptSeed(password)
 
 
         await LocalStorageService.storeData('@accountData', [{
             nickname: nickname,
-            address: LTOService.account.address,
+            address: this.account.address,
             seed: [encryptedWithSignature, encryptedWithPassword],
         }])
     }
 
     public static createAccount = async () => {
         try {
-            LTOService.account = lto.account()
+            this.account = lto.account()
         } catch (error) {
             throw new Error('Error creating account')
         }
@@ -64,10 +65,18 @@ export default class LTOService {
 
     public static importAccount = async (seed: string) => {
         try {
-            LTOService.account = lto.account({ seed: seed })
+            this.account = lto.account({ seed: seed })
         } catch (error) {
             throw new Error('Error importing account from seeds')
         }
+    }
+
+    public static deleteAccount = async () => {
+        await Promise.all([
+            LocalStorageService.removeData('@accountData'),
+            LocalStorageService.removeData('@userAlias')
+        ])
+        this.lock()
     }
 
     private static apiUrl = (path: string): string => {
@@ -76,7 +85,7 @@ export default class LTOService {
 
     public static getBalance = async (address: string) => {
         try {
-            const url = LTOService.apiUrl(`/addresses/balance/details/${address}`)
+            const url = this.apiUrl(`/addresses/balance/details/${address}`)
             const response = await fetch(url)
             return response.json()
         } catch (error) {
@@ -85,7 +94,7 @@ export default class LTOService {
     }
 
     public static getTransactions = async (address: string, limit?: number, page = 1) => {
-        const pending = await LTOService.getPendingTransactions(address)
+        const pending = await this.getPendingTransactions(address)
 
         let offset
         if (!limit) {
@@ -101,12 +110,12 @@ export default class LTOService {
 
         return ([] as TypedTransaction[]).concat(
             pending.slice(limit * (page - 1), limit),
-            limit > 0 ? await LTOService.getProcessedTransactions(address, limit, offset) : []
+            limit > 0 ? await this.getProcessedTransactions(address, limit, offset) : []
         )
     }
 
     private static getPendingTransactions = async (address: string) => {
-        const url = LTOService.apiUrl(`/transactions/unconfirmed`)
+        const url = this.apiUrl(`/transactions/unconfirmed`)
         const response = await fetch(url)
         const utx: TypedTransaction[] = await response.json()
 
@@ -117,7 +126,7 @@ export default class LTOService {
     }
 
     private static getProcessedTransactions = async (address: string, limit = 100, offset = 0) => {
-        const url = LTOService.apiUrl(`/transactions/address/${address}?limit=${limit}&offset=${offset}`)
+        const url = this.apiUrl(`/transactions/address/${address}?limit=${limit}&offset=${offset}`)
         const response = await fetch(url)
         const [txs] = await response.json()
 
@@ -126,8 +135,8 @@ export default class LTOService {
 
     public static getLeases = async (address: string) => {
         const [pending, active] = await Promise.all([
-            LTOService.getPendingTransactions(address),
-            LTOService.getActiveLeases(address)
+            this.getPendingTransactions(address),
+            this.getActiveLeases(address)
         ])
         const leases = [...pending.filter(tx => tx.type === Lease.TYPE), ...active]
 
@@ -140,14 +149,14 @@ export default class LTOService {
     }
 
     private static getActiveLeases = async (address: string) => {
-        const url = LTOService.apiUrl(`/leasing/active/${address}`)
+        const url = this.apiUrl(`/leasing/active/${address}`)
 
         const response = await fetch(url)
         return response.json()
     }
 
     public static broadcast = async (transaction: Transaction) => {
-        const url = LTOService.apiUrl('/transactions/broadcast')
+        const url = this.apiUrl('/transactions/broadcast')
         const response = await fetch(url, {
             method: 'POST',
             headers: {

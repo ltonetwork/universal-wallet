@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import { TouchableOpacity } from 'react-native'
-import { Card } from 'react-native-paper'
+import {TouchableOpacity, View} from 'react-native'
+import {Card, Paragraph, Text} from 'react-native-paper'
 import Spinner from '../../components/Spinner'
 import { PROFILE } from '../../constants/Text'
 import LocalStorageService from '../../services/LocalStorage.service'
 import { CardsContainer, Content, Field, HiddenTitle, MainCard } from './ProfileScreen.styles'
 import PressToCopy from "../../components/PressToCopy";
 import LTOService from "../../services/LTO.service";
+import {StyledButton} from "../../components/styles/StyledButton.styles";
+import ConfirmationDialog from "../../components/ConfirmationDialog";
+import {RootStackScreenProps} from "../../../types";
 
-export default function ProfileScreen() {
+export default function ProfileScreen({ navigation }: RootStackScreenProps<'Profile'>) {
 
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [accountInformation, setAccountInformation] = useState(Object.create(null))
     const [isKeyBlur, setIsKeyBlur] = useState<boolean>(true)
     const [isSeedBlur, setIsSeedBlur] = useState<boolean>(true)
     const [accountNickname, setAccountNickname] = useState<string>("")
+    const [showConfirmDelete, setShowConfirmDelete] = useState<boolean>(false)
 
     const { address, publicKey, privateKey, seed } = accountInformation
 
@@ -31,6 +35,16 @@ export default function ProfileScreen() {
             setIsSeedBlur(false)
         }
     }, [])
+
+    const deleteAccount = () => {
+        setShowConfirmDelete(false)
+        LTOService.deleteAccount().then(() => {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: 'SignUp' }],
+            })
+        })
+    }
 
     const readStorage = () => {
         LTOService.getAccount()
@@ -111,8 +125,29 @@ export default function ProfileScreen() {
                             </MainCard>
                         </PressToCopy>
                     }
+
+                    <StyledButton
+                        mode='text'
+                        color='red'
+                        uppercase={false}
+                        labelStyle={{ fontWeight: '400', fontSize: 16, width: '100%' }}
+                        onPress={() => setShowConfirmDelete(true)}
+                    >
+                        {PROFILE.DELETE_ACCOUNT}
+                    </StyledButton>
                 </CardsContainer>
             }
+            <ConfirmationDialog
+                danger={true}
+                titleLabel={PROFILE.DELETE_ACCOUNT_LABEL}
+                continueButtonLabel={PROFILE.DELETE_ACCOUNT}
+                visible={showConfirmDelete}
+                onCancel={() => setShowConfirmDelete(false)}
+                onPress={() => deleteAccount()}
+            >
+                <Paragraph style={{ textAlign: 'justify', marginBottom: 10 }}>{PROFILE.DELETE_ACCOUNT_MESSAGE}</Paragraph>
+                <Paragraph style={{ textAlign: 'justify', fontWeight: 'bold' }}>{PROFILE.DELETE_ACCOUNT_MESSAGE_2}</Paragraph>
+            </ConfirmationDialog>
         </>
     )
 }
