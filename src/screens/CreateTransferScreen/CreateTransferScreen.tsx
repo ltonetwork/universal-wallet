@@ -113,7 +113,7 @@ export default function CreateTransferScreen({ navigation }: RootStackScreenProp
           </HelperText>
 
           <StyledInput
-              label="Attachment"
+              label="Note (optional)"
               value={attachment}
               error={attachment.length > 100}
               onChangeText={setAttachment}

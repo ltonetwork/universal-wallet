@@ -11,7 +11,7 @@ export default function ConfirmationDialog(props: {
     titleLabel?: string,
     cancelButtonLabel?: string,
     continueButtonLabel?: string,
-    danger: boolean,
+    danger?: boolean,
     children?: React.ReactNode
 }): JSX.Element {
 
