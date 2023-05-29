@@ -58,7 +58,8 @@ function RootNavigator(): any {
   }, [appFirstLaunch])
 
   const skipOnboarding = (): void => {
-    LocalStorageService.getData('@appFirstLaunch')
+    setAppFirstLaunch(false)
+    /*LocalStorageService.getData('@appFirstLaunch')
       .then((data) => {
         if (data === null) {
           setAppFirstLaunch(true)
@@ -69,7 +70,7 @@ function RootNavigator(): any {
       })
       .catch((error) => {
         throw new Error(`Error retrieving data. ${error}`)
-      })
+      })*/
   }
 
   LocalStorageService.getData('@userAlias')
