@@ -174,23 +174,29 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
     }
 
     useEffect(() => {
+        const controller = updatePriceInfo()
+        return () => controller.abort()
+    }, [])
+
+    useInterval(() => {
+        updatePriceInfo()
+    }, 30 * 1000)
+
+    const updatePriceInfo = () => {
         const controller = new AbortController()
         const signal = controller.signal
-        const getPriceInfo = () => {
-            setIsLoading(true)
-            CoinPriceService.getCoinInfo(signal)
-                .then(price => {
-                    setCoinData(price)
-                })
-                .catch(error => {
-                    throw new Error(`Error retrieving coin data. ${error}`)
-                })
-        }
-        getPriceInfo()
-        return () => {
-            controller.abort()
-        }
-    }, [])
+
+        setIsLoading(true)
+        CoinPriceService.getCoinInfo(signal)
+            .then(price => {
+                setCoinData(price)
+            })
+            .catch(error => {
+                throw new Error(`Error retrieving coin data. ${error}`)
+            })
+
+        return controller;
+    }
 
     const effectiveAmount = () => {
         return regular * price
