@@ -40,6 +40,7 @@ export default function SignUpScreen({ navigation }: RootStackScreenProps<'SignU
                 </StyledButton>
                 <StyledButton
                     mode="outlined"
+                    color="#A017B7"
                     uppercase={false}
                     labelStyle={{ fontWeight: '400', fontSize: 16, width: '90%' }}
                     onPress={() => {

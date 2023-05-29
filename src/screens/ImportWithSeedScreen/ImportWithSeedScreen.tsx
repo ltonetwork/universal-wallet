@@ -39,6 +39,9 @@ export default function ImportSeedScreen({ navigation }: RootStackScreenProps<'I
                     onChangeText={(text) => setSeedPhrase(text)}
                     value={seedPhrase}
                     placeholder={IMPORT_WITHSEEDS.INPUT_SEEDPHRASE.PLACEHOLDER}
+                    autoCapitalize="none"
+                    autoComplete="off"
+                    autoCorrect={false}
                 ></StyledInput>
             </InputContainer>
 
