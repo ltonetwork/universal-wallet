@@ -186,7 +186,6 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
         const controller = new AbortController()
         const signal = controller.signal
 
-        setIsLoading(true)
         CoinPriceService.getCoinInfo(signal)
             .then(price => {
                 setCoinData(price)
