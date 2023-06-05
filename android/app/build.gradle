@@ -160,7 +160,7 @@ android {
         applicationId 'com.ltonetwork.universal'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
+        versionCode 3
         versionName "0.0.1"
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
@@ -269,8 +269,8 @@ android {
                 keyPassword properties.getProperty('LTO_UPLOAD_KEY_PASSWORD')
            }
         }
-        
-        
+
+
     }
     buildTypes {
         debug {
