@@ -35,6 +35,7 @@ import {MessageContext} from "../../context/UserMessage.context";
 import ConfirmationDialog from "../../components/ConfirmationDialog";
 import {confirmationMessage} from "../../utils/confirmationMessage";
 import {CancelLease as CancelLeaseTx} from "@ltonetwork/lto";
+import PressToCopy from "../../components/PressToCopy";
 
 export default function LeaseScreen({ navigation, route }: RootStackScreenProps<'Lease'>) {
     const { width, height } = useWindowDimensions()
@@ -146,7 +147,9 @@ export default function LeaseScreen({ navigation, route }: RootStackScreenProps<
                 <NodeCard>
                     <Card.Content>
                         <NodeName>{node?.name ?? 'Node'}</NodeName>
-                        <NodeAddress>{nodeAddress}</NodeAddress>
+                        <PressToCopy value={nodeAddress}>
+                            <NodeAddress>{nodeAddress}</NodeAddress>
+                        </PressToCopy>
                         <NodeDetail value={node?.sharing} description={node?.payoutSchedule} icon="hand-coin-outline" />
                         <NodeDetail value={node?.comment} icon="alert-octagram-outline" />
                     </Card.Content>

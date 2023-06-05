@@ -5,6 +5,7 @@ import txTypes from "../constants/TransactionTypes";
 import {Text} from "react-native";
 import {formatNumber} from "../utils/formatNumber";
 import {TypedTransaction} from "../interfaces/TypedTransaction";
+import {navigateToTransaction} from "../utils/redirectSocialMedia";
 
 export default function TransactionListItem(params: {direction: 'in' | 'out', tx: TypedTransaction}): JSX.Element {
     const {direction, tx} = params
@@ -32,6 +33,7 @@ export default function TransactionListItem(params: {direction: 'in' | 'out', tx
             titleStyle={{ fontSize: 14 }}
             description={description}
             descriptionStyle={{ fontSize: 12, marginBottom: 0 }}
+            onPress={() => navigateToTransaction(tx.id!)}
             left={({color, style}) => tx.pending
                 ? <ActivityIndicator style={{...style, marginLeft: 8}} animating={true} color="#A017B7" />
                 : <List.Icon color={color} style={{...style, marginLeft: 0, marginRight: 8}} icon={txTypes[tx.type].icon[direction]!}/>
