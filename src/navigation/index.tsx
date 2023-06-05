@@ -75,9 +75,7 @@ function RootNavigator(): any {
 
   LocalStorageService.getData('@userAlias')
     .then((data) => {
-      if (data !== null) {
-        setUserAlias(true)
-      }
+      setUserAlias(data !== null)
     })
     .catch((error) => {
       throw new Error(`Error retrieving data. ${error}`)
@@ -85,7 +83,7 @@ function RootNavigator(): any {
 
 
   return (
-    appFirstLaunch !== null && (
+      userAlias !== null && (
       <Stack.Navigator
         initialRouteName={appFirstLaunch ? 'OnBoarding' : userAlias ? 'SignIn' : 'SignUp'}
         screenOptions={{
