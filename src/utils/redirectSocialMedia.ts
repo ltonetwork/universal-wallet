@@ -1,5 +1,8 @@
 import * as WebBrowser from "expo-web-browser"
 
+const EXPLORER_URL = process.env.LTO_EXPLORER_URL || 'https://explorer.testnet.lto.network'
+const WALLET_URL = process.env.LTO_WALLET_URL || 'https://wallet.testnet.lto.network'
+
 export const nagivateTo = (url: string) => {
     WebBrowser.openBrowserAsync(url)
 }
@@ -9,11 +12,15 @@ export const navigateToWebsite = () => {
 }
 
 export const navigateToExplorer = () => {
-    WebBrowser.openBrowserAsync("https://explorer.testnet.lto.network")
+    WebBrowser.openBrowserAsync(EXPLORER_URL)
+}
+
+export const navigateToTransaction = (id: string) => {
+    WebBrowser.openBrowserAsync(`${EXPLORER_URL}/transactions/${id}`)
 }
 
 export const navigateToWebWallet = () => {
-    WebBrowser.openBrowserAsync("https://wallet.testnet.lto.network")
+    WebBrowser.openBrowserAsync(WALLET_URL)
 }
 
 export const navigateToTwitter = () => {
