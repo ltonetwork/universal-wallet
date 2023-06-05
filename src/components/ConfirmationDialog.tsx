@@ -29,7 +29,7 @@ export default function ConfirmationDialog(props: {
                 <Dialog.Title testID='dialog'>{titleLabel}</Dialog.Title>
                 <Dialog.Content>{
                     props.message
-                        ? <Paragraph style={{ textAlign: 'justify' }}>{props.message}</Paragraph>
+                        ? <Paragraph>{props.message}</Paragraph>
                         : props.children
                 }</Dialog.Content>
                 <ButtonContainer>
