@@ -1,5 +1,5 @@
 import { txFromData } from '@ltonetwork/lto'
-import { BarCodeScanner, getPermissionsAsync } from 'expo-barcode-scanner'
+import { BarCodeScanner } from 'expo-barcode-scanner'
 import React, { useContext, useEffect, useState } from 'react'
 import { Text } from 'react-native-paper'
 import { RootStackScreenProps } from '../../../types'
@@ -24,6 +24,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
     const [permission, setPermission] = useState<boolean>(true)
     const { setShowMessage, setMessageInfo } = useContext(MessageContext)
     const [scanned, setScanned] = useState(false)
+    const [confirmMessage, setConfirmMessage] = useState('')
 
     const [tx, setTx] = useState<TypedTransaction | undefined>()
     const [dialogVisible, setDialogVisible] = useState(false)
@@ -63,6 +64,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
 
             if (schema === TRANSACTION_SCHEMA) {
                 setTx(_data)
+                setConfirmMessage(confirmationMessage(_data))
                 setDialogVisible(true)
                 return
             }
@@ -95,7 +97,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
             )
             setMessageInfo(`Successful log in!`)
             setShowMessage(true)
-        } catch (error) {
+        } catch (error: any) {
             console.error(error + (error.response ? `. ${error.response.data}` : ''))
             setMessageInfo('Login failed: scan QR again!')
             setShowMessage(true)
@@ -145,7 +147,7 @@ export default function QrReader({ navigation }: RootStackScreenProps<'QrReader'
                 {tx?.sender ? (
                     <ConfirmationDialog
                         visible={dialogVisible}
-                        message={confirmationMessage(tx)}
+                        message={confirmMessage}
                         onCancel={() => navigation.goBack()}
                         onPress={() => handleTx(tx)}
                     />
