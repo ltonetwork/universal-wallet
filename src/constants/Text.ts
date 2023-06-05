@@ -9,14 +9,14 @@ export const ONBOARDING = {
     SECOND_SCREEN: {
         TITLE: 'Second screen title',
         SUBTITLE:
-            'In LTO wallet you can store your coins, complete transactions and notarise documents quickly and easy from your mobile phone'
+            'Use the LTO Universal wallet to store your coins and complete transactions quickly and easy from your mobile phone'
     },
     BUTTON: 'Start'
 }
 
 export const SIGNUP = {
     TITLE: 'SIGN UP',
-    SUBTITLE: 'Create and account or import one with your seed phrase',
+    SUBTITLE: 'Create an account or import one with your seed phrase',
     BUTTON_CREATE: 'Create new account',
     BUTTON_IMPORT: 'Import account with your seeds',
 }
