@@ -1,5 +1,5 @@
 import React, { useState} from 'react'
-import {ImageBackground, Text, useWindowDimensions, View} from 'react-native'
+import {ImageBackground, useWindowDimensions} from 'react-native'
 import { RootTabScreenProps } from '../../../types'
 import OverviewHeader from '../../components/OverviewHeader'
 import StatusBarIOS from '../../components/StatusBarIOS'
@@ -7,25 +7,20 @@ import { Container, MainTitle } from '../../components/styles/NextFunctionality.
 import { OWNABLES } from '../../constants/Text'
 import { backgroundImage } from '../../utils/images'
 import DocumentPicker, { isInProgress, types } from 'react-native-document-picker'
-import OwnableService from '../../services/Ownable.service'
-import {Modal, Portal, Button, Provider, List, Card} from 'react-native-paper'
+import OwnableService from '../../services/Ownables/Ownable.service'
+import {Button, Provider} from 'react-native-paper'
 import {useFocusEffect} from "@react-navigation/native";
-import ShortList from "../../components/ShortList";
 import PageFAB from "../../components/PageFAB";
-import WebView from "react-native-webview";
 import Ownable from "../../components/Ownable";
+import {EventChain} from "@ltonetwork/lto"
+import {TypedPackage} from "../../interfaces/TypedPackage"
 
 export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ownables'>) {
-
   const { width, height } = useWindowDimensions()
-
-  const [showAddModal, setShowAddModal] = React.useState(false)
-  const [ownableOptions, setOwnableOptions] = useState<{id: string, name: string}[]>([])
-  const [ownables, setOwnables] = useState<{id: string, option: {id: string, name: string}}[]>([])
+  const [ownables, setOwnables] = useState<Array<{chain: EventChain, package: TypedPackage}>>([]);
 
   useFocusEffect(
       React.useCallback(() => {
-          loadOwnableOptions()
           loadOwnables()
       },[])
   )
@@ -38,7 +33,6 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
         copyTo: 'documentDirectory'
       })
       await OwnableService.import(pickerResult)
-      loadOwnableOptions()
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         console.warn('cancelled')
@@ -51,25 +45,9 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
     }
   }
 
-  const loadOwnableOptions = () => {
-    OwnableService.listOptions().then(setOwnableOptions)
-  }
-
   const loadOwnables = () => {
     OwnableService.list().then(setOwnables)
   }
-
-  const renderOwnableOption = (option: {id: string, name: string}) =>
-    <List.Item
-        key={`ownable-option:${option.id}`}
-        onPress={async () => {
-          await OwnableService.issue(option.id)
-          loadOwnables()
-          setShowAddModal(false)
-        }}
-        title={`${option.name} (${option.id})`}
-    />
-
 
   return (
     <>
@@ -83,28 +61,11 @@ export default function OwnablesTabScreen({ navigation }: RootTabScreenProps<'Ow
           onQrPress={() => navigation.navigate('QrReader')}
           input={<MainTitle>{OWNABLES.MAINTITLE}</MainTitle>} />
 
-          <Button onPress={() => { OwnableService.clear().then(loadOwnables) }}>Clear</Button>
-        { ownables.map(ownable => <Ownable key={ownable.id} ownable={ownable} />) }
+        { ownables.map(({chain, package: pkg}) => <Ownable chain={chain} package={pkg} />) }
       </Container>
 
       <Provider>
-        <Portal>
-          <Modal visible={showAddModal} onDismiss={() => setShowAddModal(false)} style={{margin: 20}}>
-            <Card>
-              <Card.Content>
-                <ShortList
-                    data={ownableOptions}
-                    renderItem={({item}) => renderOwnableOption(item)}
-                />
-              </Card.Content>
-              <Card.Actions>
-                <Button onPress={importOwnable} style={{width: '100%'}}>Import</Button>
-              </Card.Actions>
-            </Card>
-          </Modal>
-        </Portal>
-
-        <PageFAB onPress={() => { setShowAddModal(true) }} />
+        <PageFAB onPress={() => importOwnable() } />
       </Provider>
     </>
   )

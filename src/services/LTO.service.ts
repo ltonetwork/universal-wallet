@@ -1,4 +1,4 @@
-import { Account, CancelLease, Lease, LTO, Transaction } from "@ltonetwork/lto"
+import {Account, Binary, CancelLease, Lease, LTO, Transaction} from "@ltonetwork/lto"
 import StorageService from "./Storage.service"
 import { TypedTransaction } from "../interfaces/TypedTransaction"
 
@@ -168,11 +168,44 @@ export default class LTOService {
         if (response.status >= 400) throw new Error('Broadcast transaction failed: ' + await response.text())
     }
 
+    public static anchor = async (...anchors: Array<{key: Binary, value: Binary}>|Array<Binary>) => {
+        if (!this.account) throw new Error('Not logged in')
+
+        if (anchors[0] instanceof Uint8Array) {
+            await lto.anchor(this.account, ...anchors as Array<Binary>)
+        } else {
+            await lto.mappedAnchor(this.account, ...anchors as Array<{key: Binary, value: Binary}>)
+        }
+    }
+
+    public static verifyAnchors = async(...anchors: Array<{key: Binary, value: Binary}>|Array<Binary>) => {
+        const data = anchors[0] instanceof Uint8Array
+          ? (anchors as Array<Binary>).map(anchor => anchor.hex)
+          : Object.fromEntries((anchors as Array<{key: Binary, value: Binary}>).map(({key, value}) => (
+            [key.hex, value.hex]
+          )))
+
+        const url = this.apiUrl('/index/hash/verify?encoding=hex')
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data),
+        })
+
+        return await response.json()
+    }
+
     public static isValidAddress = (address: string): boolean => {
         try {
             return lto.isValidAddress(address)
         } catch (e) {
             return false
         }
+    }
+
+    public static accountOf(publicKey: Binary|string): string {
+        return lto.account({publicKey: publicKey instanceof Binary ? publicKey.base58 : publicKey}).address
     }
 }
