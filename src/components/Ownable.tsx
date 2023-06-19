@@ -1,16 +1,17 @@
 import React, {useEffect, useState} from 'react'
 import { WebView } from 'react-native-webview'
 import {WebViewErrorEvent, WebViewMessageEvent} from "react-native-webview/lib/WebViewTypes"
-import {TypedOwnable} from "../interfaces/TypedOwnable"
-import OwnableService from "../services/Ownable.service"
+import {EventChain} from "@ltonetwork/lto"
+import {TypedPackage} from "../interfaces/TypedPackage"
+import {Card} from "react-native-paper"
 
-export default function Ownable(props: {ownable: TypedOwnable}): JSX.Element {
-    const { ownable } = props
+export default function Ownable(props: {chain: EventChain, package: TypedPackage}): JSX.Element {
+    const { chain, package: pkg } = props
 
     let webView: WebView
     const [js, setJs] = useState<string|undefined>()
 
-    useEffect(() => {
+    /*useEffect(() => {
         OwnableService.getHTML(ownable.option.id).then(setJs)
     }, [])
 
@@ -79,5 +80,17 @@ export default function Ownable(props: {ownable: TypedOwnable}): JSX.Element {
             onMessage={handleMessage}
             onError={handleError}
         />
+    )*/
+
+    return (
+      <Card style={{
+          aspectRatio: "1/1",
+          position: 'relative',
+      }}>
+          <Card.Title
+            title={pkg.title}
+            subtitle={chain.id}
+          />
+      </Card>
     )
 }

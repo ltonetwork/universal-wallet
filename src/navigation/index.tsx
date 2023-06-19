@@ -53,13 +53,13 @@ function RootNavigator(): any {
   const [appFirstLaunch, setAppFirstLaunch] = useState<boolean | null>(null)
   const [userAlias, setUserAlias] = useState<boolean | null>(null)
 
+/*
   useEffect(() => {
     skipOnboarding()
   }, [appFirstLaunch])
 
   const skipOnboarding = (): void => {
-    setAppFirstLaunch(false)
-    /*StorageService.getData('@appFirstLaunch')
+    StorageService.getData('@appFirstLaunch')
       .then((data) => {
         if (data === null) {
           setAppFirstLaunch(true)
@@ -70,22 +70,25 @@ function RootNavigator(): any {
       })
       .catch((error) => {
         throw new Error(`Error retrieving data. ${error}`)
-      })*/
+      })
   }
+*/
 
-  StorageService.getItem('@userAlias')
-    .then((data) => {
-      setUserAlias(data !== null)
-    })
-    .catch((error) => {
-      throw new Error(`Error retrieving data. ${error}`)
-    })
+  useEffect(() => {
+    StorageService.getItem('@userAlias')
+      .then((data) => {
+        setUserAlias(data !== null)
+      })
+      .catch((error) => {
+        throw new Error(`Error retrieving data. ${error}`)
+      })
+  }, [])
 
 
   return (
       userAlias !== null && (
       <Stack.Navigator
-        initialRouteName={appFirstLaunch ? 'OnBoarding' : userAlias ? 'SignIn' : 'SignUp'}
+        initialRouteName={userAlias ? 'SignIn' : 'SignUp'}
         screenOptions={{
           headerTitleStyle: { color: '#A017B7', fontWeight: '400', fontSize: 16 },
           headerTintColor: '#A017B7',
