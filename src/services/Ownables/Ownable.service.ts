@@ -2,7 +2,6 @@ import { unzip } from 'react-native-zip-archive'
 import RNFS from 'react-native-fs'
 import {DocumentPickerResponse} from "react-native-document-picker"
 import {Binary, EventChain} from "@ltonetwork/lto"
-import calculateCid from "../../utils/calculateCid"
 import PackageService from "../Ownables/Package.service"
 import EventChainService from "../Ownables/EventChain.service"
 import {TypedPackage} from "../../interfaces/TypedPackage"
@@ -47,7 +46,7 @@ export default class OwnableService {
             const chain = await this.extractChain(path)
 
             const files = await this.listFiles(path)
-            const cid = await calculateCid(files);
+            const cid: string = Math.random().toString(36).slice(2, 7); // TODO: generate CID
 
             await PackageService.store(cid, `${TEMP_PATH}/${id}`)
             await EventChainService.init(chain, cid);
