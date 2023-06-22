@@ -170,7 +170,8 @@
         "safe-area",
         "screens",
         "storage",
-        "svg"
+        "svg",
+        "clipboard"
       ]
     }
   }
