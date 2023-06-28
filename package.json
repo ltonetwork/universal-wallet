@@ -155,10 +155,11 @@
     "kitType": "app",
     "alignDeps": {
       "requirements": [
-        "react-native@0.68"
+        "react-native@0.70"
       ],
       "capabilities": [
-        "animation",
+        "babel-preset-react-native",
+        "clipboard",
         "core",
         "core-android",
         "core-ios",
@@ -170,8 +171,7 @@
         "safe-area",
         "screens",
         "storage",
-        "svg",
-        "clipboard"
+        "svg"
       ]
     }
   }
