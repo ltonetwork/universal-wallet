@@ -10,7 +10,7 @@ buildscript {
             kotlinVersion = findProperty('android.kotlinVersion')
         }
         frescoVersion = findProperty('expo.frescoVersion') ?: '2.5.0'
-        agp_version = '7.4.2'
+        agp_version = '7.2.1'
 
         if (System.properties['os.arch'] == 'aarch64') {
             // For M1 Users we need to use the NDK 24 which added support for aarch64
