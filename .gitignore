@@ -53,9 +53,16 @@ local.properties
 *.iml
 *.hprof
 .cxx/
+*.keystore
+!debug.keystore
 
+# fastlane
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
+# screenshots whenever they are needed.
 # For more information about the recommended setup visit:
 # https://docs.fastlane.tools/best-practices/source-control/
+
 **/fastlane/report.xml
 **/fastlane/Preview.html
 **/fastlane/screenshots
@@ -67,21 +74,19 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
-# BUCK
-buck-out/
-\.buckd/
-*.keystore
-!debug.keystore
-
 # Bundle artifacts
 *.jsbundle
 
 # CocoaPods
 /ios/Pods/
+/vendor/bundle/
 
 # Expo
 .expo/
 web-build/
 dist/
+
+# Temporary files created by Metro to check the health of the file watcher
+.metro-health-check*
 
 # @end expo-cli
