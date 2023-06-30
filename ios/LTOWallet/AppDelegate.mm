@@ -6,7 +6,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  self.moduleName = @"com.ltonetwork.universal";
+  self.moduleName = @"main";
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
