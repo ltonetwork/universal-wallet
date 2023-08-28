@@ -1,11 +1,11 @@
-import {Pressable} from "react-native";
-import React, {useContext, useEffect} from "react";
-import {useClipboard} from "@react-native-community/clipboard";
-import {MessageContext} from "../context/UserMessage.context";
+import { Pressable } from "react-native"
+import React, { useContext, useEffect } from "react"
+import { useClipboard } from "@react-native-clipboard/clipboard"
+import { MessageContext } from "../context/UserMessage.context"
 
 export default function PressToCopy(props: { value: string, onPress?: () => void, children: any }): JSX.Element {
     const [data, setString] = useClipboard()
-    const onPress = props.onPress || (() => {});
+    const onPress = props.onPress || (() => { })
 
     useEffect(() => {
         setString(data)
@@ -24,5 +24,5 @@ export default function PressToCopy(props: { value: string, onPress?: () => void
         onPress={onPress}
         onLongPress={() => copyToClipboard(props.value)}>
         {props.children}
-    </Pressable>);
+    </Pressable>)
 }
