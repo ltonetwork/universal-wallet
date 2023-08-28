@@ -83,7 +83,7 @@ function RootNavigator(): any {
 
 
   return (
-      userAlias !== null && (
+    userAlias !== null && (
       <Stack.Navigator
         initialRouteName={appFirstLaunch ? 'OnBoarding' : userAlias ? 'SignIn' : 'SignUp'}
         screenOptions={{
@@ -179,6 +179,7 @@ function BottomTabNavigator() {
       tabBarPosition='bottom'
       initialLayout={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height }}
       screenOptions={{
+        swipeEnabled: false,
         tabBarActiveTintColor: Colors[colorScheme].tint,
         tabBarInactiveTintColor: Colors[colorScheme].tabIconDefault,
         tabBarStyle: { height: 75 },

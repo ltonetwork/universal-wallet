@@ -159,6 +159,10 @@
     "vm": "vm-browserify",
     "tls": false
   },
+  "resolutions": {
+    "@types/react": "17.0.14",
+    "@types/react-dom": "17.0.14"
+  },
   "rnx-kit": {
     "kitType": "app",
     "alignDeps": {

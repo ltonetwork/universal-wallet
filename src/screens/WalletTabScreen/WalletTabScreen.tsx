@@ -1,4 +1,4 @@
-import { useFocusEffect, useIsFocused } from '@react-navigation/native'
+import { useFocusEffect, useIsFocused, useNavigation } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
 import {
     AppState,
@@ -194,7 +194,7 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
                 throw new Error(`Error retrieving coin data. ${error}`)
             })
 
-        return controller;
+        return controller
     }
 
     const effectiveAmount = () => {
@@ -241,6 +241,20 @@ export default function WalletTabScreen({ navigation }: RootTabScreenProps<'Wall
             unsubscribeAppState.remove()
         }
     }, [])
+
+    useEffect(() => {
+        const handleBackButton = () => {
+            if (navigation.canGoBack()) {
+                BackHandler.exitApp()
+                return true
+            }
+            return false
+        }
+        BackHandler.addEventListener('hardwareBackPress', handleBackButton)
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', handleBackButton)
+        }
+    }, [appState])
 
 
     return (
