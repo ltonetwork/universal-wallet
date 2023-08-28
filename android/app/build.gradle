@@ -81,13 +81,13 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.ltowallet"
+    namespace "com.ltonetwork.universal"
     defaultConfig {
-        applicationId "com.ltowallet"
+        applicationId "com.ltonetwork.universal"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 5
+        versionName "0.0.2"
 
         buildConfigField("boolean", "REACT_NATIVE_UNSTABLE_USE_RUNTIME_SCHEDULER_ALWAYS", (findProperty("reactNative.unstable_useRuntimeSchedulerAlways") ?: true).toString())
     }
@@ -98,6 +98,25 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('LTO_UPLOAD_STORE_FILE')) {
+                storeFile file(LTO_UPLOAD_STORE_FILE)
+                storePassword LTO_UPLOAD_STORE_PASSWORD
+                keyAlias LTO_UPLOAD_KEY_ALIAS
+                keyPassword LTO_UPLOAD_KEY_PASSWORD
+            } else {
+                File localPropertiesFile = project.rootProject.file('local.properties')
+                if (!localPropertiesFile.exists()) return
+
+                Properties properties = new Properties()
+                properties.load(project.rootProject.file('local.properties').newDataInputStream())
+                storeFile file(properties.getProperty('LTO_UPLOAD_STORE_FILE'))
+                keyAlias properties.getProperty('LTO_UPLOAD_KEY_ALIAS')
+                storePassword properties.getProperty('LTO_UPLOAD_STORE_PASSWORD')
+                keyPassword properties.getProperty('LTO_UPLOAD_KEY_PASSWORD')
+            }
+        }
+
     }
     buildTypes {
         debug {
@@ -106,7 +125,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds')?.toBoolean() ?: false)
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
