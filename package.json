@@ -2,11 +2,10 @@
   "name": "@ltonetwork/universal-wallet",
   "version": "0.0.1",
   "scripts": {
-    "start": "expo start --dev-client",
+    "start": "react-native start",
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "clean:android": "cd android && ./gradlew clean",
-    "eject": "expo eject",
     "test": "jest",
     "watch": "jest --watchAll",
     "postinstall": "node_modules/.bin/rn-nodeify --install crypto,assert,url,stream,events --hack",
