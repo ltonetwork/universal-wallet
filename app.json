@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "LTOWallet",
-    "slug": "LTOWallet",
+    "name": "com.ltonetwork.universal",
+    "slug": "com.ltonetwork.universal",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
