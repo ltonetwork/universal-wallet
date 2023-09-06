@@ -1,10 +1,5 @@
-import {BaseBlockstore} from "blockstore-core/base"
+import {BlackHoleBlockstore} from "blockstore-core/black-hole"
 import {importer} from "ipfs-unixfs-importer"
-
-class DummyBlockstore extends BaseBlockstore {
-  async put(): Promise<any> { }
-  async has(): Promise<boolean> { return false }
-}
 
 export default async function calculateCid(files: Array<{name: string, read: () => Promise<Uint8Array>}>): Promise<string> {
   const source = await Promise.all(
@@ -14,7 +9,7 @@ export default async function calculateCid(files: Array<{name: string, read: () 
     }))
   )
 
-  const blockstore = new DummyBlockstore()
+  const blockstore = new BlackHoleBlockstore()
 
   for await (const entry of importer(source, blockstore)) {
     if (entry.path === '' && entry.unixfs?.type === 'directory') return entry.cid.toString()
